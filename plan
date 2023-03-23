@@ -1,0 +1,196 @@
+variable global:
+
+struct s_shell_data {
+    t_list* history,        // check readline library puede no ser necessario gestionar nestra propria historia
+    char *  address,
+    int     last_execution,
+    t_list* env_variables,  // o crear nuestra propria estrutura de variables (empeza con el de la shell)
+    int     level,          // algo sobre shells dentro de shells
+}
+
+
+###################
+# INTERACTIVIDADE #
+###################
+
+a) historial
+ mirar las funciones: readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_history,
+
+
+b) prompt
+ mirar mas funciones: isatty, ttyname, ttyslot, ioctl, getenv, tcsetattr,
+tcgetattr, tgetent, tgetflag, tgetnum, tgetstr,
+tgoto, tputs
+
+c) signales
+
+Si la prompt esta vacia:
+Ctrl + C -> abre una nueva prompt
+Ctrl + \ -> nada
+Ctrl + D -> llama exit
+
+Si prompt tiene texto:
+Ctrl + C -> abre una nueva prompt (mantenendo el texto en la anterior) y no se guarda en el historial
+Ctrl + \ -> nada
+Ctrl + D -> llama exit
+
+Si esta ejecutando un comando:
+Ctrl + C
+$> ./a.out 1 | ./a.out 2 | ./a.out 3
+ -> ./a.out 1 recibe SIGKILL (9)
+ -> ./a.out 2 recibe SIGKILL (9)
+ -> ./a.out 3 recibe SIGINT (2)
+
+Ctrl + \
+$> ./a.out 1 | ./a.out 2 | ./a.out 3
+ -> ./a.out 1 recibe SIGKILL (9)
+ -> ./a.out 2 recibe SIGKILL (9)
+ -> ./a.out 3 recibe SIGQUIT (3)
+
+
+
+##############################
+# PROCESSAMENTO DE COMMANDOS #
+##############################
+
+input: < bla < otro |e$HASD xxxxx"$HASD"xxxxx'$HASD' < other      "sddggsdgds $? $BLA $BLA2 dfsd" > salida 'gfd | gfdsgs $BLA $?' | wc -l >> out >out2 > out3
+envs:
+BLA=bla_env
+HASD = cho
+
+a) separa en tokens:
+"<"
+"bla"
+"<"
+"otro"
+"|"
+"e$HASD"
+"xxxxx\"$HASD\"xxxxx'$HASD'"
+"<"
+"other"
+"\"sddggsdgds $? $BLA $BLA2 dfsd\""
+">"
+"salida"
+"'gfd | sgs $BLA $?'"
+"|"
+"wc"
+"-l"
+">>"
+"out"
+">"
+"out2"
+">"
+"out3"
+
+b) replace `$<a-zA-Z0-9>` por el valor de la variable de entorno
+   replace `$?` por el resultado de la ultima ejecucion
+
+"<"
+"bla"
+"<"
+"otro"
+"|"
+"echo"
+"xxxxxchoxxxxx$HASD"
+"<"
+"other"
+"\"sddggsdgds $? $BLA $BLA2 dfsd\""
+">"
+"salida"
+"gfd | sgs $BLA $?"
+"|"
+"wc"
+"-l"
+">>"
+"out"
+">"
+"out2"
+">"
+"out3"
+
+(no es necessario crear realemtne las arrays, es mas conceptual, se puede passar de b) para d) directamente)
+c) juntar en comandos [array de tokens] (poner todo lo que esta entre |)
+ 1: ["<", "bla", "<", "otro"]
+ 2: ["echo", "xxxxxchoxxxxx$HASD", "<", "other", "sddggsdgds 0 bla_env  dfsd", ">", "salida", "gfdsgs $BLA $?"]
+ 3: ["wc", "-l", ">>", "out", ">", "out2", ">", "out3"]
+
+d) popular la estrutura:
+
+#define WRITE 1
+#define APPEND 2
+
+typedef struct s_out_file {
+    char * name;
+    int type;
+} t_out_file;
+
+typedef struct s_command {
+    input_files: t_list *;          // lista de strings que contine los varios files de entrada en orden de aparecimiento
+    output_files: t_list *;         // lista de out_files que contiene los files de salida en orden de aparecimiento
+    command: char *;                // comando a ser ejecutado
+    argument: t_list *;             // array de strings que contiene los argumentos
+} t_command;
+
+por ejemplo para el primero comando:
+1: {
+    input_files: ["bla", "otro"],
+    output_files: [],
+    command: NULL, // distinto de "" para como se ejecuta,
+    argument: [],
+}
+
+2: {
+    input_files: ["other"],
+    output_files: [{ name: "salida", type: WRITE }],
+    command: "echo",
+    argumentos: ["xxxxxchoxxxxx$HASD", "sddggsdgds 0 bla_env  dfsd", "gfdsgs $BLA $?"]
+}
+
+3: {
+    input_files: [],
+    output_files: [{ name: "out", type: APPEND }, { name: "out2", type: WRITE }, { name: "out3", type: WRITE }],
+    command: "wc",
+    arguments: ["-l"]
+}
+
+
+#####################
+# EJECUTAR COMANDOS #
+#####################
+
+al llamar el exec_command:
+
+void exec_all_comms(t_command *commands)
+    // ejecutar builtin (exit, cd, export, unset) en la thread pincipal (si es solo un comando)
+    if (commands.size() == 1 && comands[0].command is builtin)
+            // ejectuar en la thread principal
+    else
+        for c in commands:
+            exec_command(c)
+
+
+
+void exec_command(t_command comando) {
+    int child = fork()
+    int pipe_fds[2];
+    
+    pipe(pipe_fds);
+
+    if (child == 0) {
+        // estoy en el fork
+        // abrir input_files con open para tener el fd del ultimo; 
+        // abrir output_files con open para tener el fd del ultimo;
+        // mappear input files to stdin y output files to stdout
+        // buscar donde esta el comando (si esta "wc" tenemos que ejecutar "/usr/bin/wc")
+        // executar realmenete el comando
+    }
+    else {
+        // esperar por el hijo;
+    }
+}
+
+
+####################
+# BUILTIN COMMANDS #
+####################
+exit, cd, export, unset, env, pwd, echo

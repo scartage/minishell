@@ -1,0 +1,10 @@
+obj/
+*.a
+.vscode/
+*.out
+*.dSYM
+main.c
+minishell
+output
+.bonus
+
