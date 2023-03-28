@@ -14,13 +14,65 @@ struct s_shell_data {
 ###################
 
 a) historial
- mirar las funciones: readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_history,
+ mirar las funciones: readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_history
 
+    readline:
+    La función readline se utiliza en C para leer una línea de entrada del usuario desde la consola. La función lee una línea de entrada de la consola y la devuelve como una cadena de caracteres (string). La línea de entrada incluye todos los caracteres que el usuario ha ingresado hasta que presiona la tecla "Enter".
+
+    rl_clear_history:
+    La función rl_clear_history se utiliza para borrar el historial de líneas de entrada almacenado en la biblioteca readline. El historial de líneas de entrada se utiliza para almacenar las líneas de entrada que ha ingresado el usuario durante la sesión actual. La función rl_clear_history se utiliza para borrar el historial existente antes de que se le solicite al usuario que ingrese otra línea de entrada.
+
+    rl_on_new_line:
+    La función rl_on_new_line se utiliza para indicar a la biblioteca readline que se ha completado la entrada de una línea y que se debe imprimir un nuevo indicador de línea de entrada. El indicador de línea de entrada se utiliza para indicar al usuario que está listo para ingresar otra línea de entrada.
+
+    rl_replace_line:
+    La función rl_replace_line se utiliza para reemplazar la línea de entrada actual en la biblioteca readline con una nueva línea de entrada. La función se utiliza para editar la línea de entrada actual antes de enviarla a la aplicación que la está utilizando.
+
+    rl_redisplay:
+    La función rl_redisplay se utiliza para actualizar la consola con la línea de entrada actual. La función se utiliza para reflejar los cambios realizados en la línea de entrada actual utilizando otras funciones de la biblioteca readline.
+
+    add_history:
+    La función add_history se utiliza para agregar una línea de entrada al historial de entradas en la biblioteca readline. El historial de entradas se utiliza para almacenar las líneas de entrada que ha ingresado el usuario durante la sesión actual.
 
 b) prompt
  mirar mas funciones: isatty, ttyname, ttyslot, ioctl, getenv, tcsetattr,
 tcgetattr, tgetent, tgetflag, tgetnum, tgetstr,
 tgoto, tputs
+
+    isatty:
+    La función isatty se utiliza para determinar si un descriptor de archivo corresponde a un terminal. La función devuelve 1 si el descriptor de archivo es un terminal y 0 en caso contrario.
+
+    ttyname:
+    La función ttyname se utiliza para obtener el nombre del dispositivo de terminal asociado con un descriptor de archivo. La función devuelve una cadena de caracteres que representa el nombre del dispositivo de terminal o NULL si el descriptor de archivo no está asociado con un terminal.
+
+    ttyslot:
+    La función ttyslot se utiliza para obtener el número de la entrada en el archivo /etc/ttys que corresponde a un descriptor de archivo de terminal. La función devuelve el número de entrada en /etc/ttys o -1 si el descriptor de archivo no está asociado con un terminal.
+
+    ioctl:
+    La función ioctl se utiliza para enviar comandos específicos a un dispositivo. En el caso de un terminal, se utiliza para configurar y obtener información sobre la terminal.
+
+    getenv: La función getenv se utiliza para obtener el valor de una variable de entorno específica en el sistema operativo. Los valores de las variables de entorno son configurados por el sistema operativo o por programas que se ejecutan en el entorno.
+
+    tcsetattr: La función tcsetattr se utiliza para configurar los atributos de un terminal asociado con un descriptor de archivo.
+
+    tcgetattr: La función tcgetattr se utiliza para obtener los atributos de un terminal asociado con un descriptor de archivo.
+
+    tgetent: La función tgetent se utiliza para obtener información sobre la terminal actual. Esta función se utiliza en conjunto con otras funciones como tgetnum y tgetstr para obtener información específica del terminal, como el número de filas o el color de fondo.
+
+(las siguntes funciones son adiconales que se usan con tgetent para interactuar con la terminal
+y obtener info sobre la misma)
+
+    tgetflag: La función tgetflag se utiliza para obtener el valor de una bandera específica de la terminal.
+
+    tgetnum: La función tgetnum se utiliza para obtener el valor de un parámetro numérico específico de la terminal.
+
+    tgetstr: La función tgetstr se utiliza para obtener una cadena de caracteres específica de la terminal.
+
+    tgoto: La función tgoto se utiliza para generar una secuencia de caracteres que representa una secuencia de escape específica de la terminal.
+
+    tputs: La función tputs se utiliza para enviar una secuencia de caracteres a la terminal.
+
+(Estas funciones son útiles para desarrollar programas que interactúan con la terminal de una manera más avanzada y personalizada, permitiendo una mayor personalización y control de la interfaz de usuario.)
 
 c) signales
 
@@ -194,3 +246,17 @@ void exec_command(t_command comando) {
 # BUILTIN COMMANDS #
 ####################
 exit, cd, export, unset, env, pwd, echo
+
+
+
+
+
+#################
+# DOCUMENTATION #
+#################
+
+Writing your own shell: https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
+
+Code simple shell: https://medium.com/swlh/tutorial-to-code-a-simple-shell-in-c-9405b2d3533e
+
+let's built a linux shell: https://blog.devgenius.io/lets-build-a-linux-shell-part-i-954c95911501
