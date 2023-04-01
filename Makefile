@@ -6,7 +6,7 @@
 #    By: scartage <scartage@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/03/28 20:46:21 by scartage         ###   ########.fr        #
+#    Updated: 2023/04/01 19:07:59 by scartage         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,10 @@ RM = rm -f
 
 INCLUDES = inc/minishell.h
 
-SRCS = main.c
+LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline
+CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include
+
+SRCS = main.c ft_readline.c
 
 OBJ_DIR = obj
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
@@ -25,7 +28,7 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 vpath %.c src
 
 $(OBJ_DIR)/%.o: %.c $(INCLUDES) Makefile
-		$(CC) $(CFLAGS) -c $< -o $@
+		$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 all: make_dir $(NAME)
 
@@ -33,7 +36,7 @@ make_dir:
 		@mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJS) $(INCLUDES)
-		$(CC) $(CFLAGS) -lreadline $(OBJS) -o $(NAME)
+		$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $(NAME)
 
 clean:
 	$(RM) $(OBJS)

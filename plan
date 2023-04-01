@@ -17,7 +17,9 @@ a) historial
  mirar las funciones: readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_history
 
     readline:
-    La función readline se utiliza en C para leer una línea de entrada del usuario desde la consola. La función lee una línea de entrada de la consola y la devuelve como una cadena de caracteres (string). La línea de entrada incluye todos los caracteres que el usuario ha ingresado hasta que presiona la tecla "Enter".
+    La función readline se utiliza en C para leer una línea de entrada del usuario desde la consola.
+    La función lee una línea de entrada de la consola y la devuelve como una cadena de caracteres (string).
+    La línea de entrada incluye todos los caracteres que el usuario ha ingresado hasta que presiona la tecla "Enter".
 
     rl_clear_history:
     La función rl_clear_history se utiliza para borrar el historial de líneas de entrada almacenado en la biblioteca readline. El historial de líneas de entrada se utiliza para almacenar las líneas de entrada que ha ingresado el usuario durante la sesión actual. La función rl_clear_history se utiliza para borrar el historial existente antes de que se le solicite al usuario que ingrese otra línea de entrada.
