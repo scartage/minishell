@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/04/01 19:06:56 by scartage         ###   ########.fr       */
+/*   Updated: 2023/04/02 19:28:19 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+
+//Errores
+void ft_perror(char *s);
+
+//utils
+int ft_strlen(char *s);
 
 //get imput
 int ft_get_imput(void);

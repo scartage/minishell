@@ -1,40 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: scartage <scartage@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/04/02 18:58:10 by scartage         ###   ########.fr       */
+/*   Created: 2023/04/02 18:05:17 by scartage          #+#    #+#             */
+/*   Updated: 2023/04/02 18:43:19 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+/*Aqui guardamos funciones utiles*/
 
-void ft_perror(char *s)
+int ft_strlen(char *s)
 {
-	perror(s);
-	exit(EXIT_FAILURE);
+	int i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
 }
 
-int main(int ac, char **av)
+/*
+void	ft_parse(char *input)
 {
-	(void)ac;
-	(void)av;
-	int int_mode;
+	bool double_quote;
+	bool simple_quote;
 
-	if (ac != 1)
-		ft_perror("Cantidad de argumentos incorrecta\n");
-	int_mode = 1;	
-	rl_initialize();
-	while (int_mode)
+	while(input[i])
 	{
-		int_mode = isatty(STDIN_FILENO);
-		if (!int_mode)
-			ft_perror("No corresponde a la terminal\n");
-		if (ft_get_imput() == 1)
-			break;
+		if (input[i] == '"' && !simple_quote)
+			double_quote = true;
 	}
-	return 0;
 }
+
+while (true)
+{
+	input = getline();
+	if (!input)
+		exit (1);
+	ft_parse(input);
+
+}*/

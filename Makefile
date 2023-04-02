@@ -6,7 +6,7 @@
 #    By: scartage <scartage@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/04/01 19:07:59 by scartage         ###   ########.fr        #
+#    Updated: 2023/04/02 18:15:02 by scartage         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ INCLUDES = inc/minishell.h
 LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline
 CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include
 
-SRCS = main.c ft_readline.c
+SRCS = main.c ft_readline.c utils.c
 
 OBJ_DIR = obj
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
