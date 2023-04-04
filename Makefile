@@ -6,7 +6,7 @@
 #    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/04/04 17:06:12 by fsoares-         ###   ########.fr        #
+#    Updated: 2023/04/04 18:28:20 by fsoares-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ INCLUDES	= inc/minishell.h
 LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -Llibft -lft
 CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include -Ilibft
 
-SRCS		= main.c ft_readline.c
+SRCS		= main.c ft_readline.c token_parser.c
 
 OBJ_DIR		= obj
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
@@ -28,7 +28,7 @@ DEPS		= $(addprefix  $(OBJS_DIR)/, $(SRCS:.c=.d))
 
 LIBFT		= libft/libft.a
 
-vpath %.c src
+vpath %.c src src/parsing
 
 green := $(shell tput setaf 2)
 nc := $(shell tput sgr0)

@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 15:48:59 by fsoares-          #+#    #+#             */
-/*   Updated: 2022/04/09 17:48:05 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/04/04 18:42:35 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_string	*new_builder(void)
  * @return int		A flag that signals if everything went ok. Returns -1 if it
  * 					failed a malloc, 1 otherwise.
  */
-static int	expand(t_string *string, ssize_t new_size)
+int	expand(t_string *string, ssize_t new_size)
 {
 	ssize_t	total;
 	char	*temp;

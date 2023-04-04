@@ -107,7 +107,7 @@ $> ./a.out 1 | ./a.out 2 | ./a.out 3
 # PROCESSAMENTO DE COMMANDOS #
 ##############################
 
-input: < bla < otro |e$HASD xxxxx"$HASD"xxxxx'$HASD' < other      "sddggsdgds $? $BLA $BLA2 dfsd" > salida 'gfd | gfdsgs $BLA $?' | wc -l >> out >out2 > out3
+input: "< bla < otro |e$HASD xxxxx\"$HASD\"xxxxx'$HASD' < other      \"sddggsdgds $? $BLA $BLA2 dfsd\" > salida 'gfd | sgs $BLA $?' | wc -l >> out >out2 > out3"
 envs:
 BLA=bla_env
 HASD = cho
@@ -170,12 +170,25 @@ c) juntar en comandos [array de tokens] (poner todo lo que esta entre |)
 
 d) popular la estrutura:
 
-#define WRITE 1
-#define APPEND 2
+
+typedef enum e_in_type {
+    FILE,
+    INPUT,
+} t_in_type;
+
+typedef struct s_in_file {
+    char *name;      // name of the file, or the string that represents the end of the input
+    t_in_type type;
+} t_in_file;
+
+typedef enum e_out_type {
+    WRITE,
+    APPEND,
+} t_out_type;
 
 typedef struct s_out_file {
     char * name;
-    int type;
+    t_out_type type;
 } t_out_file;
 
 typedef struct s_command {

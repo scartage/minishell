@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 18:16:50 by fsoares-          #+#    #+#             */
-/*   Updated: 2022/09/22 19:02:42 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/04/04 18:42:57 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,5 +144,6 @@ t_string	*new_builder(void);
  * 					failed a malloc, 1 otherwise.
  */
 int			append_string(t_string *string, char *str);
+int			append_char(t_string *string, char new);
 
 #endif

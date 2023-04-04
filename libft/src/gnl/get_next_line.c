@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 15:49:07 by fsoares-          #+#    #+#             */
-/*   Updated: 2022/03/04 16:53:09 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/04/04 18:42:49 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,15 @@ char	*build_res(t_string *builder, char *buffer, int b_size, int bytes)
 	char	*res;
 	int		len;
 
-	if ((b_size == 0 && bytes == 0 && builder->current == 0)
+	if ((b_size == 0 && bytes == 0 && builder->size == 0)
 		|| builder == NULL || buffer == NULL)
 		return (NULL);
-	res = malloc(builder->current + b_size + 1);
+	res = malloc(builder->size + b_size + 1);
 	if (!res)
 		return (NULL);
-	my_memmove(res, builder->buffer, builder->current);
-	my_memmove(res + builder->current, buffer, b_size);
-	res[builder->current + b_size] = 0;
+	my_memmove(res, builder->buffer, builder->size);
+	my_memmove(res + builder->size, buffer, b_size);
+	res[builder->size + b_size] = 0;
 	len = 0;
 	while (buffer[len])
 		len++;
