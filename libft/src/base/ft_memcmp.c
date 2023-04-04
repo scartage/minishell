@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/04/04 17:10:21 by fsoares-         ###   ########.fr       */
+/*   Created: 2022/01/13 19:42:04 by fsoares-          #+#    #+#             */
+/*   Updated: 2022/02/15 21:23:05 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../../libft.h"
 
-#include <stdio.h>
-#include <unistd.h>  //para el write, isatty
-#include <stdlib.h> //para el exit
-#include <string.h>	//para el strcmp (temporal)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
+{
+	size_t	i;
+	t_byte	*str1;
+	t_byte	*str2;
 
-#include <readline/readline.h>
-#include <readline/history.h>
-
-//get imput
-int ft_get_imput(void);
-#endif
+	str1 = (t_byte *)s1;
+	str2 = (t_byte *)s2;
+	i = 0;
+	while (++i <= n)
+	{
+		if (*str1 != *str2)
+			return (*str1 - *str2);
+		str1++;
+		str2++;
+	}
+	return (0);
+}

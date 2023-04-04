@@ -3,45 +3,58 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: scartage <scartage@student.42barcel>       +#+  +:+       +#+         #
+#    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/04/02 18:15:02 by scartage         ###   ########.fr        #
+#    Updated: 2023/04/04 17:06:12 by fsoares-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
-CC = gcc
-CFLAGS = -Wall -Werror -Wextra
-RM = rm -f
+NAME		= minishell
+CC			= gcc
+CFLAGS		= -Wall -Werror -Wextra -MMD -fsanitize=address -fsanitize=undefined -g
+RM			= rm -f
 
-INCLUDES = inc/minishell.h
+INCLUDES	= inc/minishell.h
 
-LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline
-CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include
+LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -Llibft -lft
+CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include -Ilibft
 
-SRCS = main.c ft_readline.c utils.c
+SRCS		= main.c ft_readline.c
 
-OBJ_DIR = obj
-OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
+OBJ_DIR		= obj
+OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
+DEPS		= $(addprefix  $(OBJS_DIR)/, $(SRCS:.c=.d))
+
+LIBFT		= libft/libft.a
 
 vpath %.c src
 
-$(OBJ_DIR)/%.o: %.c $(INCLUDES) Makefile
+green := $(shell tput setaf 2)
+nc := $(shell tput sgr0)
+
+$(OBJ_DIR)/%.o: %.c Makefile
 		$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-all: make_dir $(NAME)
+all: make_dir make_libs $(NAME)
+
+make_libs:
+	@$(MAKE) -s -C libft
 
 make_dir:
 		@mkdir -p $(OBJ_DIR)
 
-$(NAME): $(OBJS) $(INCLUDES)
+-include $(DEPS)
+$(NAME): $(LIBFT) $(OBJS)
 		$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $(NAME)
+		@echo "$(green)$(NAME) compiled$(nc)"
 
 clean:
+	@$(MAKE) -C libft fclean
 	$(RM) $(OBJS)
 
 fclean: clean
+	@$(MAKE) -C libft fclean
 	$(RM) $(NAME)
 
 re: fclean all

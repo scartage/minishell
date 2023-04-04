@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/04/04 17:10:21 by fsoares-         ###   ########.fr       */
+/*   Created: 2022/01/25 15:49:03 by fsoares-          #+#    #+#             */
+/*   Updated: 2022/06/01 17:00:46 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-#include <stdio.h>
-#include <unistd.h>  //para el write, isatty
-#include <stdlib.h> //para el exit
-#include <string.h>	//para el strcmp (temporal)
+# include "../../libft.h"
 
-#include <readline/readline.h>
-#include <readline/history.h>
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
 
-//get imput
-int ft_get_imput(void);
+# define INTERNAL_BUFFER 1024
+# define BUILDER_ERROR -1
+# define BUILDER_OK 1
+
+t_string	*new_builder(void);
+int			append_string(t_string *string, char *str);
+char		*free_builder(t_string *builder);
+void		my_memmove(char *dest, char *src, size_t n);
+
 #endif

@@ -6,4 +6,5 @@ obj/
 minishell
 output
 .bonus
-
+tests/
+libs/

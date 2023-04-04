@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/04/04 17:10:21 by fsoares-         ###   ########.fr       */
+/*   Created: 2022/01/12 12:32:09 by fsoares-          #+#    #+#             */
+/*   Updated: 2022/02/15 21:23:05 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include <stdlib.h>
+#include "../../libft.h"
 
-#include <stdio.h>
-#include <unistd.h>  //para el write, isatty
-#include <stdlib.h> //para el exit
-#include <string.h>	//para el strcmp (temporal)
+char	*ft_strtrim(char const *s1, char const *set)
+{
+	int	new_len;
+	int	start;
 
-#include <readline/readline.h>
-#include <readline/history.h>
-
-//get imput
-int ft_get_imput(void);
-#endif
+	new_len = ft_strlen(s1) - 1;
+	while (new_len >= 0 && ft_strchr(set, s1[new_len]))
+		new_len--;
+	start = 0;
+	while (ft_strchr(set, s1[start]))
+	{
+		start++;
+		new_len--;
+	}
+	return (ft_substr(s1, start, new_len + 1));
+}

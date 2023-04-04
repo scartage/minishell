@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/04/04 17:10:21 by fsoares-         ###   ########.fr       */
+/*   Created: 2022/01/12 19:28:45 by fsoares-          #+#    #+#             */
+/*   Updated: 2022/02/15 21:23:05 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../../libft.h"
 
-#include <stdio.h>
-#include <unistd.h>  //para el write, isatty
-#include <stdlib.h> //para el exit
-#include <string.h>	//para el strcmp (temporal)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+{
+	char	*res;
+	size_t	needle_len;
+	size_t	i;
 
-#include <readline/readline.h>
-#include <readline/history.h>
-
-//get imput
-int ft_get_imput(void);
-#endif
+	res = (char *)haystack;
+	needle_len = ft_strlen(needle);
+	if (needle_len == 0)
+		return (res);
+	i = 0;
+	while (*res && i + needle_len <= len)
+	{
+		if (ft_strncmp(res, needle, needle_len) == 0)
+			return (res);
+		res++;
+		i++;
+	}
+	return (NULL);
+}
