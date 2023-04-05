@@ -6,7 +6,7 @@
 #    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/04/05 18:14:29 by fsoares-         ###   ########.fr        #
+#    Updated: 2023/04/05 18:47:17 by scartage         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,10 @@ INCLUDES	= inc/minishell.h
 LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -Llibft -lft
 CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include -Ilibft
 
-SRCS		= main.c ft_readline.c token_parser.c parsing_utils.c in_token_handler.c errors.c
-SRC_DIRS	= parsing errors
+SRCS		= main.c ft_readline.c token_parser.c parsing_utils.c in_token_handler.c errors.c \
+			  env_parser.c
+
+SRC_DIRS	= parsing errors env_parser
 
 OBJ_DIR		= obj
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
