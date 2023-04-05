@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:39:16 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/05 16:55:51 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:33:01 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,51 @@
 
 bool	is_quote(char c);
 bool	is_word_char(char c);
-void	add_token(t_list **result, char *token);
-void	process_redirection(t_parse_info *info);
+void	add_token(t_parse_info *info, char *token);
+void	add_char_to_token(t_parse_info *info, char c);
+
+void	process_redirection(t_parse_info *info)
+{
+	if (info->current_char == '>')
+	{
+		if (info->line[info->pos] == '>')
+		{
+			add_token(info, ">>");
+			info->pos++;
+		}
+		else
+			add_token(info, ">");
+	}
+	else if (info->current_char == '<')
+	{
+		if (info->line[info->pos] == '<')
+		{
+			add_token(info, "<<");
+			info->pos++;
+		}
+		else
+			add_token(info, "<");
+	}
+}
 
 t_state	in_token_space(t_parse_info *info)
 {
-	add_token(&info->tokens, info->token->buffer);
+	add_token(info, info->token->buffer);
 	reset_builder(info->token);
 	return (in_space);
 }
 
 t_state	in_token_pipe(t_parse_info *info)
 {
-	add_token(&info->tokens, info->token->buffer);
-	add_token(&info->tokens, "|");
+	add_token(info, info->token->buffer);
+	add_token(info, "|");
 	reset_builder(info->token);
 	return (in_space);
 }
 
 t_state	in_token_redirection(t_parse_info *info)
 {
-	add_token(&info->tokens, info->token->buffer);
+	add_token(info, info->token->buffer);
 	process_redirection(info);
 	reset_builder(info->token);
 	return (in_space);
@@ -53,11 +77,11 @@ t_state	handle_in_token(t_parse_info *info)
 	else if (info->current_char == '>' || info->current_char == '<')
 		next_state = in_token_redirection(info);
 	else if (is_word_char(info->current_char))
-		append_char(info->token, info->current_char);
+		add_char_to_token(info, info->current_char);
 	else if (is_quote(info->current_char))
 	{
 		info->quote_char = info->current_char;
-		append_char(info->token, info->current_char);
+		add_char_to_token(info, info->current_char);
 		next_state = in_quote;
 	}
 	else

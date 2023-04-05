@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:46:11 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/05 16:57:28 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:36:46 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 
 bool	is_quote(char c);
 bool	is_word_char(char c);
-void	add_token(t_list **result, char *token);
+void	add_token(t_parse_info *info, char *token);
+void	add_char_to_token(t_parse_info *info, char c);
 void	process_redirection(t_parse_info *info);
 
 t_state	handle_in_token(t_parse_info *info);
@@ -30,24 +31,22 @@ t_state	handle_in_space(t_parse_info *info)
 	if (is_quote(info->current_char))
 	{
 		info->quote_char = info->current_char;
-		append_char(info->token, info->current_char);
+		add_char_to_token(info, info->current_char);
 		next_state = in_quote;
 	}
 	else if (info->current_char == '|')
-		add_token(&info->tokens, "|");
+		add_token(info, "|");
 	else if (info->current_char == '>' || info->current_char == '<')
-	{
 		process_redirection(info);
-	}
 	else if (is_word_char(info->current_char))
 	{
-		append_char(info->token, info->current_char);
+		add_char_to_token(info, info->current_char);
 		next_state = in_token;
 	}
 	else if (info->current_char == ' ')
 		next_state = in_space;
 	else
-		printf("wtf: %i: %c\n", info->current_char, info->current_char);
+		shell_error("Problem parsing tokens in_space");
 	return (next_state);
 }
 
@@ -58,13 +57,27 @@ t_state	handle_in_quote(t_parse_info *info)
 	next_state = in_quote;
 	if (is_quote(info->current_char))
 	{
-		append_char(info->token, info->current_char);
+		add_char_to_token(info, info->current_char);
 		if (info->current_char == info->quote_char)
 			next_state = in_token;
 	}
 	else
-		append_char(info->token, info->current_char);
+		add_char_to_token(info, info->current_char);
 	return (next_state);
+}
+
+t_parse_info	new_info(char *line)
+{
+	t_parse_info	info;
+
+	info.line = line;
+	info.current_char = line[0];
+	info.pos = 1;
+	info.token = new_builder();
+	if (info.token == NULL)
+		abort_perror("Creating string to save tokens");
+	info.tokens = NULL;
+	return (info);
 }
 
 t_list	*parse_line(char *line)
@@ -72,11 +85,7 @@ t_list	*parse_line(char *line)
 	t_state			current_state;
 	t_parse_info	info;
 
-	info.line = line;
-	info.current_char = line[0];
-	info.pos = 1;
-	info.token = new_builder();
-	info.tokens = NULL;
+	info = new_info(line);
 	current_state = in_space;
 	while (info.current_char)
 	{
@@ -91,7 +100,8 @@ t_list	*parse_line(char *line)
 		info.current_char = line[info.pos++];
 	}
 	if (current_state == in_token || current_state == in_quote)
-		add_token(&info.tokens, info.token->buffer);
+		add_token(&info, info.token->buffer);
 	free_builder(info.token);
+	// TODO: Maybe free line
 	return (info.tokens);
 }

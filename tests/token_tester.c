@@ -30,13 +30,17 @@ bool test_parsing(char *line, char** expected) {
 	t_list *result = parse_line(line);
 	t_list *tmp_res = result;
 	bool test_ok = true;
-	while (*expected && result) {
+	while (*expected) {
 		if (strcmp(*expected, result->content) != 0) {
 			printf("Error: expected: -%s-, got -%s-\n", *expected, result->content);
 			test_ok = false;
 		}
 		result = result->next;
 		expected++;
+	}
+	if (result != NULL) {
+		printf("Error: has more members than expected: %s", result->content);
+		test_ok = false;
 	}
 	ft_lstclear(&tmp_res, free);
 	test_n++;

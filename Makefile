@@ -6,13 +6,13 @@
 #    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/04/05 16:45:00 by fsoares-         ###   ########.fr        #
+#    Updated: 2023/04/05 18:14:29 by fsoares-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minishell
 CC			= gcc
-CFLAGS		= -Wall -Werror -Wextra -MMD -fsanitize=address -fsanitize=undefined -g
+CFLAGS		= -Wall -Werror -Wextra -MMD -g -fsanitize=address -fsanitize=undefined
 RM			= rm -f
 
 INCLUDES	= inc/minishell.h

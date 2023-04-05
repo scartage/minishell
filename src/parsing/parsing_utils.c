@@ -6,11 +6,13 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:43:14 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/05 16:45:59 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:32:18 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "token_parser.h"
+#include "../errors/errors.h"
 
 bool	is_quote(char c)
 {
@@ -25,31 +27,39 @@ bool	is_word_char(char c)
 		return (true);
 }
 
-void	add_token(t_list **result, char *token)
+void	free_info(t_parse_info *info)
 {
-	ft_lstadd_back(result, ft_lstnew(ft_strdup(token)));
+	free(info->line);
+	free_builder(info->token);
+	ft_lstclear(&info->tokens, free);
 }
 
-void	process_redirection(t_parse_info *info)
+void	add_token(t_parse_info *info, char *token)
 {
-	if (info->current_char == '>')
+	char	*temp;
+	t_list	*new;
+
+	temp = ft_strdup(token);
+	if (temp == NULL)
 	{
-		if (info->line[info->pos] == '>')
-		{
-			add_token(&info->tokens, ">>");
-			info->pos++;
-		}
-		else
-			add_token(&info->tokens, ">");
+		free_info(info);
+		abort_perror("Creating token while parsing tokens");
 	}
-	else if (info->current_char == '<')
+	new = ft_lstnew(temp);
+	if (new == NULL)
 	{
-		if (info->line[info->pos] == '<')
-		{
-			add_token(&info->tokens, "<<");
-			info->pos++;
-		}
-		else
-			add_token(&info->tokens, "<");
+		free(temp);
+		free_info(info);
+		abort_perror("Creating lists while parsing tokens");
+	}
+	ft_lstadd_back(&info->tokens, new);
+}
+
+void	add_char_to_token(t_parse_info *info, char c)
+{
+	if (append_char(info->token, c) < 0)
+	{
+		free_info(info);
+		abort_perror("Adding char to token while parsing");
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 18:16:50 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/05 16:54:34 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:30:47 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,27 @@ t_string	*new_builder(void);
  *
  * @param string	The autoexpansive string that will handle a random value size
  * @param new		The new chars to add to the buffer
- * @param new_size	The number of chars to add to the string
  *
  * @return int		A flag that signals if everything went ok. Returns -1 if it
  * 					failed a malloc, 1 otherwise.
  */
 int			append_string(t_string *string, char *str);
+
+/**
+ * @brief Appends the char to the current buffer. If there is not enough space it
+ * will double the buffer size and copy the string
+ *
+ * @param string	The autoexpansive string that will handle a random value size
+ * @param new		The char to add to the buffer
+ *
+ * @return int		A flag that signals if everything went ok. Returns -1 if it
+ * 					failed a malloc, 1 otherwise.
+ */
 int			append_char(t_string *string, char new);
+
+/**
+ * Maintains the allocation, but resets the content of the string
+ */
 void		reset_builder(t_string *string);
 
 #endif
