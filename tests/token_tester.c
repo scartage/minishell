@@ -25,18 +25,23 @@ char **arr(int n, ...)
 bool test_parsing(char *line, char** expected) {
 	
 	static int test_n = 1;
+	char **temp = expected;
 	//printf("En el teste %i\n", test_n);
 	t_list *result = parse_line(line);
-	while (*expected) {
+	t_list *tmp_res = result;
+	bool test_ok = true;
+	while (*expected && result) {
 		if (strcmp(*expected, result->content) != 0) {
 			printf("Error: expected: -%s-, got -%s-\n", *expected, result->content);
-			return false;
+			test_ok = false;
 		}
 		result = result->next;
 		expected++;
 	}
+	ft_lstclear(&tmp_res, free);
 	test_n++;
-	return true;
+	free(temp);
+	return test_ok;
 }
 
 int main() {

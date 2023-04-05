@@ -6,7 +6,7 @@
 #    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/11 18:02:58 by fsoares-          #+#    #+#              #
-#    Updated: 2023/04/04 18:29:26 by fsoares-         ###   ########.fr        #
+#    Updated: 2023/04/05 17:12:07 by fsoares-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ LIB_OBJS	= $(addprefix  $(OBJS_DIR)/, $(LIB_SRCS:.c=.o))
 LIB_DEPS	= $(addprefix  $(OBJS_DIR)/, $(LIB_SRCS:.c=.d))
 
 CC 			= gcc
-CFLAGS		= -Wall -Wextra -Werror -MMD
+CFLAGS		= -Wall -Wextra -Werror -MMD -g
 NAME		= libft.a
 
 vpath %.c src/base src/extra src/gnl src/printf

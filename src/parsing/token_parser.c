@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:46:11 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/05 16:50:00 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:57:28 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,6 @@ t_list	*parse_line(char *line)
 	}
 	if (current_state == in_token || current_state == in_quote)
 		add_token(&info.tokens, info.token->buffer);
+	free_builder(info.token);
 	return (info.tokens);
 }

@@ -1,5 +1,7 @@
 obj/
 *.a
+*.o
+*.d
 .vscode/
 *.out
 *.dSYM
