@@ -25,7 +25,7 @@ char **arr(int n, ...)
 bool test_parsing(char *line, char** expected) {
 	
 	static int test_n = 1;
-	printf("En el teste %i\n", test_n);
+	//printf("En el teste %i\n", test_n);
 	t_list *result = parse_line(line);
 	while (*expected) {
 		if (strcmp(*expected, result->content) != 0) {
@@ -42,6 +42,9 @@ bool test_parsing(char *line, char** expected) {
 int main() {
 	printf(CYN "Tests token parser\n" NC);
 	bool res = true;
+
+	res = test_parsing("", arr(0)) && res;
+	res = test_parsing("    ", arr(0)) && res;
 	
 	res = test_parsing("abcd", arr(1, "abcd")) && res;
 	

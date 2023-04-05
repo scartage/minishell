@@ -6,147 +6,91 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:46:11 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/04 20:30:01 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:50:00 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token_parser.h"
-#include "libft.h"
 #include <stdio.h>
+#include "libft.h"
+#include "../errors/errors.h"
+#include "token_parser.h"
 
-bool	is_quote(char c)
-{
-	return (c == '"' || c == '\'');
-}
+bool	is_quote(char c);
+bool	is_word_char(char c);
+void	add_token(t_list **result, char *token);
+void	process_redirection(t_parse_info *info);
 
-bool	is_word_char(char c)
+t_state	handle_in_token(t_parse_info *info);
+
+t_state	handle_in_space(t_parse_info *info)
 {
-	if (c == ' ' || is_quote(c))
-		return (false);
+	t_state	next_state;
+
+	next_state = in_space;
+	if (is_quote(info->current_char))
+	{
+		info->quote_char = info->current_char;
+		append_char(info->token, info->current_char);
+		next_state = in_quote;
+	}
+	else if (info->current_char == '|')
+		add_token(&info->tokens, "|");
+	else if (info->current_char == '>' || info->current_char == '<')
+	{
+		process_redirection(info);
+	}
+	else if (is_word_char(info->current_char))
+	{
+		append_char(info->token, info->current_char);
+		next_state = in_token;
+	}
+	else if (info->current_char == ' ')
+		next_state = in_space;
 	else
-		return (true);
+		printf("wtf: %i: %c\n", info->current_char, info->current_char);
+	return (next_state);
 }
 
-void	add_token(t_list **result, char *token)
+t_state	handle_in_quote(t_parse_info *info)
 {
-	ft_lstadd_back(result, ft_lstnew(ft_strdup(token)));
+	t_state	next_state;
+
+	next_state = in_quote;
+	if (is_quote(info->current_char))
+	{
+		append_char(info->token, info->current_char);
+		if (info->current_char == info->quote_char)
+			next_state = in_token;
+	}
+	else
+		append_char(info->token, info->current_char);
+	return (next_state);
 }
 
 t_list	*parse_line(char *line)
 {
-	t_state		current_state;
-	t_list		*result;
-	char		current_char;
-	t_string	*word;
-	char		open_quote;
+	t_state			current_state;
+	t_parse_info	info;
 
-	word = new_builder();
+	info.line = line;
+	info.current_char = line[0];
+	info.pos = 1;
+	info.token = new_builder();
+	info.tokens = NULL;
 	current_state = in_space;
-	current_char = *line++;
-	result = NULL;
-	while (current_char)
+	while (info.current_char)
 	{
-		//printf("state: %i, char: %c\n", current_state, current_char);
-		if (current_state == in_space && is_quote(current_char))
-		{
-			open_quote = current_char;
-			append_char(word, current_char);
-			current_state = in_quote;
-		}
-		else if (current_state == in_space && current_char == '|')
-		{
-			add_token(&result, "|");
-		}
-		else if (current_state == in_space && current_char == '>')
-		{
-			if (*line == '>') {
-				add_token(&result, ">>");
-				line++;
-			} else {
-				add_token(&result, ">");
-			}
-		}
-		else if (current_state == in_space && current_char == '<')
-		{
-			if (*line == '<') {
-				add_token(&result, "<<");
-				line++;
-			} else {
-				add_token(&result, "<");
-			}
-		}
-		else if (current_state == in_space && is_word_char(current_char))
-		{
-			append_char(word, current_char);
-			current_state = in_word;
-		}
-		
-		// in word
-		else if (current_state == in_word && current_char == ' ')
-		{
-			current_state = in_space;
-			add_token(&result, word->buffer);
-			word = new_builder();
-		}
-		else if (current_state == in_word && current_char == '|')
-		{
-			current_state = in_space;
-			add_token(&result, word->buffer);
-			add_token(&result, "|");
-			word = new_builder();
-		}
-		else if (current_state == in_word && current_char == '>')
-		{
-			current_state = in_space;
-			add_token(&result, word->buffer);
-			if (*line == '>') {
-				add_token(&result, ">>");
-				line++;
-			} else {
-				add_token(&result, ">");
-			}
-			word = new_builder();
-		}
-		else if (current_state == in_word && current_char == '<')
-		{
-			current_state = in_space;
-			add_token(&result, word->buffer);
-			if (*line == '<') {
-				add_token(&result, "<<");
-				line++;
-			} else {
-				add_token(&result, "<");
-			}
-			word = new_builder();
-		}
-		else if (current_state == in_word && is_word_char(current_char))
-		{
-			append_char(word, current_char);
-		}
-		else if (current_state == in_word && is_quote(current_char))
-		{
-			open_quote = current_char;
-			append_char(word, current_char);
-			current_state = in_quote;
-		}
-		
-		// in quote
-		else if (current_state == in_quote && is_quote(current_char))
-		{
-			append_char(word, current_char);
-			if (current_char == open_quote)
-				current_state = in_word;
-		}
-		else if (current_state == in_quote && !is_quote(current_char))
-		{
-			append_char(word, current_char);
-		}
-
-		current_char = *line++;
+		if (current_state == in_space)
+			current_state = handle_in_space(&info);
+		else if (current_state == in_token)
+			current_state = handle_in_token(&info);
+		else if (current_state == in_quote)
+			current_state = handle_in_quote(&info);
+		else
+			shell_error("wtf, it should never do this (token parsing)");
+		info.current_char = line[info.pos++];
 	}
-	if (current_state == in_word || current_state == in_quote) {
-		//printf("word: >%s<\n", word->buffer);
-		add_token(&result, word->buffer);
-	}
-	return (result);
+	if (current_state == in_token || current_state == in_quote)
+		add_token(&info.tokens, info.token->buffer);
+	return (info.tokens);
 }
