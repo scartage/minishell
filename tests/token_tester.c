@@ -32,14 +32,14 @@ bool test_parsing(char *line, char** expected) {
 	bool test_ok = true;
 	while (*expected) {
 		if (strcmp(*expected, result->content) != 0) {
-			printf("Error: expected: -%s-, got -%s-\n", *expected, result->content);
+			printf(RED "Error" NC ": expected: -%s-, got -%s-\n", *expected, result->content);
 			test_ok = false;
 		}
 		result = result->next;
 		expected++;
 	}
 	if (result != NULL) {
-		printf("Error: has more members than expected: %s", result->content);
+		printf(RED "Error" NC ": has more members than expected: %s", result->content);
 		test_ok = false;
 	}
 	ft_lstclear(&tmp_res, free);
@@ -49,7 +49,7 @@ bool test_parsing(char *line, char** expected) {
 }
 
 int main() {
-	printf(CYN "Tests token parser\n" NC);
+	printf(CYN "Test: Token Parser\n" NC);
 	bool res = true;
 
 	res = test_parsing("", arr(0)) && res;
@@ -130,8 +130,9 @@ int main() {
 				"out3")
 	) && res;
 
+
 	if (res) 
-		printf(GRN "Tests Passed\n" NC);
+		printf(CYN "Token Parser " GRN "Tests Passed\n" NC);
 	else
-		printf(RED "Tests Failed\n" NC);
+		printf(CYN "Token Parser " RED "Tests Failed\n" NC);
 }
