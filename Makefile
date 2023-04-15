@@ -6,14 +6,14 @@
 #    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/04/05 18:47:17 by scartage         ###   ########.fr        #
+#    Updated: 2023/04/15 15:40:56 by scartage         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minishell
 CC			= gcc
 CFLAGS		= -Wall -Werror -Wextra -MMD -g -fsanitize=address -fsanitize=undefined
-RM			= rm -f
+RM			= rm -rf
 
 INCLUDES	= inc/minishell.h
 
@@ -27,7 +27,7 @@ SRC_DIRS	= parsing errors env_parser
 
 OBJ_DIR		= obj
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
-DEPS		= $(addprefix  $(OBJS_DIR)/, $(SRCS:.c=.d))
+DEPS		= $(addprefix  $(OBJ_DIR)/, $(SRCS:.c=.d))
 
 LIBFT		= libft/libft.a
 
@@ -54,7 +54,7 @@ $(NAME): $(LIBFT) $(OBJS)
 
 clean:
 	@$(MAKE) -C libft fclean
-	$(RM) $(OBJS)
+	$(RM) $(OBJ_DIR)
 
 fclean: clean
 	@$(MAKE) -C libft fclean

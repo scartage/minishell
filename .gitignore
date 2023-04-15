@@ -9,3 +9,5 @@ minishell
 output
 .bonus
 libs/
+*.swp
+
