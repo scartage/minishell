@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42barcel>       +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:46:39 by scartage          #+#    #+#             */
-/*   Updated: 2023/04/05 16:55:44 by scartage         ###   ########.fr       */
+/*   Updated: 2023/04/16 15:25:39 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ char	*ft_readline(void)
 /*Ojo: el exit tiene mas complejidad que simplemente
  * poner un exit en terminal (en bash has exit hola 0 y luego
  * revisa lo que devuelve el echo $?)*/
-char *get_input(void)
+char	*get_input(void)
 {
-	char *line;
+	char	*line;
 
 	line = ft_readline();
 	if (!line)

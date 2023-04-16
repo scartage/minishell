@@ -1,24 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_parser.h                                       :+:      :+:    :+:   */
+/*   env_replacer.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 17:15:16 by scartage          #+#    #+#             */
-/*   Updated: 2023/04/16 15:36:07 by scartage         ###   ########.fr       */
+/*   Created: 2023/04/16 15:55:59 by scartage          #+#    #+#             */
+/*   Updated: 2023/04/16 15:56:36 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_PARSER_H
-# define ENV_PARSER_H
-
-# include "libft.h"
-
-typedef struct s_env_var {
-	char	*name;
-	char	*content;
-}	t_env_var;
-
-t_list	*env_parser(char **env);
-#endif
+#include "../inc/minishell.c"
+#include "libft"
