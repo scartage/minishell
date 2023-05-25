@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/04/16 17:31:00 by scartage         ###   ########.fr       */
+/*   Updated: 2023/05/25 19:48:45 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "libft.h"
 #include "parsing/token_parser.h"
 #include "env_parser/env_parser.h"
+#include "env_replacer/env_replacer.h"
+
 //#include "env_replacer/env_replacer.h"
 
 extern t_shell g_shell;
@@ -44,16 +46,7 @@ void	execute_input(char *input)
 
 void get_env(char **envp)
 {
-	/*Ojo: buscar como podemos recorrer esta lista
-	para ver el nombre y contenido de las variables de entorno*/
 	g_shell.env_variables = env_parser(envp);
-	while (g_shell.env_variables->next)
-	{
-		printf("s\n", g_shell.env_variables->content->name);
-		g_shell.env_variables = g_shell.env_variables->next;
-	}
-	printf("s\n", g_shell.env_variables->content.name);
-	/*TODO: este WHILE no funciona (o no lo se usar bien)*/
 }
 
 int main(int ac, char **av, char **envp)
@@ -76,6 +69,7 @@ int main(int ac, char **av, char **envp)
 		input = get_input();
 		if (input == NULL)
 			break;
+		input = replacing_envars(input, g_shell.env_variables);
 		execute_input(input);	
 	}
 	return 0;

@@ -6,19 +6,20 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:16:17 by scartage          #+#    #+#             */
-/*   Updated: 2023/04/16 17:31:02 by scartage         ###   ########.fr       */
+/*   Updated: 2023/05/25 19:12:47 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>		//para malloc
 #include "env_parser.h"
+# include "stdio.h"
 
-char	*get_content(char *s, int equal)
+static char	*get_content(char *s, int equal)
 {
 	return (ft_substr(s, equal + 1, ft_strlen(s)));
 }
 
-char	*get_name(char *s, int equal)
+static char	*get_name(char *s, int equal)
 {
 	return (ft_substr(s, 0, equal));
 }
@@ -34,9 +35,11 @@ t_list	*env_parser(char **env)
 	i = 0;
 	first_equal = 0;
 	result = NULL;
-	envs = malloc(sizeof(t_env_var));
 	while (env[i] != NULL)
 	{
+		envs = malloc(sizeof(t_env_var));
+		if (envs == NULL)
+			exit(-1);
 		equal_ptr = ft_strchr(env[i], '=');
 		first_equal = equal_ptr - env[i];
 		envs->name = get_name(env[i], first_equal);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
+#    By: scartage <scartage@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/04/15 17:54:02 by fsoares-         ###   ########.fr        #
+#    Updated: 2023/05/25 19:22:29 by scartage         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,9 @@ LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -Llibft -lft
 CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include -Ilibft
 
 SRCS		= main.c ft_readline.c token_parser.c parsing_utils.c in_token_handler.c errors.c \
-			  env_parser.c
+			  env_parser.c env_replacer.c
 
-SRC_DIRS	= parsing errors env_parser
+SRC_DIRS	= parsing errors env_parser env_replacer
 
 OBJ_DIR		= obj
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
