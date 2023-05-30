@@ -162,6 +162,9 @@ b) replace `$<a-zA-Z0-9>` por el valor de la variable de entorno
 ">"
 "out3"
 
+b.2) Los cambios se realizan en los tokens que tiene $<A-Z>, se buscan los que no tienen quotes y los que tienen doble quoutes, los simples no se modifican.
+
+
 (no es necessario crear realemtne las arrays, es mas conceptual, se puede passar de b) para d) directamente)
 c) juntar en comandos [array de tokens] (poner todo lo que esta entre |)
  1: ["<", "bla", "<", "otro"]
