@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyb3rn4ut4 <cyb3rn4ut4@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/05 18:38:07 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/05/30 22:33:19 by cyb3rn4ut4       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static char	*prepend_shell(char *message)
 {
 	char	*temp;
 	int		size;
-	int		comm_len;
+	//int		comm_len;
 
-	comm_len = 0;
+	//comm_len = 0;
 	size = ft_strlen(message) + ft_strlen("minishell: ") + 1;
 	temp = malloc(size);
 	ft_strlcpy(temp, "minishell: ", size);

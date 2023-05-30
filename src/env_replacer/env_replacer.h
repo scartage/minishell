@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_replacer.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyb3rn4ut4 <cyb3rn4ut4@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:55:59 by scartage          #+#    #+#             */
-/*   Updated: 2023/05/30 18:14:56 by scartage         ###   ########.fr       */
+/*   Updated: 2023/05/30 23:45:45 by cyb3rn4ut4       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@
 # include "libft.h"
 # include "../env_parser/env_parser.h"
 
-typedef struct s_tmp_list
-{
-    int                 number_envs;        
-	void			    *content;
-	struct s_tmp_list	*next;
-}	t_tmp_list;
+typedef struct s_env_var {
+	char	*name;
+	char	*content;
+}	t_env_var;
 
 t_list* replacing_envars(t_list *input, t_list *env_variables);
 
