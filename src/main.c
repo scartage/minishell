@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyb3rn4ut4 <cyb3rn4ut4@student.42.fr>      +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/05/30 22:32:41 by cyb3rn4ut4       ###   ########.fr       */
+/*   Updated: 2023/05/31 17:07:46 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,13 @@ void	execute_input(char *input)
 	printf("---   before env_parsing   ---\n");
 	printf("\n");
 	printf("\n");
-	while (temp_tokens->next)
+	while (temp_tokens->content)
 	{
 		printf("token: [%s]\n", (char *)temp_tokens->content);
 		if (temp_tokens->next == NULL)
 			break;
 		temp_tokens = temp_tokens->next;
 	}
-
-	printf("token [%s]\n", (char *)tokens->content);
 	tokens = replacing_envars(tokens, g_shell.env_variables);
 	printf("\n");
 	printf("\n");
