@@ -7,6 +7,6 @@ BASE_CC	= gcc $(CFLAGS) -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -L../
 all: $(OBJS)
 	@$(MAKE) --no-print-directory -C ..
 	@$(BASE_CC) token_tester.c -o token_tester.out
-	@$(BASE_CC) env_replace_tester.c -o env_replace_tester.out
+	$(BASE_CC) env_replace_tester.c -o env_replace_tester.out
 	./token_tester.out
 	./env_replace_tester.out

@@ -278,3 +278,56 @@ Writing your own shell: https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBo
 Code simple shell: https://medium.com/swlh/tutorial-to-code-a-simple-shell-in-c-9405b2d3533e
 
 let's built a linux shell: https://blog.devgenius.io/lets-build-a-linux-shell-part-i-954c95911501
+
+
+t_command *new_command() {
+    t_command res = malloc(sizeof(t_comand));
+
+    res.inputs = NULL;
+    res.outpus = NULL;
+    res.args = NULL;
+
+    return res;
+}
+
+void add_input_file(t_command *command, char *filename) {
+    ft_lstadd_back(command->inputs, ft_lstnew(filename));
+}
+
+void add_out_file(t_command *command, char *filename, bool is_append) {
+
+    t_out_file *file = malloc(t_out_file);
+    if (is_append)
+    {
+        file->type = APPEND
+    } else {
+        ...
+    }
+    file->name = filename;
+    ft_lstadd_back(command->outputs, ft_lstnew(file));
+}
+
+
+
+process()
+{
+
+token_list = ["aaa", ">", "out", "argument"];
+
+while (token_list->content) {
+    char *current = token_list->content;
+    if (current == "<") // strcmp {
+        add_out_file(command, token_list->next->content, false);
+        token_list = token_list->next;
+    } else if (<<) {
+
+    } else if (>) {
+
+    } else if (>>) {
+
+    } else {
+        add to args
+    }
+}
+
+}

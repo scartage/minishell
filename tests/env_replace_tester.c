@@ -10,10 +10,7 @@
 
 extern t_shell g_shell;
 
-// remove this after implementing the real function
-char *replace_env(char *input) {
-	return strdup(input);
-}
+char *env_replacer(char *str);
 
 void set_last_exec_result(int res) {
 	g_shell.last_execution = res;
@@ -31,11 +28,13 @@ int test_env_rep(char* replacements, char*input, char* expected) {
 		g_shell.env_variables = NULL;
 
 	int res = 1;
-	char *actual = replace_env(input); // change this to the correct function
+	char *actual = env_replacer(input); 
 	if (strcmp(actual, expected) != 0)
 	{
-		printf(RED "Error" NC ": expected: %-20s, got: %-20s\n", expected, actual);
+		printf(RED "Error" NC ": input: %-20s, expected: %-20s, got: %-20s\n", input, expected, actual);
 		res = 0;
+	} else {
+		printf(GRN "Pass " NC ": input: %-20s, expected: %-20s, got: %-20s\n", input, expected, actual);	
 	}
 	free(actual);
 	test_n++;
@@ -56,6 +55,7 @@ int main() {
 	res = test_env_rep(NULL, "\"abc\"", "abc") && res;
 
 	res = test_env_rep("teste=123",	"abc$teste", "abc123") && res;
+	res = test_env_rep("teste=123",	"\"$teste\"", "123") && res;
 	res = test_env_rep("test=123",	"abc$teste", "abc") && res;
 	res = test_env_rep(NULL,		"abc$teste", "abc") && res;
 	res = test_env_rep("teste=123",	"abc$Teste", "abc") && res;

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cyb3rn4ut4 <cyb3rn4ut4@student.42.fr>      +#+  +:+       +#+         #
+#    By: scartage <scartage@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/05/30 23:15:10 by cyb3rn4ut4       ###   ########.fr        #
+#    Updated: 2023/06/01 19:31:55 by scartage         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ fclean: clean
 
 re: fclean all
 
-test:
+test: all
 	@$(MAKE) -C tests
 
 .PHONY: all clean fclean re test

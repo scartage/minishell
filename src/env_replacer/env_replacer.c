@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/05/31 18:55:55 by scartage         ###   ########.fr       */
+/*   Updated: 2023/06/01 20:05:17 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ char *change_env(char *str, int *n_envs, t_list *env_variables)
 	return (new_str);
 }
 
-t_list *replacing_envars(t_list *input, t_list *env_variables)
+t_list *replacing_envars_orig(t_list *input, t_list *env_variables)
 {
 	t_list *new_tokens = input;
 	int n_envs;
@@ -142,6 +142,86 @@ t_list *replacing_envars(t_list *input, t_list *env_variables)
 		}
 		if (new_tokens->next == NULL)
 			break;
+		new_tokens = new_tokens->next;
+	}
+    //devolveriamos el input con las variables cambiadas
+    return ((t_list *)new_tokens);
+}
+
+typedef enum e_state
+{
+	in_single_quote,
+	in_double_quote,
+	in_env_var_name,
+	in_word
+}	t_state;
+
+char *get_env_value(char *str) {
+	printf("get var: %s\n", str);
+	(void)str;
+	return "123";
+}
+
+char *env_replacer(char *str) {
+	int i = 0;
+
+	t_state current = in_word;
+
+	t_string *res = new_builder();
+	t_string *env_name = new_builder();
+
+	while (str[i])
+	{
+		//printf("char: %c -> status: %i\n", str[i], current);
+		if (current == in_word && str[i] == '\'') {
+			current = in_single_quote;
+		} else if (current == in_word && str[i] == '"') {
+			current = in_double_quote;
+		} else if (current == in_double_quote && str[i] == '"') {
+			current = in_word;
+		} else if (current == in_double_quote && str[i] == '$') {
+			current = in_env_var_name;
+		} else if (current == in_word && str[i] == '$') {
+			current = in_env_var_name;
+		} else if (current == in_env_var_name && !(ft_isalnum(str[i]) || str[i] == '_')) {
+			append_string(res, get_env_value(env_name->buffer));
+			append_char(res, str[i]);
+			reset_builder(env_name);
+			current = in_word;
+		} else if (current == in_single_quote && str[i] == '\'') {
+			current = in_word;
+		} else if (current == in_word || current == in_single_quote || current == in_double_quote) {
+			append_char(res, str[i]);
+		} else if  (current == in_env_var_name) {
+			append_char(env_name, str[i]);
+		}
+
+		if (str[i])
+			i++;
+	}
+
+	if (current == in_env_var_name) {
+		append_string(res, get_env_value(env_name->buffer));
+	}
+
+	printf("res: %s\n", res->buffer);
+	free_builder(env_name);
+	char *result = ft_strdup(res->buffer); // needs free
+	free_builder(res);
+
+	return result;
+}
+
+t_list *replacing_envars(t_list *input, t_list *env_variables)
+{
+	t_list *new_tokens = input;
+	int n_envs;
+	(void )*env_variables;
+	(void)n_envs;
+	
+	while (new_tokens->content)
+	{
+		env_replacer(new_tokens->content);
 		new_tokens = new_tokens->next;
 	}
     //devolveriamos el input con las variables cambiadas
