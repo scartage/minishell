@@ -28,7 +28,8 @@ int test_env_rep(char* replacements, char*input, char* expected) {
 		g_shell.env_variables = NULL;
 
 	int res = 1;
-	char *actual = env_replacer(input); 
+	char *actual = env_replacer(input);
+	printf("actual= %s\n", actual); 
 	if (strcmp(actual, expected) != 0)
 	{
 		printf(RED "Error" NC ": input: %-20s, expected: %-20s, got: %-20s\n", input, expected, actual);
