@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/06/07 17:25:40 by scartage         ###   ########.fr       */
+/*   Updated: 2023/06/07 17:39:56 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,22 @@ char *get_content(char *env_name, t_list *env_variables)
 {
 	t_list *tmp = env_variables;
 
-	while (tmp->content)
+	if (env_name == NULL || env_variables == NULL)
+		return ("");
+	while (tmp != NULL)
 	{
 		t_env_var* env = (t_env_var *)tmp->content;
+		//printf("env_name: %s, env->name %s\n", env_name, env->name);
 		if (strcmp(env_name, env->name) == 0)
 		{
 			printf("encontramos coincidencia, return %s\n", env->content);
 			return (env->content);
 		}
-		printf("no strcmp\n");
 		if (tmp->next == NULL)
 			break;
 		tmp = tmp->next;
 	}
-	return (NULL);
+	return ("");
 }
 
 typedef enum e_state
@@ -50,8 +52,6 @@ char *get_env_value(char *str, t_list *env_variables) {
 	printf("get var: %s\n", str);
 	char *res = get_content(str, env_variables);
 	printf("El contenido de la env_var es: %s\n", res);
-	if (res == NULL)
-		return "123";
 	return res;
 }
 
@@ -78,7 +78,6 @@ char *env_replacer(char *str, t_list *env_variables) {
 			current = in_env_var_name;
 		} else if (current == in_env_var_name && !(ft_isalnum(str[i]) || str[i] == '_')) {
 			append_string(res, get_env_value(env_name->buffer, env_variables));
-			printf("appen char: %c\n", str[i]);
 			if (str[i] != '"')
 				append_char(res, str[i]);
 			reset_builder(env_name);

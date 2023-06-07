@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/06/07 16:46:09 by scartage         ###   ########.fr       */
+/*   Updated: 2023/06/07 17:39:01 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	execute_input(char *input)
 			break;
 		temp_tokens = temp_tokens->next;
 	}
+	
 	tokens = replacing_envars(tokens, g_shell.env_variables);
-	printf("no sale del resplacing envars\n");
 	printf("\n");
 	printf("\n");
 	
