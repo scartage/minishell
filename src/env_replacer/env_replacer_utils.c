@@ -3,6 +3,16 @@
 #include <string.h>
 
 
+bool is_space(char *s)
+{
+    if (s[0] == ' ')
+    {
+        printf("is space: %c\n", s[0]);
+        return (true);
+    }
+    return (false);
+}
+
 bool is_uppercase(char *s)
 {
     size_t i = 0; 

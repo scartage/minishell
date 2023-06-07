@@ -57,9 +57,9 @@ int main() {
 
 	res = test_env_rep("teste=123",	"abc$teste", "abc123") && res;
 	res = test_env_rep("teste=123",	"\"$teste\"", "123") && res;
-	res = test_env_rep("test=123",	"abc$teste", "abc") && res;
+	res = test_env_rep("test=123",	"abc$teste", "abc123") && res;
 	res = test_env_rep(NULL,		"abc$teste", "abc") && res;
-	res = test_env_rep("teste=123",	"abc$Teste", "abc") && res;
+	res = test_env_rep("teste=123",	"abc$Teste", "abc123") && res;
 
 	res = test_env_rep("teste=123,xxx=56", 	"abc$teste$xxx", 	"abc12356") && res;
 	res = test_env_rep("Test_123X=123", 	"abc$Test_123X", 	"abc123") && res;

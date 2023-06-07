@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:55:59 by scartage          #+#    #+#             */
-/*   Updated: 2023/05/31 18:50:23 by scartage         ###   ########.fr       */
+/*   Updated: 2023/06/07 16:36:00 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,5 @@ bool can_change(char *s, int *n_envs);
 bool has_env_char(char *s, int *n_envs);
 bool check_quotes(char *s);
 bool is_uppercase(char *s);
+bool is_space(char *s);
 #endif

@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/06/01 18:46:56 by scartage         ###   ########.fr       */
+/*   Updated: 2023/06/07 16:46:09 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,16 @@ void	execute_input(char *input)
 	printf("---   before env_parsing   ---\n");
 	printf("\n");
 	printf("\n");
-	while (temp_tokens->content)
+
+	/*en el caso de que el input sea un espacio
+	ojo esta funcion no es vital, es solo para ver los
+	tokens de manera facil*/
+	if (temp_tokens->content == NULL)
+	{
+		printf("No correct input\n");
+		return ;
+	}
+	while (temp_tokens->content != NULL)
 	{
 		printf("token: [%s]\n", (char *)temp_tokens->content);
 		if (temp_tokens->next == NULL)
@@ -43,6 +52,7 @@ void	execute_input(char *input)
 		temp_tokens = temp_tokens->next;
 	}
 	tokens = replacing_envars(tokens, g_shell.env_variables);
+	printf("no sale del resplacing envars\n");
 	printf("\n");
 	printf("\n");
 	
