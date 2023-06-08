@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:46:39 by scartage          #+#    #+#             */
-/*   Updated: 2023/05/25 19:50:54 by scartage         ###   ########.fr       */
+/*   Updated: 2023/06/08 18:32:28 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*get_input(void)
 	line = ft_readline();
 	if (!line)
 		exit(EXIT_FAILURE);
-	if (line[0] == '\0' || strcmp(line, "\n") == 0)
+	if (line[0] == '\0' || strcmp(line, "\n") == 0 || line[0] == 32)
 	{	
 		free(line);
 		return (NULL);
@@ -44,7 +44,7 @@ char	*get_input(void)
 		free(line);
 		rl_clear_history();
 		write(STDOUT_FILENO, "exit\n", 5);
-		return (NULL);
-	}	
+		exit(EXIT_SUCCESS);
+	}
 	return (line);
 }

@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/06/07 17:39:56 by scartage         ###   ########.fr       */
+/*   Updated: 2023/06/08 18:59:23 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,12 @@ char *get_content(char *env_name, t_list *env_variables)
 {
 	t_list *tmp = env_variables;
 
-	if (env_name == NULL || env_variables == NULL)
-		return ("");
 	while (tmp != NULL)
 	{
 		t_env_var* env = (t_env_var *)tmp->content;
 		//printf("env_name: %s, env->name %s\n", env_name, env->name);
 		if (strcmp(env_name, env->name) == 0)
 		{
-			printf("encontramos coincidencia, return %s\n", env->content);
 			return (env->content);
 		}
 		if (tmp->next == NULL)
@@ -48,10 +45,7 @@ typedef enum e_state
 /*Tenemos que solucionar cuando el contenido es (NULL)*/
 char *get_env_value(char *str, t_list *env_variables) {
 
-
-	printf("get var: %s\n", str);
 	char *res = get_content(str, env_variables);
-	printf("El contenido de la env_var es: %s\n", res);
 	return res;
 }
 
@@ -65,7 +59,7 @@ char *env_replacer(char *str, t_list *env_variables) {
 
 	while (str[i])
 	{
-		//printf("char: %c -> status: %i\n", str[i], current);
+		printf("char: %c -> status: %i\n", str[i], current);
 		if (current == in_word && str[i] == '\'') {
 			current = in_single_quote;
 		} else if (current == in_word && str[i] == '"') {
@@ -76,12 +70,21 @@ char *env_replacer(char *str, t_list *env_variables) {
 			current = in_env_var_name;
 		} else if (current == in_word && str[i] == '$') {
 			current = in_env_var_name;
-		} else if (current == in_env_var_name && !(ft_isalnum(str[i]) || str[i] == '_')) {
-			append_string(res, get_env_value(env_name->buffer, env_variables));
-			if (str[i] != '"')
-				append_char(res, str[i]);
-			reset_builder(env_name);
-			current = in_word;
+		} else if (current == in_env_var_name && !(ft_isalnum(str[i])))
+		{
+			if (str[i] == '$')
+ 			{
+    	    	append_string(res, get_env_value(env_name->buffer, env_variables));
+    	   		reset_builder(env_name);
+    	   		current = in_env_var_name; 		
+			}
+			else {
+ 				append_string(res, get_env_value(env_name->buffer, env_variables));
+				if (str[i] != '"')
+					append_char(res, str[i]);
+				reset_builder(env_name);
+				current = in_word;			
+			}
 		} else if (current == in_single_quote && str[i] == '\'') {
 			current = in_word;
 		} else if (current == in_word || current == in_single_quote || current == in_double_quote) {
@@ -89,14 +92,13 @@ char *env_replacer(char *str, t_list *env_variables) {
 		} else if  (current == in_env_var_name) {
 			append_char(env_name, str[i]);
 		}
-
 		if (str[i])
 			i++;
 	}
 	if (current == in_env_var_name) {
 		append_string(res, get_env_value(env_name->buffer, env_variables));
+		current = in_word;
 	}
-	printf("res de res: [%s]\n", res->buffer);
 	free_builder(env_name);
 	char *result = ft_strdup(res->buffer); // needs free
 	free_builder(res);
@@ -107,14 +109,14 @@ char *env_replacer(char *str, t_list *env_variables) {
 t_list *replacing_envars(t_list *input, t_list *env_variables)
 {
 	t_list *new_tokens = input;
+	t_list *current_tokens = new_tokens;
 
-	while (new_tokens->content)
+	while (current_tokens != NULL)
 	{
-		env_replacer(new_tokens->content, env_variables);
-		if (new_tokens->next == NULL)
+		current_tokens->content = env_replacer(current_tokens->content, env_variables);
+		if (current_tokens->next == NULL)
 			break ;
-		new_tokens = new_tokens->next;
+		current_tokens = current_tokens->next;
 	}
-    //devolveriamos el input con las variables cambiadas
-    return ((t_list *)new_tokens);
+    return (new_tokens);
 }

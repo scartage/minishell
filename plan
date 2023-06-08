@@ -102,10 +102,22 @@ $> ./a.out 1 | ./a.out 2 | ./a.out 3
  -> ./a.out 3 recibe SIGQUIT (3)
 
 
+##############################
+#         !TO CHECK !        #
+##############################
+
+*hay que ver porque cuando al minishell se le pasa un espacio como imput se rompe
+*hay que seguir el comportaimiento que tiene bash con este comando:
+
+                echo " hola este $TESTE entro ' $TESTE este no' $TESTE y si"
+                hola este si entro ' si este no' si y si
+
+ el minishell  = [ hola este si entro  $TESTE este no si y si]
 
 ##############################
 # PROCESSAMENTO DE COMMANDOS #
 ##############################
+
 
 input: "< bla < otro |e$HASD xxxxx\"$HASD\"xxxxx'$HASD' < other      \"sddggsdgds $? $BLA $BLA2 dfsd\" > salida 'gfd | sgs $BLA $?' | wc -l >> out >out2 > out3"
 envs:
