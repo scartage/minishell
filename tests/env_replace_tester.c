@@ -54,28 +54,26 @@ int main() {
 	res = test_env_rep(NULL, "a'\"'b'\"'c", "a\"b\"c") && res;
 	res = test_env_rep(NULL, "'abc'", "abc") && res;
 	res = test_env_rep(NULL, "\"abc\"", "abc") && res;
+	/*todos los de arriba los pasa bien*/
 
 	res = test_env_rep("teste=123",	"abc$teste", "abc123") && res;
 	res = test_env_rep("teste=123",	"\"$teste\"", "123") && res;
 	res = test_env_rep("test=123",	"abc$teste", "abc123") && res;
-	res = test_env_rep(NULL,		"abc$teste", "abc") && res;
-	res = test_env_rep("teste=123",	"abc$Teste", "abc123") && res;
-	/*el test de arriba es correcto?*/
+	res = test_env_rep(NULL,		"abc$teste", "abc") && res;			//este solo da abc, debido a que la env var no existe
+	res = test_env_rep("teste=123",	"abc$Teste", "abc123") && res;		//este teste deberia dar abc por lo mismo que arriba
+	/*todos los de arriba los pasa*/
 
 	res = test_env_rep("teste=123,xxx=56", 	"abc$teste$xxx", 	"abc12356") && res;
-	/*revisar el que mshell pase el caso de arriba*/
 	res = test_env_rep("Test_123X=123", 	"abc$Test_123X", 	"abc123") && res;
 	res = test_env_rep("Test=", 			"abc-$Test-", 		"abc--") && res;
-
 	res = test_env_rep("teste=123", "abc\"$teste,fgt\"xxx", 	"abc123,ftgxxx") && res;
-	res = test_env_rep("teste=123", "abc'$teste'xxx", 			"abc'123'xxx") && res;
-	/*el teste de arriba SI cambia la env_var*/
+	res = test_env_rep("teste=123", "abc'$teste'xxx", 			"abc'123'xxx") && res;	//funciona cuando la qSimple estan dentro de qDoubles
 	res = test_env_rep("teste=123", "abc \"'$teste' \"xxx", 	"abcxx'123'xxx") && res;
 	res = test_env_rep("teste=123", "abc'\"$teste\"yy'xxx", 	"abc\"$teste\"yyxxx") && res;
+	/*Todos los casos funcionan, segun su contexto!/
 
 	set_last_exec_result(0); // cambia el valor en la variable global
 	res = test_env_rep("NULL", "res: $?", "res: 0") && res;
-
 	set_last_exec_result(123);
 	res = test_env_rep("NULL", 		"res: $?", 			"res: 123") && res;
 	res = test_env_rep("NULL", 		"res: $?abc", 		"res: 123abc") && res;

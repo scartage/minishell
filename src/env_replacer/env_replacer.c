@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/06/08 18:59:23 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/11 19:43:36 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char *env_replacer(char *str, t_list *env_variables) {
 
 	while (str[i])
 	{
-		printf("char: %c -> status: %i\n", str[i], current);
+		//printf("char: %c -> status: %i\n", str[i], current);
 		if (current == in_word && str[i] == '\'') {
 			current = in_single_quote;
 		} else if (current == in_word && str[i] == '"') {

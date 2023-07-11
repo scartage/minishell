@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/07/11 18:12:24 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/11 19:10:25 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,10 @@ void	ft_error(char *s)
 	exit(EXIT_FAILURE);
 }
 
-void	execute_input(char *input)
+void printingBefore(t_list *temp_tokens)
 {
-	t_list *tokens = parse_line(input);
-	t_list *temp_tokens = tokens;
-
 	/*while para verificar tokens de la lista*/
-	printf("---   before env_parsing   ---\n");
-	printf("\n");
-	printf("\n");
-
-
+	printf("---before env_parsing---\n");
 	if (temp_tokens->content == NULL)
 	{
 		printf("No correct input\n");
@@ -49,22 +42,33 @@ void	execute_input(char *input)
 			break;
 		temp_tokens = temp_tokens->next;
 	}
-
-	tokens = replacing_envars(tokens, g_shell.env_variables);
+	printf("---Go to replace the env_vars---");
 	printf("\n");
-	printf("\n");
+}
 
-
-	printf("---   after env_replacing   ---\n");
-	t_list *tem_tokens = tokens;
-	while (tem_tokens->content != NULL)
+void printAfter(t_list *temp_tokens)
+{
+	printf("---after env_replacing---\n");
+	while (temp_tokens->content != NULL)
 	{
-		printf("new token content: [%s]\n", (char *)tem_tokens->content);
-		if (tem_tokens->next == NULL)
+		printf("new token content: [%s]\n", (char *)temp_tokens->content);
+		if (temp_tokens->next == NULL)
 			break;
-		tem_tokens = tem_tokens->next;
+		temp_tokens = temp_tokens->next;
 	}
-	printf("fins ara\n");
+	printf("fins ara\n");	
+}
+
+
+void	execute_input(char *input)
+{
+	t_list *tokens = parse_line(input);
+	t_list *temp_tokens = tokens;
+
+	printingBefore(temp_tokens);
+	tokens = replacing_envars(tokens, g_shell.env_variables);
+	printAfter(temp_tokens);
+
 	/*t_list *commands = to_commands(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
 	execute(commands);*/
 }
@@ -81,7 +85,6 @@ int main(int ac, char **av, char **envp)
 	int		int_mode;
 	char	*input;
 
-	printf("hola mundo\n");
 	if (ac != 1)
 		ft_error("Cantidad de argumentos incorrecta\n");
 	int_mode = 1;
