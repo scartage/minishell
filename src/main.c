@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/06/08 18:45:10 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/11 18:12:24 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int main(int ac, char **av, char **envp)
 	int		int_mode;
 	char	*input;
 
+	printf("hola mundo\n");
 	if (ac != 1)
 		ft_error("Cantidad de argumentos incorrecta\n");
 	int_mode = 1;
