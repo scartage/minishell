@@ -6,7 +6,7 @@
 #    By: scartage <scartage@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/06/07 17:34:12 by scartage         ###   ########.fr        #
+#    Updated: 2023/07/13 19:32:32 by scartage         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -Llibft -lft
 CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include -Ilibft
 
 SRCS		= main.c ft_readline.c token_parser.c parsing_utils.c in_token_handler.c errors.c \
-			  env_parser.c env_replacer.c env_replacer_utils.c
+			  env_parser.c env_replacer.c temp_utils.c 
 
 SRC_DIRS	= parsing errors env_parser env_replacer
 

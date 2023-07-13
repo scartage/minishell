@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:55:59 by scartage          #+#    #+#             */
-/*   Updated: 2023/06/08 15:36:16 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/13 19:03:26 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,4 @@
 t_list* replacing_envars(t_list *input, t_list *env_variables);
 char *env_replacer(char *str, t_list *env_variables);
 
-/*Utils*/
-void print_content_list(t_list *env_variables);
-bool can_change(char *s, int *n_envs);
-bool has_env_char(char *s, int *n_envs);
-bool check_quotes(char *s);
-bool is_uppercase(char *s);
-bool is_space(char *s);
 #endif

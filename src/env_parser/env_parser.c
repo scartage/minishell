@@ -6,13 +6,13 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 17:16:17 by scartage          #+#    #+#             */
-/*   Updated: 2023/05/25 19:12:47 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/13 19:09:52 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>		//para malloc
 #include "env_parser.h"
-# include "stdio.h"
+#include "stdio.h"
 
 static char	*get_content(char *s, int equal)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:29 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/05 18:02:31 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/07/13 19:29:38 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,10 @@ void	shell_error(char *reason);
  */
 void	abort_perror(char *reason);
 
+/**
+ * Shows the error and exit. Used in the main
+ * 
+ * @param s The reason to display on the terminal
+ */
+void	ft_error(char *s);
 #endif

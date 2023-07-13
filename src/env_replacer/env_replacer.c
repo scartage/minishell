@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/07/11 19:43:36 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/13 19:09:07 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ char *get_content(char *env_name, t_list *env_variables)
 	while (tmp != NULL)
 	{
 		t_env_var* env = (t_env_var *)tmp->content;
-		//printf("env_name: %s, env->name %s\n", env_name, env->name);
-		if (strcmp(env_name, env->name) == 0)
+		if (ft_strncmp(env_name, env->name, ft_strlen(env_name)) == 0)
 		{
 			return (env->content);
 		}
@@ -42,10 +41,13 @@ typedef enum e_state
 	in_word
 }	t_state;
 
-/*Tenemos que solucionar cuando el contenido es (NULL)*/
+/*Tenemos que solucionar cuando el contenido es (NULL)
+	en la lista de tokens que obtenemos, si el valor de la variable de entorno esta vacio
+	nos dejara un espacio en blanco en el array, esto puede traer problemas a futuro*/
 char *get_env_value(char *str, t_list *env_variables) {
 
 	char *res = get_content(str, env_variables);
+	printf("res es igual a = %s\n", res);
 	return res;
 }
 

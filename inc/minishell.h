@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/04/16 15:23:48 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/13 19:34:04 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ typedef struct s_shell {
 
  t_shell	g_shell;
 
-//get imput
 char *get_input(void);
 
+//Temporal util functions
+void printingBefore(t_list *temp_tokens);
+void printAfter(t_list *temp_tokens);
 
 #endif

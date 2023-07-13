@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyb3rn4ut4 <cyb3rn4ut4@student.42.fr>      +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/05/30 22:33:19 by cyb3rn4ut4       ###   ########.fr       */
+/*   Updated: 2023/07/13 19:28:54 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include "errors.h"
 #include "libft.h"
 
@@ -49,4 +50,11 @@ void	abort_perror(char *message)
 	free(temp);
 	free_globals();
 	exit(1);
+}
+
+/*This one is used in the main*/
+void	ft_error(char *s)
+{
+	write(STDERR_FILENO, s, ft_strlen(s));
+	exit(EXIT_FAILURE);
 }
