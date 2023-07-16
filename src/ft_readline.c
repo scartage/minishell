@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:46:39 by scartage          #+#    #+#             */
-/*   Updated: 2023/06/08 18:32:28 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/16 14:30:59 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ char	*get_input(void)
 {
 	char	*line;
 
+	printf("inside input\n");
 	line = ft_readline();
 	if (!line)
-		exit(EXIT_FAILURE);
+		exit(EXIT_SUCCESS);
 	if (line[0] == '\0' || strcmp(line, "\n") == 0 || line[0] == 32)
-	{	
+	{
 		free(line);
 		return (NULL);
 	}

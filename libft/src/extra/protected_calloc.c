@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   protected_calloc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 17:30:35 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/02/01 19:54:26 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/07/16 15:24:07 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	*protected_malloc(size_t size)
 {
 	void	*res;
 
-	res = malloc(size);
+	res = ft_calloc(size, 1);
 	if (!res)
 		terminate_with_error("Failed malloc");
 	return (res);
