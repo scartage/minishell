@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/07/13 19:09:07 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/21 13:44:05 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef enum e_state
 char *get_env_value(char *str, t_list *env_variables) {
 
 	char *res = get_content(str, env_variables);
-	printf("res es igual a = %s\n", res);
 	return res;
 }
 

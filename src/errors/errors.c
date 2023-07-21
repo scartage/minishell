@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/07/13 19:28:54 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/21 13:14:31 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	abort_perror(char *message)
 	temp = prepend_shell(message);
 	perror(temp);
 	free(temp);
-	free_globals();
-	exit(1);
+	//free_globals();
+	//exit(1);
 }
 
 /*This one is used in the main*/

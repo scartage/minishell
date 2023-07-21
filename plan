@@ -240,6 +240,7 @@ por ejemplo para el primero comando:
 # EJECUTAR COMANDOS #
 #####################
 
+
 al llamar el exec_command:
 
 void exec_all_comms(t_command *commands)
@@ -276,21 +277,6 @@ void exec_command(t_command comando) {
 # BUILTIN COMMANDS #
 ####################
 exit, cd, export, unset, env, pwd, echo
-
-
-
-
-
-#################
-# DOCUMENTATION #
-#################
-
-Writing your own shell: https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
-
-Code simple shell: https://medium.com/swlh/tutorial-to-code-a-simple-shell-in-c-9405b2d3533e
-
-let's built a linux shell: https://blog.devgenius.io/lets-build-a-linux-shell-part-i-954c95911501
-
 
 t_command *new_command() {
     t_command res = malloc(sizeof(t_comand));
@@ -343,3 +329,19 @@ while (token_list->content) {
 }
 
 }
+
+
+#################
+# DOCUMENTATION #
+#################
+
+Writing your own shell: https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
+
+Code simple shell: https://medium.com/swlh/tutorial-to-code-a-simple-shell-in-c-9405b2d3533e
+
+let's built a linux shell: https://blog.devgenius.io/lets-build-a-linux-shell-part-i-954c95911501
+
+
+
+https://man7.org/linux/man-pages/man2/signal.2.html
+https://man7.org/linux/man-pages/man7/signal.7.html

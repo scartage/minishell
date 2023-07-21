@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/07/16 16:50:24 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/21 13:34:18 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ t_builtins_fn get_builtin(t_command *command) {
 
     builtins[0] = (t_builtins_fn){.name = "echo", .fn = echo};
     builtins[1] = (t_builtins_fn){.name = "pwd", .fn = pwd};
+    builtins[2] = (t_builtins_fn){.name = "exit", .fn = ft_exit};
 
     int i = 0;
-    while (i < 2) {
+    while (i < 3) {
         if (ft_strncmp(command->arguments->content, builtins[i].name, 20) == 0) {
             return builtins[i];
         }

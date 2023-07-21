@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/07/16 16:47:47 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/21 13:40:24 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "signals/signals.h"
 #include "executor/executor.h"
 #include "temp_utils.h"
-//#include "env_replacer/env_replacer.h"
+
 
 extern t_shell g_shell;
 
@@ -33,11 +33,11 @@ extern t_shell g_shell;
 void	execute_input(char *input)
 {
 	t_list *tokens = parse_line(input);
-	t_list *temp_tokens = tokens;
+	//t_list *temp_tokens = tokens;
 
-	printingBefore(temp_tokens);
+	//printingBefore(temp_tokens);
 	tokens = replacing_envars(tokens, g_shell.env_variables);
-	printAfter(temp_tokens);
+	//printAfter(temp_tokens);
 
 	t_list *commands = token_to_command(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
 	ft_lstiter(commands, print_command);
