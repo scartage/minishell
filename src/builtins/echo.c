@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/07/21 13:34:43 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/23 16:15:01 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 int echo(t_list *arguments)
 {
+    
     ft_lstiter(arguments->next, print_strings_echo);
     ft_printfln("");
     printf("\n");

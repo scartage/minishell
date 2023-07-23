@@ -11,19 +11,18 @@ void sigint_handler(int signum)
     {
         // TODO: needs cheching if it is executing anything
         //Cerramos el proceso que esta en ejecucion
-        kill(getpid(), SIGINT);
+        kill(g_shell.children_pid, SIGINT);
     }
-    else{
-        write(STDOUT_FILENO, "\n", 1);
-        rl_replace_line("", 1);
-        rl_on_new_line();
-        rl_redisplay();
-    }
+    write(STDOUT_FILENO, "\n", 1);
+    rl_replace_line("", 1);
+    rl_on_new_line();
+    rl_redisplay();
     // Por ejemplo, detener el proceso actual o realizar alguna limpieza antes de terminar
 }
 
 // Manejador de señal para EOF (Ctrl-D)
-/*Esto no es una senal????*/
+/*Esto no es una senal????
+TODO*/
 void eof_handler(int signum)
 {
     /*No se como programar el manejo de esta senal, pendiente de revisar*/

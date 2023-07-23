@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/07/16 16:38:18 by scartage         ###   ########.fr       */
+/*   Updated: 2023/07/23 15:36:53 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_shell {
 	t_list		*parsed_words;
 	int			level;              // for shells inside shells
 	bool		is_executing;
+	pid_t		children_pid;
 }	t_shell;
 
  t_shell	g_shell;

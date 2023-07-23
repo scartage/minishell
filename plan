@@ -235,6 +235,14 @@ por ejemplo para el primero comando:
     arguments: ["-l"]
 }
 
+#####################
+#   REDIRECCIONES   #
+#####################
+
+* comando > archivo: Redirige la salida estándar del comando al archivo, sobrescribiendo * cualquier contenido existente en el archivo.
+* comando >> archivo: Redirige la salida estándar del comando al archivo, anexando la salida al final del archivo en lugar de sobrescribir el archivo.
+* comando < archivo: Redirige la entrada estándar del comando al archivo, por lo que el comando lee su entrada del archivo en lugar de la terminal.
+* comando 2> archivo: Redirige el error estándar del comando al archivo, sobrescribiendo cualquier contenido existente en el archivo
 
 #####################
 # EJECUTAR COMANDOS #
