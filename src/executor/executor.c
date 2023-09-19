@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/07/23 16:20:35 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:55:16 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../builtins/builtins.h"
 #include <fcntl.h>
 
-extern t_shell g_shell;
+extern t_gShell g_shell;
 
 typedef struct s_builtins_fn {
     char * name;

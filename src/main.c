@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/19 18:48:02 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/19 19:53:07 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,39 +21,43 @@
 #include "executor/executor.h"
 #include "temp_utils.h"
 
+extern t_gShell g_shell;
 
-/*void	execute_input(char *input, t_shell *shell)
+//Funtion to read the content inside a list
+/*	current = result;
+	while (current != NULL)
+	{
+		t_env_var *env_var = (t_env_var *)current->content;
+		printf("name=%s, content=%s\n", env_var->name, env_var->content);
+		current = current->next;
+	}
+*/
+
+void	execute_input(char *input, t_shell *shell)
 {
 	t_list *tokens = parse_line(input);
 	//t_list *temp_tokens = tokens;
 
 	//printingBefore(temp_tokens);
-	tokens = replacing_envars(tokens, g_shell.env_variables);
+	tokens = replacing_envars(tokens, shell->env_variables);
 	//printAfter(temp_tokens);
 
 	t_list *commands = token_to_command(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
 	ft_lstiter(commands, print_command);
 	execute(commands);
-}*/
+}
 
 /*this fn returns t_list intead of void*/
 void	get_env(char **envp, t_shell *shell)
 {
-	t_list	*current;
-
 	shell->env_variables = env_parser(envp);
-	current = shell->env_variables;
-	while (current != NULL)
-	{
-		printf("%s\n", current->content);
-		current = current->next;
-	}
 }
 
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	shell;
 	int		int_mode;
+	char	*input;
 
 	(void)ac;
 	(void)av;
@@ -63,7 +67,7 @@ int	main(int ac, char **av, char **envp)
 		ft_error("Cantidad de argumentos incorrecta\n");
 	int_mode = 1;
 	get_env(envp, &shell);
-	/*rl_initialize();
+	rl_initialize();
 	while (int_mode)
 	{
 		int_mode = isatty(STDIN_FILENO);
@@ -73,6 +77,6 @@ int	main(int ac, char **av, char **envp)
 		if (input == NULL)
 			continue ;
 		execute_input(input, &shell);
-	}*/
+	}
 	return (0);
 }
