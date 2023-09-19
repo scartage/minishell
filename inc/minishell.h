@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/07/23 15:36:53 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:33:00 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_command {
 	t_list * arguments;     // de char *, array de strings que contiene los argumentos
 } t_command;
 
+/*Esta estructura tiene que desaparecer, tenemos que pasar las estructuras*/
 typedef struct s_shell {
 	int			last_execution;
 	t_list		*env_variables;		// list of t_env_var
@@ -57,7 +58,7 @@ typedef struct s_shell {
 	pid_t		children_pid;
 }	t_shell;
 
- t_shell	g_shell;
+t_shell	shell;
 
 char *get_input(void);
 
