@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/19 19:53:07 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/20 19:45:51 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	execute_input(char *input, t_shell *shell)
 
 	t_list *commands = token_to_command(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
 	ft_lstiter(commands, print_command);
-	execute(commands);
+	execute(commands, shell->env_variables);
 }
 
 /*this fn returns t_list intead of void*/
