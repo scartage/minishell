@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/19 19:53:07 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/20 18:15:03 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@
 #include "temp_utils.h"
 
 extern t_gShell g_shell;
-
-//Funtion to read the content inside a list
-/*	current = result;
-	while (current != NULL)
-	{
-		t_env_var *env_var = (t_env_var *)current->content;
-		printf("name=%s, content=%s\n", env_var->name, env_var->content);
-		current = current->next;
-	}
-*/
 
 void	execute_input(char *input, t_shell *shell)
 {

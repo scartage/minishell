@@ -20,7 +20,6 @@
 
 int echo(t_list *arguments)
 {
-    
     ft_lstiter(arguments->next, print_strings_echo);
     ft_printfln("");
     printf("\n");
