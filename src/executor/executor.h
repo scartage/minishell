@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:44:58 by scartage          #+#    #+#             */
-/*   Updated: 2023/07/16 16:47:13 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/20 18:47:29 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 # include "libft.h"
 
-void execute(t_list * commands);
+void execute(t_list * commands, t_list * envs);
 
 #endif

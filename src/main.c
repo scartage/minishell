@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/20 18:15:03 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:01:06 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	execute_input(char *input, t_shell *shell)
 
 	t_list *commands = token_to_command(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
 	ft_lstiter(commands, print_command);
-	execute(commands);
+	execute(commands, shell->env_variables);
 }
 
 /*this fn returns t_list intead of void*/
