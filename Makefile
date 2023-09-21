@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: scartage <scartage@student.42.fr>          +#+  +:+       +#+         #
+#    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/07/16 16:54:53 by scartage         ###   ########.fr        #
+#    Updated: 2023/09/21 19:44:14 by fsoares-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -Llibft -lft
 CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include -Ilibft
 
 SRCS		= main.c ft_readline.c token_parser.c parsing_utils.c in_token_handler.c errors.c \
-			  env_parser.c env_replacer.c temp_utils.c signals.c commands.c echo.c executor.c
+			  env_parser.c env_replacer.c temp_utils.c signals.c commands.c echo.c executor.c \
+			  file_handler.c path_handler.c
 
 SRC_DIRS	= parsing errors env_parser env_replacer signals builtins executor
 
