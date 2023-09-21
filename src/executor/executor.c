@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/21 20:24:00 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/09/21 20:32:15 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,10 +176,9 @@ void	execute_all_commands(t_list *comms, t_list *envs)
 		;
 }
 
-
-void execute(t_list *commands, t_list *envs)
+void execute(t_list * commands, t_list *envs)
 {
-	// TODO: later handle heredocs
+	(void)envs;
 	// TODO: later handle heredocs
 
 	t_command *command = commands->content;

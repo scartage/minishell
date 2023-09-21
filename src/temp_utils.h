@@ -16,7 +16,7 @@ void print_strings(void * str);
 
 void print_strings_echo(void * str);
 
-void ft_isdigit_void(void * str);
+int ft_isdigit_void(void * str);
 
 void print_command(void * command2);
 

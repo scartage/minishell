@@ -50,12 +50,20 @@ void print_strings_echo(void * str) {
 	printf("%s ", (char *)str);
 }
 
-/*TO CHECK
-	quiero evaular los argumentos que le llegan a exit, solo pueden ser INTS (numericos??)*/
-void ft_isdigit_void(void *str)
+int ft_isdigit_void(void *str)
 {
-	char * tmp = ft_strdup(str);
-	ft_isdigit(tmp[0]);
+	char * tmp;
+	int i;
+
+	i  = 0;
+	tmp = ft_strdup((char *)str);
+	while (tmp[i] != '\0')
+	{
+		if (ft_isdigit(tmp[0]) == 0)
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 void print_command(void * command2) {
