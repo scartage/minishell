@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:46:39 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/21 20:45:31 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/26 21:09:28 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "parsing/token_parser.h"
 
 // extern t_shell g_shell;
+
 
 char *ft_readline(void)
 {
@@ -24,14 +25,19 @@ char *ft_readline(void)
 	line = readline(prompt);
 	if (line == NULL)
 	{
-		// Configura el buffer interno de readline para que contenga "exit"
-		rl_replace_line("exit", 0);
-		// Muestra el contenido del buffer
-		rl_redisplay();
-		// Escribe un salto de línea para mover el cursor a la siguiente línea
-		write(STDOUT_FILENO, "\n", 1);
-		rl_clear_history();
-		exit(EXIT_SUCCESS);
+		if (g_shell.is_executing == true)
+		{
+			printf("pepe el pepe\n");
+			// TODO: needs cheching if it is executing anything
+			//Cerramos el proceso que esta en ejecucion
+			kill(g_shell.children_pid, SIGINT);
+		}
+		else
+		{
+			write(STDOUT_FILENO, "exit\n", 5);
+			rl_clear_history();
+			exit(EXIT_SUCCESS);
+		}
 	}
 	return (line);
 }

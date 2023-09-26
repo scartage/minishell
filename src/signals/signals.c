@@ -27,12 +27,11 @@ void sigquit_handler(int signum)
     (void)signum;
     if (g_shell.is_executing)
     {
-       // TODO: needs cheching if it is executing anything
-        printf("work in progress\n");
-        printf("por lo que veo solo funciona cuando hay un ejecutable\n");
+        rl_replace_line("Quit: 3", 1);
+        rl_on_new_line();
+        rl_redisplay();
         kill(getpid(), SIGQUIT);
     }
-    // Por ejemplo, finalizar el proceso actual o generar un volcado de núcleo
 }
 
 void signals(void)

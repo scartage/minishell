@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/21 20:00:00 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/26 21:12:36 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 
-	//signals();
+	signals();
 	if (ac != 1)
 		ft_error("Cantidad de argumentos incorrecta\n");
 	int_mode = 1;
@@ -64,6 +64,7 @@ int	main(int ac, char **av, char **envp)
 		int_mode = isatty(STDIN_FILENO);
 		if (!int_mode)
 			ft_error("No corresponde a la terminal\n");
+		g_shell.is_executing = false;
 		input = get_input();
 		if (input == NULL)
 			continue ;

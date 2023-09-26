@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/19 18:54:27 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/26 19:29:48 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include <readline/readline.h>	//para obtener input
 #include <readline/history.h>	//historial del input
 #include "../libft/libft.h"		//para el t_list
+#include <signal.h>
+
 
 typedef enum e_in_type {
 	NORMAL,  // fichero: <
