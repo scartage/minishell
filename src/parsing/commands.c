@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:20:13 by scartage          #+#    #+#             */
-/*   Updated: 2023/07/16 16:03:12 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/27 18:49:15 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,26 +72,26 @@ t_list /*<t_command>*/ * token_to_command(t_list * tokens)
 {
 	printf("token to command: \n");
 	t_list * commands = NULL;
-	t_command * current = protected_malloc(sizeof(t_command));
+	t_command * command_list = protected_malloc(sizeof(t_command));
 	char first_char;
 
 	while (tokens != NULL)
 	{
 		first_char = ((char *)tokens->content)[0];
 		if (first_char == '|') {
-			ft_lstadd_back(&commands, ft_lstnew(current));
-			current =  protected_malloc(sizeof(t_command));
+			ft_lstadd_back(&commands, ft_lstnew(command_list));
+			command_list =  protected_malloc(sizeof(t_command));
 		} else if (first_char == '<') {
-			add_input_to_command(current, tokens->content, tokens->next->content);
+			add_input_to_command(command_list, tokens->content, tokens->next->content);
 			tokens = tokens->next;
 		} else if (first_char == '>') {
-			add_output_to_command(current, tokens->content, tokens->next->content);
+			add_output_to_command(command_list, tokens->content, tokens->next->content);
 			tokens = tokens->next;
 		} else {
-			add_argument_to_command(current, tokens->content);
+			add_argument_to_command(command_list, tokens->content);
 		}
 		tokens = tokens->next;
 	}
-	ft_lstadd_back(&commands, ft_lstnew(current));
+	ft_lstadd_back(&commands, ft_lstnew(command_list));
 	return (commands);
 }

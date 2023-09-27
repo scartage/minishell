@@ -6,7 +6,7 @@
 #    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/09/21 19:44:14 by fsoares-         ###   ########.fr        #
+#    Updated: 2023/09/27 19:52:44 by fsoares-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,11 @@ CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include -Ilibft
 
 SRCS		= main.c ft_readline.c token_parser.c parsing_utils.c in_token_handler.c errors.c \
 			  env_parser.c env_replacer.c temp_utils.c signals.c commands.c echo.c executor.c \
-			  file_handler.c path_handler.c
+			  file_handler.c path_handler.c \
+			  syscalls.c  # remove when to deliver
 
-SRC_DIRS	= parsing errors env_parser env_replacer signals builtins executor
+SRC_DIRS	= parsing errors env_parser env_replacer signals builtins executor \
+              debug  # remove when to deliver
 
 OBJ_DIR		= obj
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))

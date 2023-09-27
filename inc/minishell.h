@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/26 19:29:48 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/27 20:25:30 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,8 @@ typedef struct s_gShell {
 t_gShell	g_shell;
 
 char *get_input(void);
+
+#define DEBUG(...) fprintf (stderr, __VA_ARGS__);
+//#define DEBUG(...) ;
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/21 20:32:15 by scartage         ###   ########.fr       */
+/*   Updated: 2023/09/27 20:25:50 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,12 +121,12 @@ void do_exec_call(t_command *comm, t_list *envs)
 
 int exec_comm(t_command *com, int in_pipe[2], int out_pipe[2], t_list *envs)
 {
-	int child;
+	int child_pid;
 
-	child = fork();
-	if (child == -1)
+	child_pid = fork();
+	if (child_pid == -1)
 		abort_perror("Forking for program");
-	if (child == 0)
+	if (child_pid == 0)
 	{
 		setup_pipes(com, in_pipe, out_pipe);
 		// char myString[100];
@@ -137,7 +137,8 @@ int exec_comm(t_command *com, int in_pipe[2], int out_pipe[2], t_list *envs)
 
 		do_exec_call(com, envs);
 	}
-	return child;
+	
+	return (child_pid);
 }
 
 
@@ -151,6 +152,8 @@ void	execute_all_commands(t_list *comms, t_list *envs)
 
 	if (pipe(in_pipe) == -1)
 		abort_perror("Creating pipe");
+		
+	t_list *temp = comms;
 		
 	while (comms)
 	{
@@ -166,19 +169,23 @@ void	execute_all_commands(t_list *comms, t_list *envs)
 	if (waitpid(child, &status, 0) == -1)
 		abort_perror("Waiting for last thread");
 		
-	char buff[100001];
-	int bytes_read = read(out_pipe[0], buff, 100000);
-	buff[bytes_read] = 0;
-	printf("%s", buff);
+	// FIXME: do this correctly
+	if (((t_command *)ft_lstlast(temp)->content)->output_files == NULL) {
+		char buff[100001];
+		int bytes_read = read(out_pipe[0], buff, 100000);
+		buff[bytes_read] = 0;
+		printf("%s", buff);
+	}
+	
 	
 	close_pipe(out_pipe);
-	while (wait(NULL) != -1)
-		;
+	while (wait(NULL) != -1) {
+		DEBUG("waiting for wait\n");
+	}
 }
 
 void execute(t_list * commands, t_list *envs)
 {
-	(void)envs;
 	// TODO: later handle heredocs
 
 	t_command *command = commands->content;
@@ -199,13 +206,9 @@ void execute(t_list * commands, t_list *envs)
 	}
 	else
 	{
-		printf("here??\n");
-		(void)envs;
 		execute_all_commands(commands, envs);
 	}
 
-	g_shell.last_execution = result;
-	g_shell.is_executing = false;
 	g_shell.last_execution = result;
 	g_shell.is_executing = false;
 }
