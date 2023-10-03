@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/03 18:46:32 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/03 19:19:26 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	main(int ac, char **av, char **envp)
 		if (input == NULL)
 			continue ;
 		execute_input(input, &shell);
+		/*hola buenas noches*/
 	}
 	return (0);
 }
