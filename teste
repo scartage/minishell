@@ -1,5 +1,10 @@
 
-hola "$ENV" adios pepe ls 
+hola mundo 
 
-hola "$ENV" adios pepe ls 
-[?2004hminishell: [Kminishell: [Kminishell: [?2004l
+hola mundo 
+[?2004hminishell: 
+minishell: c
+minishell: 
+minishell: [?2004l
+exit
+inishell: [?2004l

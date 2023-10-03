@@ -4,40 +4,56 @@
 #include <../inc/minishell.h>
 #include <unistd.h>
 
-void sigint_handler(int signum)
+static void signal_handler(int signal)
 {
-    (void)signum;
-    if (g_shell.is_executing)
+    if (signal == SIGINT)       //control + C
     {
-        // TODO: needs cheching if it is executing anything
-        //Cerramos el proceso que esta en ejecucion
-        kill(g_shell.children_pid, SIGINT);
-    }
-    write(STDOUT_FILENO, "\n", 1);    
-    rl_replace_line("", 1);
-    rl_on_new_line();
-    rl_redisplay();
-    // Por ejemplo, detener el proceso actual o realizar alguna limpieza antes de terminar
-}
-
-
-// Manejador de señal para SIGQUIT (Ctrl-\)
-void sigquit_handler(int signum)
-{
-    (void)signum;
-    if (g_shell.is_executing)
-    {
-        rl_replace_line("Quit: 3", 1);
+        write(STDOUT_FILENO, "\n", 1);    
+        rl_replace_line("", 1);
         rl_on_new_line();
         rl_redisplay();
-        kill(getpid(), SIGQUIT);
     }
+    else if (signal == SIGQUIT) //cntrl + D (sin proceso en ejecucion)
+    {
+        rl_redisplay();     //aqui no deberia hacer nada, funciona cuando
+                            //hay algo en ejecucion
+    }
+    return ;
 }
 
-void signals(void)
+static void child_handler(int signal)
 {
-	signal(SIGINT, sigint_handler);   // Manejador para SIGINT (Ctrl-C)
-    signal(SIGQUIT, sigquit_handler); // Manejador para SIGQUIT (Ctrl-\)
+    if (signal == SIGINT)
+    {
+        fflush(stdout);
+        write(STDOUT_FILENO, "\n", 1);    
+        rl_replace_line("", 1);
+        rl_on_new_line();
+        rl_redisplay();
+        exit(EXIT_SUCCESS);
+    }
+    else if (signal == SIGQUIT)
+    {
+        write(1, "Quit: 3\n", 8);
+        rl_replace_line("", 1);
+        rl_on_new_line();
+        rl_redisplay();
+    }
+    return ;
+}
+
+void signals(int i)
+{
+	struct sigaction    sa;
+
+    if (i)
+        sa.sa_handler = &signal_handler;
+    else
+        sa.sa_handler = &child_handler;
+    sa.sa_flags = SA_RESTART;
+    sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGQUIT, &sa, NULL);
+    sigaction(SIGTERM, &sa, NULL);
 }
 
 /*info interesante 

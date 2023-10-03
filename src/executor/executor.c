@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/27 20:25:50 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/03 18:26:01 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "../env_parser/env_parser.h"
 #include "path_handler.h"
 #include "file_handler.h"
+#include "../signals/signals.h"
 
 extern t_gShell g_shell;
 
@@ -137,8 +138,8 @@ int exec_comm(t_command *com, int in_pipe[2], int out_pipe[2], t_list *envs)
 
 		do_exec_call(com, envs);
 	}
-	
-	return (child_pid);
+	signals(0);
+	return child_pid;
 }
 
 

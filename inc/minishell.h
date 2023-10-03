@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/27 20:25:30 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/03 18:46:30 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct s_command {
 } t_command;
 
 
-
 /*Esta estructura tiene que desaparecer, tenemos que pasar las estructuras*/
 typedef struct s_shell {
 	t_list		*env_variables;
@@ -71,7 +70,7 @@ t_gShell	g_shell;
 
 char *get_input(void);
 
-#define DEBUG(...) fprintf (stderr, __VA_ARGS__);
-//#define DEBUG(...) ;
+//#define DEBUG(...) fprintf (stderr, __VA_ARGS__);
+#define DEBUG(...) ;
 
 #endif
