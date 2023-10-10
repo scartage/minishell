@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/03 19:19:54 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/10 19:58:32 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	execute_input(char *input, t_shell *shell)
 /*this fn returns t_list intead of void*/
 void	get_env(char **envp, t_shell *shell)
 {
+	g_shell.children_pid = 0;
+	g_shell.is_executing = false;
 	shell->env_variables = env_parser(envp);
 }
 
@@ -68,7 +70,6 @@ int	main(int ac, char **av, char **envp)
 		if (input == NULL)
 			continue ;
 		execute_input(input, &shell);
-		/*hola buenas dias*/
 	}
 	return (0);
 }

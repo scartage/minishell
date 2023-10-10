@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/03 18:46:30 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/10 19:52:28 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ typedef struct s_command {
 
 /*Esta estructura tiene que desaparecer, tenemos que pasar las estructuras*/
 typedef struct s_shell {
-	t_list		*env_variables;
-	t_list		*parsed_words;
+	t_list		*env_variables; //entorno
+	t_list		*parsed_words;	//input
 }	t_shell;
 
 t_shell	shell;

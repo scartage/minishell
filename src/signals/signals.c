@@ -4,6 +4,8 @@
 #include <../inc/minishell.h>
 #include <unistd.h>
 
+extern t_gShell g_shell;
+
 static void signal_handler(int signal)
 {
     if (signal == SIGINT)       //control + C
@@ -13,10 +15,9 @@ static void signal_handler(int signal)
         rl_on_new_line();
         rl_redisplay();
     }
-    else if (signal == SIGQUIT) //cntrl + D (sin proceso en ejecucion)
+    else if (signal == SIGQUIT) //cntrl + / (sin proceso en ejecucion)
     {
-        rl_redisplay();     //aqui no deberia hacer nada, funciona cuando
-                            //hay algo en ejecucion
+        rl_redisplay();
     }
     return ;
 }
@@ -25,19 +26,12 @@ static void child_handler(int signal)
 {
     if (signal == SIGINT)
     {
-        fflush(stdout);
         write(STDOUT_FILENO, "\n", 1);    
-        rl_replace_line("", 1);
-        rl_on_new_line();
-        rl_redisplay();
-        exit(EXIT_SUCCESS);
-    }
+        exit(EXIT_FAILURE);    }
     else if (signal == SIGQUIT)
     {
         write(1, "Quit: 3\n", 8);
-        rl_replace_line("", 1);
-        rl_on_new_line();
-        rl_redisplay();
+        exit(EXIT_FAILURE);
     }
     return ;
 }
