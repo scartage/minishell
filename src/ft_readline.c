@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:46:39 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/10 20:54:07 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/11 12:55:35 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,16 @@ char *ft_readline(void)
 	line = readline(prompt);
 	if (line == NULL)
 	{
-		if (g_shell.children_pid != 0)
+		write(STDOUT_FILENO, "hola\n", 5);
+		if (g_shell.is_executing)
 		{
-			printf("pid: %d\n", g_shell.children_pid);
-			printf("cerrando el hijo\n");
-			// TODO: needs cheching if it is executing anything
-			//Cerramos el proceso que esta en ejecucion
-			kill(g_shell.children_pid, SIGINT);
+			if (g_shell.children_pid != 0)
+			{
+				printf("cerrando el hijo\n");
+				// TODO: needs cheching if it is executing anything
+				//Cerramos el proceso que esta en ejecucion
+				kill(g_shell.children_pid, SIGINT);
+			}
 		}
 		else
 		{
@@ -43,12 +46,7 @@ char *ft_readline(void)
 	return (line);
 }
 
-/*Ojo: el exit tiene mas complejidad que simplemente
- * poner un exit en terminal (en bash has exit hola 0 y luego
- * revisa lo que devuelve el echo $?)
- * 
- * 
- * rl_catch_signals = 0; es una variable global de readline
+/* rl_catch_signals = 0; es una variable global de readline
  * la cual cuando esta en 0 es para que readline no use sus
  * propios manejadores de senales y podamos usar los nuestros*/
 char *get_input(void)

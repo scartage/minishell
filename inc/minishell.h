@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/10 19:52:28 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/11 13:23:28 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_gShell {
 t_gShell	g_shell;
 
 char *get_input(void);
-
+bool check_pre_parse_input(const char *str);
 //#define DEBUG(...) fprintf (stderr, __VA_ARGS__);
 #define DEBUG(...) ;
 

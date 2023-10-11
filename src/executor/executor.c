@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/10 21:16:59 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/11 12:48:18 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,15 +131,13 @@ int exec_comm(t_command *com, int in_pipe[2], int out_pipe[2], t_list *envs)
 	{
 		signals(0);
 		setup_pipes(com, in_pipe, out_pipe);
-		sleep(60);
+		sleep(10);
 		do_exec_call(com, envs);
-		// exit(EXIT_FAILURE);
 	}
 	else
 	{
 		g_shell.is_executing = true;
 		g_shell.children_pid = child_pid;
-		signals(1);
 	}
 	return child_pid;
 }
@@ -171,7 +169,7 @@ void	execute_all_commands(t_list *comms, t_list *envs)
 	}
 	if (waitpid(child, &status, 0) == -1)
 		abort_perror("Waiting for last thread");
-	// signals(1);
+	signals(1);
 	// FIXME: do this correctly
 	if (((t_command *)ft_lstlast(temp)->content)->output_files == NULL) {
 		char buff[100001];

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
+#    By: scartage <scartage@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/09/27 19:52:44 by fsoares-         ###   ########.fr        #
+#    Updated: 2023/10/11 13:24:17 by scartage         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ INCLUDES	= inc/minishell.h
 LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -Llibft -lft
 CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include -Ilibft
 
-SRCS		= main.c ft_readline.c token_parser.c parsing_utils.c in_token_handler.c errors.c \
+SRCS		= main.c ft_readline.c check_input_before.c token_parser.c parsing_utils.c in_token_handler.c errors.c \
 			  env_parser.c env_replacer.c temp_utils.c signals.c commands.c echo.c executor.c \
 			  file_handler.c path_handler.c \
 			  syscalls.c  # remove when to deliver
