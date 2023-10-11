@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/07/21 13:14:31 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/11 17:29:51 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ static char	*prepend_shell(char *message)
 	ft_strlcpy(temp, "minishell: ", size);
 	ft_strlcat(temp, message, size);
 	return (temp);
+}
+
+void	show_errors_checker(char *msm)
+{
+	char	*temp;
+
+	temp = prepend_shell(msm);
+	write(STDERR_FILENO, temp, ft_strlen(temp));
 }
 
 void	abort_perror(char *message)

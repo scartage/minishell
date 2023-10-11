@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/11 13:23:28 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/11 20:40:14 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 #include "../libft/libft.h"		//para el t_list
 #include <signal.h>
 
+
+#define MAX_CHILDREN 100
 
 typedef enum e_in_type {
 	NORMAL,  // fichero: <
@@ -63,7 +65,8 @@ typedef struct s_gShell {
 	int		last_execution;
 	int		level;
 	bool	is_executing;
-	pid_t	children_pid;
+	pid_t	children_pid[MAX_CHILDREN];
+	int		current_child;
 }	t_gShell;
 
 t_gShell	g_shell;

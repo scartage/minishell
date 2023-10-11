@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:20:13 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/27 18:49:15 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/11 20:41:11 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void add_argument_to_command(t_command * command, char * value) {
 
 t_list /*<t_command>*/ * token_to_command(t_list * tokens)
 {
-	printf("token to command: \n");
+	//printf("token to command: \n");
 	t_list * commands = NULL;
 	t_command * command_list = protected_malloc(sizeof(t_command));
 	char first_char;

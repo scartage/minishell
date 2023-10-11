@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/11 12:48:18 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/11 21:27:40 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void do_exec_call(t_command *comm, t_list *envs)
 	//my_log("command path: %s\n", command_path);
 	//my_log("args: "); log_array(args);
 	//my_log("envs: "); log_array(envp);
+	DEBUG("executing %s\n", command_path);
 	if (execve(command_path, args, envp) == -1)
 		abort_perror("Problem executing command");
 }
@@ -129,20 +130,38 @@ int exec_comm(t_command *com, int in_pipe[2], int out_pipe[2], t_list *envs)
 		abort_perror("Forking for program");
 	if (child_pid == 0)
 	{
-		signals(0);
 		setup_pipes(com, in_pipe, out_pipe);
-		sleep(10);
 		do_exec_call(com, envs);
 	}
 	else
 	{
 		g_shell.is_executing = true;
-		g_shell.children_pid = child_pid;
+		if (g_shell.current_child < MAX_CHILDREN)
+			g_shell.children_pid[g_shell.current_child++] = child_pid;
 	}
-	return child_pid;
+	return (child_pid);
 }
 
+void print_child_pids() {
+    for (int i = 0; i < g_shell.current_child; i++) {
+        DEBUG("Child PID %d: %d\n", i, g_shell.children_pid[i]);
+    }
+}
 
+void clean_array_pid(void)
+{
+	int i;
+
+	i = 0;
+	while (i < g_shell.current_child)
+	{
+		g_shell.children_pid[i] = 0;
+		i++;
+	}
+	g_shell.children_pid[i] = 0;
+	g_shell.current_child = 0;
+	print_child_pids();
+}
 void	execute_all_commands(t_list *comms, t_list *envs)
 {
 	int		in_pipe[2];
@@ -153,9 +172,6 @@ void	execute_all_commands(t_list *comms, t_list *envs)
 
 	if (pipe(in_pipe) == -1)
 		abort_perror("Creating pipe");
-		
-	t_list *temp = comms;
-		
 	while (comms)
 	{
 		command = comms->content;
@@ -169,18 +185,17 @@ void	execute_all_commands(t_list *comms, t_list *envs)
 	}
 	if (waitpid(child, &status, 0) == -1)
 		abort_perror("Waiting for last thread");
-	signals(1);
+	DEBUG("after wait\n");
 	// FIXME: do this correctly
-	if (((t_command *)ft_lstlast(temp)->content)->output_files == NULL) {
-		char buff[100001];
-		int bytes_read = read(out_pipe[0], buff, 100000);
-		buff[bytes_read] = 0;
-		printf("%s", buff);
-	}
+	DEBUG("after print\n")
 	close_pipe(out_pipe);
 	while (wait(NULL) != -1) {
 		DEBUG("waiting for wait\n");
 	}
+	clean_array_pid();
+	DEBUG("after all wait\n")
+	DEBUG("\nhay %i hijos\n", g_shell.current_child);
+	print_child_pids();
 }
 
 void execute(t_list * commands, t_list *envs)

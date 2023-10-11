@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:20:49 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/11 13:41:07 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/11 17:28:49 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,16 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
+#include "errors/errors.h"
 
 /*Here we are going to check the input before we parsed it*/
-
-bool check_pre_parse_input(const char *str)
+static bool check_closed_quotes(const char *str, int len)
 {
 	int single_quotes = 0;
 	int double_quotes = 0;
-	int len = ft_strlen(str);
 	int i;
 
-	//checking quoutes
+	//checking if quoutes are closed
 	i = 0;
 	while (i < len)
 	{
@@ -36,23 +35,44 @@ bool check_pre_parse_input(const char *str)
 	}
 	if (single_quotes % 2 != 0 || double_quotes % 2 != 0)
 	{
-		printf("Error: comilla no cerrada\n");
+		show_errors_checker("Error: Quote not closed.\n");
 		return (false);
 	}
+	return (true);
+}
 
-	// caracteres especiales al principio o al final
-	if (strchr("|>", str[0] || strchr("|><", str[len - 1])))
-	{
-		printf("Error: Caracteres especiales mal colocados\n");
-		return (false);
-	}
 
-	//combinacion caracteres especiales
-	if (strstr(str, "||") || strstr(str, "><"))
+static bool	check_start_end_chars(const char *str, int len)
+{
+	if (ft_strrchr("|>", str[0]) || ft_strrchr("|><", str[len - 1]))
 	{
-		printf("Error: combinaciones no validad\n");
+		show_errors_checker("Error: Special characters misplaced\n");
 		return (false);
 	}
-    return true;
+	return (true);
+}
+
+static bool	check_special_chars(const char *str, int len)
+{
+	if (ft_strnstr(str, "||", len) || ft_strnstr(str, "><", len))
+	{
+		show_errors_checker("Error: Invalid combinations of special characters.\n");
+		return (false);
+	}
+	return (true);
+}
+
+bool	check_pre_parse_input(const char *str)
+{
+	int len = ft_strlen(str);
+
+	if (!check_closed_quotes(str, len))
+		return (false);
+	if (!check_start_end_chars(str, len))
+		return (false);
+	if (!check_special_chars(str, len))
+		return (false);
+	else
+		return (true);
 }
 

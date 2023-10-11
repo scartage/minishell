@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:46:39 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/11 12:55:35 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:58:46 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,9 @@ char *ft_readline(void)
 	line = readline(prompt);
 	if (line == NULL)
 	{
-		write(STDOUT_FILENO, "hola\n", 5);
-		if (g_shell.is_executing)
-		{
-			if (g_shell.children_pid != 0)
-			{
-				printf("cerrando el hijo\n");
-				// TODO: needs cheching if it is executing anything
-				//Cerramos el proceso que esta en ejecucion
-				kill(g_shell.children_pid, SIGINT);
-			}
-		}
-		else
-		{
-			write(STDOUT_FILENO, "exit\n", 5);
-			rl_clear_history();
-			exit(EXIT_SUCCESS);
-		}
+		write(STDOUT_FILENO, "exit\n", 5);
+		rl_clear_history();
+		exit(EXIT_SUCCESS);
 	}
 	return (line);
 }

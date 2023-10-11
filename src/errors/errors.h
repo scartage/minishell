@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:29 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/07/13 19:29:38 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/11 16:32:06 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,7 @@ void	abort_perror(char *reason);
  * @param s The reason to display on the terminal
  */
 void	ft_error(char *s);
+
+/*Show error in checkers for input*/
+void	show_errors_checker(char *msm);
 #endif
