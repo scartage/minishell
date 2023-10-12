@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 18:16:50 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/11 19:53:36 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:35:18 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,9 @@ void		ft_lstclear(t_list **lst, void (*del)(void *));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
+/** extra function to remove elements from the list */
+void		ft_lstremove(t_list **list, t_list *to_remove, void (*del)(void *));
+
 int			ft_printf(const char *format, ...);
 /**
  * @brief Equal to ft_printf, but adds a newline at the end
@@ -113,7 +116,6 @@ void		terminate_with_error(char *message);
 void		*protected_calloc(size_t count, size_t size);
 void		*protected_malloc(size_t size);
 double		ft_atof(const char *str);
-
 /**
  * @brief Unquotes a word.
  * Removes the surrounding quotes and also if there are any escaped quotes
