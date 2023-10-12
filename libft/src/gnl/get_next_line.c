@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 15:49:07 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/04 18:42:49 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:07:34 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*delete_objects(t_buffer **buffers, t_string *builder, int fd)
 	t_buffer	*temp;
 	t_buffer	*prev;
 
-	free_builder(builder);
+	str_free(builder);
 	temp = *buffers;
 	prev = NULL;
 	while (temp != NULL)
@@ -108,7 +108,7 @@ char	*build_res(t_string *builder, char *buffer, int b_size, int bytes)
 	len = len - b_size + 1;
 	my_memmove(buffer, buffer + b_size, len);
 	buffer[len] = 0;
-	free_builder(builder);
+	str_free(builder);
 	return (res);
 }
 
@@ -121,14 +121,14 @@ char	*get_next_line(int fd)
 	char			*buffer;
 
 	bytes = 1;
-	builder = new_builder();
+	builder = str_new();
 	buffer = get_buffer_for_fd(&buffers, fd);
 	while (bytes > 0 && buffer)
 	{
 		offset = get_newline_offset(buffer);
 		if (offset != -1)
 			break ;
-		if (append_string(builder, buffer) == BUILDER_ERROR)
+		if (str_append(builder, buffer) == BUILDER_ERROR)
 			return (delete_objects(&buffers, builder, fd));
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes == -1)

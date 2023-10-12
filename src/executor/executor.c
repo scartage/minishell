@@ -1,213 +1,145 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/27 20:25:50 by fsoares-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <stdio.h>
 
 #include "executor.h"
 #include "../inc/minishell.h"
 #include "../builtins/builtins.h"
 #include "../errors/errors.h"
-#include "../env_parser/env_parser.h"
 #include "path_handler.h"
-#include "file_handler.h"
+#include "pipe_handler.h"
 
-extern t_gShell g_shell;
+char	**comm_to_args(t_command *comm);
+char	**envs_to_array(t_list *envs);
+void	handle_heredocs(t_list *commands);
 
-typedef struct s_builtins_fn
+void	do_exec_call(t_command *comm, t_list *envs)
 {
-	char *name;
-	int (*fn)(t_list *);
-} t_builtins_fn;
+	char		*command_path;
+	char		**args;
+	char		**envp;
+	t_builtin	builtin;
 
-#include <stdarg.h>
-void my_log(const char * format, ...)
-{
-  va_list args;
-  va_start (args, format);
-  vfprintf (stderr, format, args);
-  va_end (args);
-  fflush(stderr);
+	builtin = get_builtin(comm);
+	if (builtin.name != NULL)
+		execute_builtin(builtin, comm, envs);
+	else
+	{
+		command_path = get_full_path(comm, envs);
+		args = comm_to_args(comm);
+		envp = envs_to_array(envs);
+		if (execve(command_path, args, envp) == -1)
+			abort_perror("Problem executing command");
+	}
 }
 
-t_builtins_fn get_builtin(t_command *command)
+int	execute_single_command(t_command *command, t_list *envs)
 {
-	t_builtins_fn builtins[7];
+	t_builtin	builtin;
+	int			child_pid;
+	int			result;
 
-	builtins[0] = (t_builtins_fn){.name = "echo", .fn = echo};
-	builtins[1] = (t_builtins_fn){.name = "pwd", .fn = pwd};
-	builtins[2] = (t_builtins_fn){.name = "exit", .fn = ft_exit};
-
-	int i = 0;
-	while (i < 3)
+	result = 0;
+	builtin = get_builtin(command);
+	if (builtin.name != NULL)
+		result = execute_builtin(builtin, command, envs);
+	else
 	{
-		if (ft_strncmp(command->arguments->content, builtins[i].name, 20) == 0)
+		child_pid = fork();
+		if (child_pid == 0)
 		{
-			return builtins[i];
+			setup_first_read_fd(command);
+			setup_last_write_fd(command);
+			do_exec_call(command, envs);
 		}
-		i++;
+		waitpid(child_pid, &result, 0);
+		//FIXME: update is running flags
 	}
-
-	return (t_builtins_fn){.name = NULL, .fn = NULL};
+	return (result);
 }
 
-char	**comm_to_args(t_command *comm)
+int	execute_first_command(t_command *comm, t_list *envs, int out_pipe[2])
 {
-	t_list *args = comm->arguments;
-	char **res = protected_calloc(ft_lstsize(args) + 1, sizeof(char *));
-	int i = 0;
+	int	child_pid;
 
-	while (args)
+	child_pid = fork();
+	if (child_pid == 0)
 	{
-		res[i++] = args->content;
-		args = args->next;
+		setup_first_read_fd(comm);
+		setup_pipe_write(comm, out_pipe);
+		do_exec_call(comm, envs);
 	}
-	return (res);
+	return (child_pid);
 }
 
-char	*create_env_str(t_env_var *env) {
-	// + 2 for the '=' and the \0
-	int total_size = ft_strlen(env->name) + ft_strlen(env->content) + 2;
-	char *res = protected_calloc(total_size, sizeof(char));
-	ft_strlcpy(res, env->name, total_size);
-	ft_strlcat(res, "=", total_size);
-	ft_strlcat(res, env->content, total_size);
-	return res;
-}
-
-char	**envs_to_array(t_list *envs)
+int	execute_last_command(t_command *comm, t_list *envs, int in_pipe[2])
 {
-	char **res = protected_calloc(ft_lstsize(envs) + 1, sizeof(char *));
-	int i = 0;
-	
-	while(envs) {
-		res[i++] = create_env_str(envs->content);
-		envs = envs->next;
+	int	child_pid;
+
+	child_pid = fork();
+	if (child_pid == 0)
+	{
+		setup_pipe_read(comm, in_pipe);
+		setup_last_write_fd(comm);
+		do_exec_call(comm, envs);
 	}
-	return (res);
+	return (child_pid);
 }
 
-void log_array(char **arr) {
-	my_log("[");
-	while(*arr) {
-		my_log("'%s', ", *arr);
-		arr++;
-	}
-	my_log("]\n");
-}
-
-void do_exec_call(t_command *comm, t_list *envs)
+int	exec_command(t_command *comm, t_list *envs, int in_pipe[2], int out_pipe[2])
 {
-	char	*command_path;
-
-	command_path = get_full_path(comm, envs);
-	char ** args = comm_to_args(comm);
-	char ** envp = envs_to_array(envs);
-	//my_log("command path: %s\n", command_path);
-	//my_log("args: "); log_array(args);
-	//my_log("envs: "); log_array(envp);
-	if (execve(command_path, args, envp) == -1)
-		abort_perror("Problem executing command");
-}
-
-int exec_comm(t_command *com, int in_pipe[2], int out_pipe[2], t_list *envs)
-{
-	int child_pid;
+	int	child_pid;
 
 	child_pid = fork();
 	if (child_pid == -1)
 		abort_perror("Forking for program");
 	if (child_pid == 0)
 	{
-		setup_pipes(com, in_pipe, out_pipe);
-		// char myString[100];
-		// read(STDIN_FILENO, myString, 99);
-		// myString[99] = 0;
-		// fprintf(stderr, "dgskkshksdjgs: %s\n", myString);
-		// fflush(stderr);
-
-		do_exec_call(com, envs);
+		setup_pipe_read(comm, in_pipe);
+		setup_pipe_write(comm, out_pipe);
+		do_exec_call(comm, envs);
 	}
-	
 	return (child_pid);
 }
 
-
-void	execute_all_commands(t_list *comms, t_list *envs)
+int	execute_all_commands(t_list *commands, t_list *envs)
 {
-	int		in_pipe[2];
-	int		out_pipe[2];
-	int		status;
-	int		child;
-	t_command	*command;
+	int	out_pipe[2];
+	int	in_pipe[2];
+	int	child;
+	int	status;
 
-	if (pipe(in_pipe) == -1)
-		abort_perror("Creating pipe");
-		
-	t_list *temp = comms;
-		
-	while (comms)
+	pipe(in_pipe);
+	execute_first_command(commands->content, envs, in_pipe);
+	commands = commands->next;
+	while (commands && commands->next)
 	{
-		command = comms->content;
-		if (pipe(out_pipe) == -1)
-			abort_perror("Creating pipe");
-		child = exec_comm(command, in_pipe, out_pipe, envs);
+		pipe(out_pipe);
+		exec_command(commands->content, envs, in_pipe, out_pipe);
 		close_pipe(in_pipe);
 		in_pipe[0] = out_pipe[0];
 		in_pipe[1] = out_pipe[1];
-		comms = comms->next;
+		commands = commands->next;
 	}
-	if (waitpid(child, &status, 0) == -1)
-		abort_perror("Waiting for last thread");
-		
-	// FIXME: do this correctly
-	if (((t_command *)ft_lstlast(temp)->content)->output_files == NULL) {
-		char buff[100001];
-		int bytes_read = read(out_pipe[0], buff, 100000);
-		buff[bytes_read] = 0;
-		printf("%s", buff);
-	}
-	
-	
-	close_pipe(out_pipe);
-	while (wait(NULL) != -1) {
-		DEBUG("waiting for wait\n");
-	}
+	child = execute_last_command(commands->content, envs, in_pipe);
+	close_pipe(in_pipe);
+	waitpid(child, &status, 0);
+	while (wait(NULL) != -1)
+		;
+	//FIXME: update is running flags
+	return (0);
 }
 
-void execute(t_list * commands, t_list *envs)
+void	execute(t_list *commands, t_list *envs)
 {
-	// TODO: later handle heredocs
+	int	result;
 
-	t_command *command = commands->content;
-	t_builtins_fn builtin = get_builtin(command);
-	int result = 0;
-
-	// fork to execute commads
-	if (builtin.name != NULL)
-	{
-		if (ft_lstsize(command->output_files) > 0)
-		{
-			int bla = open("teste", O_CREAT | O_WRONLY, 0644);
-			dup2(bla, STDOUT_FILENO);
-			result = builtin.fn(command->arguments);
-			close(bla);
-		}
-		result = builtin.fn(command->arguments);
-	}
+	handle_heredocs(commands);
+	if (ft_lstsize(commands) == 1)
+		result = execute_single_command(commands->content, envs);
 	else
-	{
-		execute_all_commands(commands, envs);
-	}
+		result = execute_all_commands(commands, envs);
 
 	g_shell.last_execution = result;
 	g_shell.is_executing = false;

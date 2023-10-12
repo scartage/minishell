@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:46:11 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/06/07 17:10:07 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:07:34 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_parse_info	new_info(char *line)
 	info.line = line;
 	info.current_char = line[0];
 	info.pos = 1;
-	info.token = new_builder();
+	info.token = str_new();
 	if (info.token == NULL)
 		abort_perror("Creating string to save tokens");
 	info.tokens = NULL;
@@ -102,7 +102,7 @@ t_list	*parse_line(char *line)
 	}
 	if (current_state == in_token || current_state == in_quote)
 		add_token(&info, info.token->buffer);
-	free_builder(info.token);
+	str_free(info.token);
 	// TODO: Maybe free line
 	return (info.tokens);
 }

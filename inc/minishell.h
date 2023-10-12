@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/27 20:25:30 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:34:19 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef enum e_in_type {
 typedef struct s_in_file {
 	char *name;      // name of the file, or the string that represents the end of the input
 	t_in_type type;
+	char *end_str;
 } t_in_file;
 
 typedef enum e_out_type {

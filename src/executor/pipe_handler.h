@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_handler.h                                     :+:      :+:    :+:   */
+/*   pipe_handler.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/18 18:49:16 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/12 17:40:17 by fsoares-         ###   ########.fr       */
+/*   Created: 2023/10/12 17:33:02 by fsoares-          #+#    #+#             */
+/*   Updated: 2023/10/12 17:53:02 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILE_HANDLER_H
-# define FILE_HANDLER_H
+#ifndef PIPE_HANDLER_H
+# define PIPE_HANDLER_H
 
 # include "minishell.h"
 
-int	open_read_perm(char *path);
+void	setup_first_read_fd(t_command *command);
+void	setup_last_write_fd(t_command *command);
+void	setup_pipe_read(t_command *command, int in_pipe[2]);
+void	setup_pipe_write(t_command *command, int out_pipe[2]);
 
-int	open_write_perm(char *path, bool is_heredoc);
-
-int	get_input_fd(t_list *in_files);
-
-int	get_output_fd(t_list *out_files);
+void	close_pipe(int pipe[2]);
 
 #endif

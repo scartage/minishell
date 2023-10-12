@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_replacer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/07/21 13:44:05 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:13:44 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ char *env_replacer(char *str, t_list *env_variables) {
 
 	t_state current = in_word;
 
-	t_string *res = new_builder();
-	t_string *env_name = new_builder();
+	t_string *res = str_new();
+	t_string *env_name = str_new();
 
 	while (str[i])
 	{
@@ -75,34 +75,34 @@ char *env_replacer(char *str, t_list *env_variables) {
 		{
 			if (str[i] == '$')
  			{
-    	    	append_string(res, get_env_value(env_name->buffer, env_variables));
-    	   		reset_builder(env_name);
+    	    	str_append(res, get_env_value(env_name->buffer, env_variables));
+    	   		str_clear(env_name);
     	   		current = in_env_var_name; 		
 			}
 			else {
- 				append_string(res, get_env_value(env_name->buffer, env_variables));
+ 				str_append(res, get_env_value(env_name->buffer, env_variables));
 				if (str[i] != '"')
-					append_char(res, str[i]);
-				reset_builder(env_name);
+					str_add_char(res, str[i]);
+				str_clear(env_name);
 				current = in_word;			
 			}
 		} else if (current == in_single_quote && str[i] == '\'') {
 			current = in_word;
 		} else if (current == in_word || current == in_single_quote || current == in_double_quote) {
-			append_char(res, str[i]);
+			str_add_char(res, str[i]);
 		} else if  (current == in_env_var_name) {
-			append_char(env_name, str[i]);
+			str_add_char(env_name, str[i]);
 		}
 		if (str[i])
 			i++;
 	}
 	if (current == in_env_var_name) {
-		append_string(res, get_env_value(env_name->buffer, env_variables));
+		str_append(res, get_env_value(env_name->buffer, env_variables));
 		current = in_word;
 	}
-	free_builder(env_name);
+	str_free(env_name);
 	char *result = ft_strdup(res->buffer); // needs free
-	free_builder(res);
+	str_free(res);
 
 	return result;
 }

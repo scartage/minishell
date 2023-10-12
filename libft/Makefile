@@ -6,7 +6,7 @@
 #    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/11 18:02:58 by fsoares-          #+#    #+#              #
-#    Updated: 2023/04/05 17:12:07 by fsoares-         ###   ########.fr        #
+#    Updated: 2023/10/11 19:15:27 by fsoares-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ BONUS_SRCS	= ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c ft_lstdelone.c \
 			  ft_lstiter.c ft_lstlast.c ft_lstmap.c ft_lstnew.c ft_lstsize.c
 
 EXTRA_SRCS	= ft_atol.c ft_free_split.c protected_calloc.c to_case_str.c \
-			  unquote.c ft_atof.c append_char.c
+			  unquote.c ft_atof.c str_helpers.c
 
 GNL_SRCS	= get_next_line.c get_next_line_utils.c
 

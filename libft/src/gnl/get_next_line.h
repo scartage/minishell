@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 15:49:03 by fsoares-          #+#    #+#             */
-/*   Updated: 2022/06/01 17:00:46 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:07:34 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 # define BUILDER_ERROR -1
 # define BUILDER_OK 1
 
-t_string	*new_builder(void);
-int			append_string(t_string *string, char *str);
-char		*free_builder(t_string *builder);
+t_string	*str_new(void);
+int			str_append(t_string *string, char *str);
+char		*str_free(t_string *builder);
 void		my_memmove(char *dest, char *src, size_t n);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/09/27 19:52:44 by fsoares-         ###   ########.fr        #
+#    Updated: 2023/10/12 17:39:12 by fsoares-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,11 @@ RM			= rm -rf
 INCLUDES	= inc/minishell.h
 
 LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -Llibft -lft
-CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include -Ilibft
+CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include -Ilibft -Iinc
 
 SRCS		= main.c ft_readline.c token_parser.c parsing_utils.c in_token_handler.c errors.c \
 			  env_parser.c env_replacer.c temp_utils.c signals.c commands.c echo.c executor.c \
-			  file_handler.c path_handler.c \
+			  file_handler.c path_handler.c executor_utils.c heredoc.c builtins.c pipe_handler.c\
 			  syscalls.c  # remove when to deliver
 
 SRC_DIRS	= parsing errors env_parser env_replacer signals builtins executor \
@@ -68,4 +68,7 @@ re: fclean all
 test: all
 	@$(MAKE) -C tests
 
-.PHONY: all clean fclean re test
+run: all 
+	./minishell
+
+.PHONY: all clean fclean re test run

@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 18:48:59 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/09/27 19:44:11 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/12 17:35:06 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	open_write_perm(char *path, bool is_append)
 {
 	int	fd;
 
-	DEBUG("out_file_path: %s\n", path);
 	if (access(path, F_OK) == 0 && access(path, W_OK) == -1)
 		abort_perror(path);
 	if (is_append)
@@ -47,51 +46,32 @@ int	open_write_perm(char *path, bool is_append)
 	return (fd);
 }
 
-// by default if no input file is found return the stdin.
-int		get_file_input_fd(t_command *comm, int in_pipe)
+int	get_input_fd(t_list *in_files)
 {
-	// FIXME: open the others like it is done by bash
-	t_list *file_node = ft_lstlast(comm->input_files);
-	if (file_node == NULL)
-		return (in_pipe);
-	else
+	t_in_file	*in_file;
+
+	if (in_files == NULL)
+		return (0);
+	while (in_files->next && in_files->next->next)
 	{
-		close(in_pipe);
-		return (open_read_perm(((t_in_file *)file_node->content)->name));
+		// FIXME: handle it the same way as bash for multiple inputs
+		in_files = in_files->next;
 	}
+	in_file = in_files->content;
+	return (open_read_perm(in_file->name));
 }
 
-int		get_file_output_fd(t_command *comm, int out_pipe) {
-	// FIXME: open the others like it is done by bash
-	t_list *file_node = ft_lstlast(comm->output_files);
-	if (file_node == NULL)
-		return (out_pipe);
-	else 
+int	get_output_fd(t_list *out_files)
+{
+	t_out_file	*out_file;
+
+	if (out_files == NULL)
+		return (0);
+	while (out_files->next && out_files->next->next)
 	{
-		close(out_pipe);
-		t_out_file *file = (t_out_file *)file_node->content;
-		return (open_write_perm(file->name, file->type == APPEND));
+		// FIXME: handle it the same way as bash for multiple outputs
+		out_files = out_files->next;
 	}
-}
-
-void	setup_pipes(t_command *comm, int in_pipe[2], int out_pipe[2])
-{
-	(void)comm;
-	
-	if (dup2(get_file_input_fd(comm, in_pipe[0]), STDIN_FILENO) == -1)
-		abort_perror("Redirecting read end of input pipe to stdin");
-	if (dup2(get_file_output_fd(comm, out_pipe[1]), STDOUT_FILENO) == -1)
-		abort_perror("Redirecting stdout to write end of output pipe");
-	if (close(in_pipe[1]) == -1)
-		abort_perror("Closing write end of input pipe");
-	if (close(out_pipe[0]) == -1)
-		abort_perror("Closing read end of output pipe");
-}
-
-void	close_pipe(int pipe[2])
-{
-	if (close(pipe[0]) == -1)
-		abort_perror("Closing the read end of the pipe");
-	if (close(pipe[1]) == -1)
-		abort_perror("Closing the write end of the pipe");
+	out_file = out_files->content;
+	return (open_write_perm(out_file->name, out_file->type == APPEND));
 }

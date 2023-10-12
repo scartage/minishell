@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:43:14 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/05 18:32:18 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:07:34 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	is_word_char(char c)
 void	free_info(t_parse_info *info)
 {
 	free(info->line);
-	free_builder(info->token);
+	str_free(info->token);
 	ft_lstclear(&info->tokens, free);
 }
 
@@ -57,7 +57,7 @@ void	add_token(t_parse_info *info, char *token)
 
 void	add_char_to_token(t_parse_info *info, char c)
 {
-	if (append_char(info->token, c) < 0)
+	if (str_add_char(info->token, c) < 0)
 	{
 		free_info(info);
 		abort_perror("Adding char to token while parsing");

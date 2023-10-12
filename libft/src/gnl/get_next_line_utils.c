@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 15:48:59 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/04 18:42:35 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:07:34 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	my_memmove(char *dest, char *src, size_t n)
 	}
 }
 
-char	*free_builder(t_string *builder)
+char	*str_free(t_string *builder)
 {
 	if (!builder)
 		return (NULL);
@@ -34,7 +34,7 @@ char	*free_builder(t_string *builder)
 	return (NULL);
 }
 
-t_string	*new_builder(void)
+t_string	*str_new(void)
 {
 	t_string	*new_;
 
@@ -96,7 +96,7 @@ int	expand(t_string *string, ssize_t new_size)
  * @return int		A flag that signals if everything went ok. Returns -1 if it
  * 					failed a malloc, 1 otherwise.
  */
-int	append_string(t_string *string, char *new)
+int	str_append(t_string *string, char *new)
 {
 	size_t	len;
 

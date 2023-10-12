@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 18:16:50 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/05 18:30:47 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:53:36 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ char		*unquote(char *word);
 
 void		ft_free_split(char **split);
 
-char		*free_builder(t_string *builder);
-t_string	*new_builder(void);
+char		*str_free(t_string *builder);
+t_string	*str_new(void);
 
 /**
  * @brief Appends new to the current buffer. If there is not enough space it
@@ -142,7 +142,7 @@ t_string	*new_builder(void);
  * @return int		A flag that signals if everything went ok. Returns -1 if it
  * 					failed a malloc, 1 otherwise.
  */
-int			append_string(t_string *string, char *str);
+int			str_append(t_string *string, char *str);
 
 /**
  * @brief Appends the char to the current buffer. If there is not enough space it
@@ -154,11 +154,17 @@ int			append_string(t_string *string, char *str);
  * @return int		A flag that signals if everything went ok. Returns -1 if it
  * 					failed a malloc, 1 otherwise.
  */
-int			append_char(t_string *string, char new);
+int			str_add_char(t_string *string, char new);
 
 /**
  * Maintains the allocation, but resets the content of the string
  */
-void		reset_builder(t_string *string);
+void		str_clear(t_string *string);
+
+/**
+ * Converts the string to a char* sequence of chars. In the process it frees the 
+ * memory associated with the t_string
+ */
+char		*str_to_char(t_string *string);
 
 #endif

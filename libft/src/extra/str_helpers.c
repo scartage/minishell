@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   append_char.c                                      :+:      :+:    :+:   */
+/*   str_add_char.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -14,7 +14,7 @@
 
 int	expand(t_string *string, ssize_t new_size);
 
-int	append_char(t_string *string, char new)
+int	str_add_char(t_string *string, char new)
 {
 	if (expand(string, string->current + 1) == BUILDER_ERROR)
 		return (BUILDER_ERROR);
@@ -24,8 +24,17 @@ int	append_char(t_string *string, char new)
 	return (BUILDER_OK);
 }
 
-void	reset_builder(t_string *string)
+void	str_clear(t_string *string)
 {
 	string->current = 0;
 	string->buffer[0] = 0;
+}
+
+char	*str_to_char(t_string *string)
+{
+	char	*to_return;
+
+	to_return = ft_strdup(string->buffer);
+	str_free(string);
+	return (to_return);
 }

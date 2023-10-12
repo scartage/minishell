@@ -6,49 +6,30 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:20:13 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/27 18:49:15 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/12 17:30:08 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
 #include "../temp_utils.h"
+#include "../../inc/minishell.h"
 #include <stdio.h>
-
-typedef enum e_in_type {
-	NORMAL,  // fichero: <
-	HEREDOC, // El heredoc: <<
-} t_in_type;
-
-typedef struct s_in_file {
-	char *name;      // name of the file, or the string that represents the end of the input
-	t_in_type type;
-} t_in_file;
-
-typedef enum e_out_type {
-	WRITE,  // >
-	APPEND, // >>
-} t_out_type;
-
-typedef struct s_out_file {
-	char * name;
-	t_out_type type;
-} t_out_file;
-
-typedef struct s_command {
-	t_list * input_files;   // de t_in_file, lista de strings que contine los varios files de entrada en orden de aparecimiento
-	t_list * output_files;  // de t_out_file, lista de out_files que contiene los files de salida en orden de aparecimiento
-	t_list * arguments;     // de char *, array de strings que contiene los argumentos
-} t_command;
 
 void add_input_to_command(t_command * command, char * type, char * value)
 {
-	t_in_file * input = protected_malloc(sizeof(t_in_file));
-	
-	input->type = NORMAL;
-	if (ft_strncmp(type, "<<", 3) == 0) {
+	t_in_file	*input;
+
+	input = protected_malloc(sizeof(t_in_file));
+	if (ft_strncmp(type, "<<", 3) == 0)
+	{
 		input->type = HEREDOC;
+		input->end_str = ft_strdup(value);
 	}
-	input->name = ft_strdup(value);
+	else
+	{
+		input->type = NORMAL;
+		input->name = ft_strdup(value);
+	}
 	ft_lstadd_back(&command->input_files, ft_lstnew(input));
 }
 
@@ -70,7 +51,6 @@ void add_argument_to_command(t_command * command, char * value) {
 
 t_list /*<t_command>*/ * token_to_command(t_list * tokens)
 {
-	printf("token to command: \n");
 	t_list * commands = NULL;
 	t_command * command_list = protected_malloc(sizeof(t_command));
 	char first_char;

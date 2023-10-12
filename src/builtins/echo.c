@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/26 21:22:14 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/12 17:12:22 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,18 @@
 #include "../inc/minishell.h"
 #include "../errors/errors.h"
 
-int echo(t_list *arguments)
+int echo(t_list *arguments, t_list *envs)
 {
+	(void)envs;
 	ft_lstiter(arguments->next, print_strings_echo);
 	ft_printfln("");
 	printf("\n");
 	return 0;
 }
 
-int pwd(t_list *arguments)
+int pwd(t_list *arguments, t_list *envs)
 {
+	(void)envs;
 	(void)arguments;
 	char buffer[PATH_MAX];
 	getcwd(buffer, PATH_MAX);
@@ -36,8 +38,9 @@ int pwd(t_list *arguments)
 }
 
 /*Falta revisar casos de exit y que funcione con sus parametros*/
-int ft_exit(t_list *arguments)
+int ft_exit(t_list *arguments, t_list *envs)
 {
+	(void)envs;
 	int arg_count = ft_lstsize(arguments);
 	int ex_number = 0;
 

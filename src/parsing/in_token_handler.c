@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:39:16 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/05 18:33:01 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:13:44 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	process_redirection(t_parse_info *info)
 t_state	in_token_space(t_parse_info *info)
 {
 	add_token(info, info->token->buffer);
-	reset_builder(info->token);
+	str_clear(info->token);
 	return (in_space);
 }
 
@@ -53,7 +53,7 @@ t_state	in_token_pipe(t_parse_info *info)
 {
 	add_token(info, info->token->buffer);
 	add_token(info, "|");
-	reset_builder(info->token);
+	str_clear(info->token);
 	return (in_space);
 }
 
@@ -61,7 +61,7 @@ t_state	in_token_redirection(t_parse_info *info)
 {
 	add_token(info, info->token->buffer);
 	process_redirection(info);
-	reset_builder(info->token);
+	str_clear(info->token);
 	return (in_space);
 }
 
