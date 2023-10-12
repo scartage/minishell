@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/12 18:34:19 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:39:27 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 #include "../libft/libft.h"		//para el t_list
 #include <signal.h>
 
+
+#define MAX_CHILDREN 100
 
 typedef enum e_in_type {
 	NORMAL,  // fichero: <
@@ -52,11 +54,10 @@ typedef struct s_command {
 } t_command;
 
 
-
 /*Esta estructura tiene que desaparecer, tenemos que pasar las estructuras*/
 typedef struct s_shell {
-	t_list		*env_variables;
-	t_list		*parsed_words;
+	t_list		*env_variables; //entorno
+	t_list		*parsed_words;	//input
 }	t_shell;
 
 t_shell	shell;
@@ -65,14 +66,15 @@ typedef struct s_gShell {
 	int		last_execution;
 	int		level;
 	bool	is_executing;
-	pid_t	children_pid;
+	pid_t	children_pid[MAX_CHILDREN];
+	int		current_child;
 }	t_gShell;
 
 t_gShell	g_shell;
 
 char *get_input(void);
-
-#define DEBUG(...) fprintf (stderr, __VA_ARGS__);
-//#define DEBUG(...) ;
+bool check_pre_parse_input(const char *str);
+//#define DEBUG(...) fprintf (stderr, __VA_ARGS__);
+#define DEBUG(...) ;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:20:13 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/12 17:30:08 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:50:50 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void add_argument_to_command(t_command * command, char * value) {
 
 t_list /*<t_command>*/ * token_to_command(t_list * tokens)
 {
+	//printf("token to command: \n");
 	t_list * commands = NULL;
 	t_command * command_list = protected_malloc(sizeof(t_command));
 	char first_char;

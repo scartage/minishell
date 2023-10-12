@@ -6,14 +6,14 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:46:39 by scartage          #+#    #+#             */
-/*   Updated: 2023/09/26 21:09:28 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:58:46 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include "parsing/token_parser.h"
 
-// extern t_shell g_shell;
+extern t_gShell g_shell;
 
 
 char *ft_readline(void)
@@ -25,26 +25,16 @@ char *ft_readline(void)
 	line = readline(prompt);
 	if (line == NULL)
 	{
-		if (g_shell.is_executing == true)
-		{
-			printf("pepe el pepe\n");
-			// TODO: needs cheching if it is executing anything
-			//Cerramos el proceso que esta en ejecucion
-			kill(g_shell.children_pid, SIGINT);
-		}
-		else
-		{
-			write(STDOUT_FILENO, "exit\n", 5);
-			rl_clear_history();
-			exit(EXIT_SUCCESS);
-		}
+		write(STDOUT_FILENO, "exit\n", 5);
+		rl_clear_history();
+		exit(EXIT_SUCCESS);
 	}
 	return (line);
 }
 
-/*Ojo: el exit tiene mas complejidad que simplemente
- * poner un exit en terminal (en bash has exit hola 0 y luego
- * revisa lo que devuelve el echo $?)*/
+/* rl_catch_signals = 0; es una variable global de readline
+ * la cual cuando esta en 0 es para que readline no use sus
+ * propios manejadores de senales y podamos usar los nuestros*/
 char *get_input(void)
 {
 	char *line;

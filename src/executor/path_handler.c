@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:25:03 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/09/21 19:46:52 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/12 15:57:55 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,17 +111,21 @@ char	*get_full_path(t_command *cmd, t_list *envs)
 	char	*command;
 
 	command = cmd->arguments->content;
+	DEBUG("command: %s\n", command);
 	if (ft_strchr(command, '/') != NULL )
 	{
 		if (check_exec_permissions(command))
 			return (command);
-		show_error("No such file or directory");
+		show_error("minishell: No such file or directory");
 		exit(127);
 	}
 	result = search_path(command, envs);
 	if (!result)
 	{
-		show_error("command not found");
+		char *prefix = "minishell: ";
+		char *temp_join = ft_strjoin(prefix, command);
+		char *full_error_msm = ft_strjoin(temp_join, ": command not found\n");
+		show_error(full_error_msm);
 		exit(127);
 	}
 	return (result);

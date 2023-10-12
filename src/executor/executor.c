@@ -1,14 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
+/*   Updated: 2023/10/12 18:49:47 by fsoares-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <stdio.h>
 
 #include "executor.h"
-#include "../inc/minishell.h"
+#include "minishell.h"
 #include "../builtins/builtins.h"
 #include "../errors/errors.h"
 #include "path_handler.h"
 #include "pipe_handler.h"
+#include "../signals/signals.h"
+
 
 char	**comm_to_args(t_command *comm);
 char	**envs_to_array(t_list *envs);
@@ -87,6 +100,29 @@ int	execute_last_command(t_command *comm, t_list *envs, int in_pipe[2])
 	return (child_pid);
 }
 
+
+void print_child_pids() {
+    for (int i = 0; i < g_shell.current_child; i++) {
+        DEBUG("Child PID %d: %d\n", i, g_shell.children_pid[i]);
+    }
+}
+
+void clean_array_pid(void)
+{
+	int i;
+
+	i = 0;
+	while (i < g_shell.current_child)
+	{
+		g_shell.children_pid[i] = 0;
+		i++;
+	}
+	g_shell.children_pid[i] = 0;
+	g_shell.current_child = 0;
+	print_child_pids();
+}
+
+
 int	exec_command(t_command *comm, t_list *envs, int in_pipe[2], int out_pipe[2])
 {
 	int	child_pid;
@@ -100,6 +136,9 @@ int	exec_command(t_command *comm, t_list *envs, int in_pipe[2], int out_pipe[2])
 		setup_pipe_write(comm, out_pipe);
 		do_exec_call(comm, envs);
 	}
+	g_shell.is_executing = true;
+	if (g_shell.current_child < MAX_CHILDREN)
+		g_shell.children_pid[g_shell.current_child++] = child_pid;
 	return (child_pid);
 }
 
@@ -127,7 +166,10 @@ int	execute_all_commands(t_list *commands, t_list *envs)
 	waitpid(child, &status, 0);
 	while (wait(NULL) != -1)
 		;
-	//FIXME: update is running flags
+	clean_array_pid();
+	DEBUG("after all wait\n")
+	DEBUG("\nhay %i hijos\n", g_shell.current_child);
+	print_child_pids();
 	return (0);
 }
 
