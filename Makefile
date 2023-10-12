@@ -6,7 +6,7 @@
 #    By: scartage <scartage@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/10/11 13:24:17 by scartage         ###   ########.fr        #
+#    Updated: 2023/10/12 17:53:15 by scartage         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -Llibft -lft
 CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include -Ilibft
 
 SRCS		= main.c ft_readline.c check_input_before.c token_parser.c parsing_utils.c in_token_handler.c errors.c \
-			  env_parser.c env_replacer.c temp_utils.c signals.c commands.c echo.c executor.c \
+			  env_parser.c env_replacer.c temp_utils.c signals.c commands.c builtins.c 2builtins.c executor.c \
 			  file_handler.c path_handler.c \
 			  syscalls.c  # remove when to deliver
 

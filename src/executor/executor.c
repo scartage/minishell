@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/11 21:27:40 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/12 17:58:58 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ extern t_gShell g_shell;
 typedef struct s_builtins_fn
 {
 	char *name;
-	int (*fn)(t_list *);
+	int (*fn)(t_list *, t_list *);
 } t_builtins_fn;
 
 #include <stdarg.h>
@@ -47,9 +47,11 @@ t_builtins_fn get_builtin(t_command *command)
 	builtins[0] = (t_builtins_fn){.name = "echo", .fn = echo};
 	builtins[1] = (t_builtins_fn){.name = "pwd", .fn = pwd};
 	builtins[2] = (t_builtins_fn){.name = "exit", .fn = ft_exit};
+	builtins[3] = (t_builtins_fn){.name = "cd", .fn = ft_cd};
+	builtins[4] = (t_builtins_fn){.name = "env", .fn = ft_env};
 
 	int i = 0;
-	while (i < 3)
+	while (i < 5)
 	{
 		if (ft_strncmp(command->arguments->content, builtins[i].name, 20) == 0)
 		{
@@ -57,7 +59,6 @@ t_builtins_fn get_builtin(t_command *command)
 		}
 		i++;
 	}
-
 	return (t_builtins_fn){.name = NULL, .fn = NULL};
 }
 
@@ -162,6 +163,7 @@ void clean_array_pid(void)
 	g_shell.current_child = 0;
 	print_child_pids();
 }
+
 void	execute_all_commands(t_list *comms, t_list *envs)
 {
 	int		in_pipe[2];
@@ -213,10 +215,10 @@ void execute(t_list * commands, t_list *envs)
 		{
 			int bla = open("teste", O_CREAT | O_WRONLY, 0644);
 			dup2(bla, STDOUT_FILENO);
-			result = builtin.fn(command->arguments);
+			result = builtin.fn(command->arguments, envs);
 			close(bla);
 		}
-		result = builtin.fn(command->arguments);
+		result = builtin.fn(command->arguments, envs);
 	}
 	else
 	{
