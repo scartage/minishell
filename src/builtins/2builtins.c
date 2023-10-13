@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 16:05:02 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:57:03 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,4 @@ t_builtin	get_builtin(t_command *command)
 	}
 
 	return ((t_builtin){.name = NULL, .fn = NULL});
-}
-
-int	execute_builtin(t_builtin builtin, t_command *command, t_list *envs)
-{
-	//FIXME: handle redirections
-	return (builtin.fn(command->arguments, envs));
 }

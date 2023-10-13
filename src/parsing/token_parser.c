@@ -6,11 +6,12 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:46:11 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/11 19:07:34 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:58:06 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "libft.h"
 #include "../errors/errors.h"
 #include "token_parser.h"
@@ -103,6 +104,6 @@ t_list	*parse_line(char *line)
 	if (current_state == in_token || current_state == in_quote)
 		add_token(&info, info.token->buffer);
 	str_free(info.token);
-	// TODO: Maybe free line
+	free(line);
 	return (info.tokens);
 }

@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 16:13:05 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:41:22 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_gShell	g_shell;
 
 char *get_input(void);
 bool check_pre_parse_input(const char *str);
-//#define DEBUG(...) fprintf (stderr, __VA_ARGS__);
-#define DEBUG(...) ;
+#define DEBUG(...) fprintf (stderr, __VA_ARGS__);
+//#define DEBUG(...) ;
 
 #endif

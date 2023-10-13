@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 16:04:20 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:53:42 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ void	execute_input(char *input, t_shell *shell)
 	//printAfter(temp_tokens);
 
 	t_list *commands = token_to_command(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
+	ft_lstclear(&tokens, free);
 	//ft_lstiter(commands, print_command);
 	execute(commands, shell->env_variables);
+	ft_lstclear((void *)&commands, (void (*)(void *))free_command);
 }
  
 /*this fn returns t_list intead of void*/

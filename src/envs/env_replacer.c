@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 16:24:33 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:59:11 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ char *env_replacer(char *str, t_list *env_variables) {
 	str_free(env_name);
 	char *result = ft_strdup(res->buffer); // needs free
 	str_free(res);
-
+	free(str);
 	return result;
 }
 

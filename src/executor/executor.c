@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 16:29:21 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:57:26 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@
 
 char	**comm_to_args(t_command *comm);
 char	**envs_to_array(t_list *envs);
-void	handle_heredocs(t_list *commands);
+void	create_heredocs(t_list *commands);
+void	delete_heredocs();
 
 
 void print_child_pids() {
@@ -67,7 +68,7 @@ void	do_exec_call(t_command *comm, t_list *envs)
 	builtin = get_builtin(comm);
 	if (builtin.name != NULL)
 	{
-		return_code = execute_builtin(builtin, comm, envs);
+		return_code = builtin.fn(comm->arguments, envs);
 		exit(return_code);
 	}
 	else
@@ -94,7 +95,7 @@ int	execute_single_command(t_command *command, t_list *envs)
 		int saved_stdout = dup(1);
 		setup_first_read_fd(command);
 		setup_last_write_fd(command);
-		result = execute_builtin(builtin, command, envs);
+		result = builtin.fn(command->arguments, envs);
 		dup2(saved_stdout, 1);
 		dup2(saved_stdin, 0);
 		close(saved_stdout);
@@ -195,7 +196,7 @@ void	execute(t_list *commands, t_list *envs)
 {
 	int	result;
 
-	handle_heredocs(commands);
+	create_heredocs(commands);
 	if (ft_lstsize(commands) == 1)
 		result = execute_single_command(commands->content, envs);
 	else
@@ -205,4 +206,5 @@ void	execute(t_list *commands, t_list *envs)
 	print_child_pids();
 	clean_array_pid();
 	g_shell.last_execution = result;
+	delete_heredocs();
 }

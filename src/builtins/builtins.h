@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:20:51 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/12 18:43:49 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:56:43 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ typedef struct s_builtins_fn
 }	t_builtin;
 
 t_builtin	get_builtin(t_command *command);
-int			execute_builtin(t_builtin builtin, t_command *comm, t_list *envs);
 
 int 		echo(t_list *arguments, t_list *envs);
 int 		pwd(t_list *arguments, t_list *envs);

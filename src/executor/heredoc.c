@@ -6,25 +6,32 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:23:16 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/12 17:24:57 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 19:09:58 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include "../../inc/minishell.h"
 
+#define NAME_SIZE 200
 #define TEMP_FILE ".__tmp_file_"
+
+void	temp_file_name(char *buffer, int id)
+{
+	char	*id_str;
+
+	ft_strlcpy(buffer, TEMP_FILE, NAME_SIZE);
+	id_str = ft_itoa(id);
+	ft_strlcat(buffer, id_str, NAME_SIZE);
+	free(id_str);
+}
 
 int	create_temp_file(t_in_file *in_file, int id)
 {
 	int		fd;
-	char	name[200];
-	char	*id_str;
+	char	name[NAME_SIZE];
 
-	ft_strlcpy(name, TEMP_FILE, 200);
-	id_str = ft_itoa(id);
-	ft_strlcat(name, id_str, 200);
-	free(id_str);
+	temp_file_name(name, id);
 	fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
 	in_file->name = strdup(name);
@@ -53,7 +60,7 @@ void	capture_input_heredoc(t_in_file *in_file, int id)
 	close(temp_fd);
 }
 
-void	handle_heredocs(t_list *commands)
+void	create_heredocs(t_list *commands)
 {
 	t_command	*comm;
 	t_list		*in_files;
@@ -77,8 +84,18 @@ void	handle_heredocs(t_list *commands)
 	}
 }
 
-void clear_heredoc_temp_files(t_list *commands)
+void delete_heredocs()
 {
-	(void)commands;
-	DEBUG("clear_heredoc_temp_files not implemented yet");
+	int		i;
+	int		status;
+	char	name[NAME_SIZE];
+
+	i = 0;
+	status = 0;
+	while (status >= 0)
+	{
+		temp_file_name(name, i);
+		status = unlink(name);
+		i++;
+	}
 }
