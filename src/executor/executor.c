@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/12 18:49:47 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:51:02 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,49 @@ char	**comm_to_args(t_command *comm);
 char	**envs_to_array(t_list *envs);
 void	handle_heredocs(t_list *commands);
 
+
+void print_child_pids() {
+    for (int i = 0; i < g_shell.current_child; i++) {
+        DEBUG("Child PID %d: %d\n", i, g_shell.children_pid[i]);
+    }
+}
+
+void add_child_pid(int pid)
+{
+	g_shell.is_executing = true;
+	if (g_shell.current_child < MAX_CHILDREN)
+		g_shell.children_pid[g_shell.current_child++] = pid;
+}
+
+void clean_array_pid(void)
+{
+	int i;
+
+	i = 0;
+	while (i < g_shell.current_child)
+	{
+		g_shell.children_pid[i] = 0;
+		i++;
+	}
+	g_shell.children_pid[i] = 0;
+	g_shell.current_child = 0;
+	g_shell.is_executing = false;
+}
+
 void	do_exec_call(t_command *comm, t_list *envs)
 {
 	char		*command_path;
 	char		**args;
 	char		**envp;
 	t_builtin	builtin;
+	int			return_code;
 
 	builtin = get_builtin(comm);
 	if (builtin.name != NULL)
-		execute_builtin(builtin, comm, envs);
+	{
+		return_code = execute_builtin(builtin, comm, envs);
+		exit(return_code);
+	}
 	else
 	{
 		command_path = get_full_path(comm, envs);
@@ -56,7 +89,17 @@ int	execute_single_command(t_command *command, t_list *envs)
 	result = 0;
 	builtin = get_builtin(command);
 	if (builtin.name != NULL)
+	{
+		int saved_stdin = dup(0);
+		int saved_stdout = dup(1);
+		setup_first_read_fd(command);
+		setup_last_write_fd(command);
 		result = execute_builtin(builtin, command, envs);
+		dup2(saved_stdout, 1);
+		dup2(saved_stdin, 0);
+		close(saved_stdout);
+		close(saved_stdin);
+	}
 	else
 	{
 		child_pid = fork();
@@ -67,7 +110,7 @@ int	execute_single_command(t_command *command, t_list *envs)
 			do_exec_call(command, envs);
 		}
 		waitpid(child_pid, &result, 0);
-		//FIXME: update is running flags
+		add_child_pid(child_pid);
 	}
 	return (result);
 }
@@ -83,6 +126,7 @@ int	execute_first_command(t_command *comm, t_list *envs, int out_pipe[2])
 		setup_pipe_write(comm, out_pipe);
 		do_exec_call(comm, envs);
 	}
+	add_child_pid(child_pid);
 	return (child_pid);
 }
 
@@ -97,31 +141,9 @@ int	execute_last_command(t_command *comm, t_list *envs, int in_pipe[2])
 		setup_last_write_fd(comm);
 		do_exec_call(comm, envs);
 	}
+	add_child_pid(child_pid);
 	return (child_pid);
 }
-
-
-void print_child_pids() {
-    for (int i = 0; i < g_shell.current_child; i++) {
-        DEBUG("Child PID %d: %d\n", i, g_shell.children_pid[i]);
-    }
-}
-
-void clean_array_pid(void)
-{
-	int i;
-
-	i = 0;
-	while (i < g_shell.current_child)
-	{
-		g_shell.children_pid[i] = 0;
-		i++;
-	}
-	g_shell.children_pid[i] = 0;
-	g_shell.current_child = 0;
-	print_child_pids();
-}
-
 
 int	exec_command(t_command *comm, t_list *envs, int in_pipe[2], int out_pipe[2])
 {
@@ -136,9 +158,7 @@ int	exec_command(t_command *comm, t_list *envs, int in_pipe[2], int out_pipe[2])
 		setup_pipe_write(comm, out_pipe);
 		do_exec_call(comm, envs);
 	}
-	g_shell.is_executing = true;
-	if (g_shell.current_child < MAX_CHILDREN)
-		g_shell.children_pid[g_shell.current_child++] = child_pid;
+	add_child_pid(child_pid);
 	return (child_pid);
 }
 
@@ -163,14 +183,10 @@ int	execute_all_commands(t_list *commands, t_list *envs)
 	}
 	child = execute_last_command(commands->content, envs, in_pipe);
 	close_pipe(in_pipe);
-	waitpid(child, &status, 0);
+	waitpid(child, &status, 0); //FIXME: get the correct status
 	while (wait(NULL) != -1)
 		;
-	clean_array_pid();
-	DEBUG("after all wait\n")
-	DEBUG("\nhay %i hijos\n", g_shell.current_child);
-	print_child_pids();
-	return (0);
+	return (status);
 }
 
 void	execute(t_list *commands, t_list *envs)
@@ -182,7 +198,9 @@ void	execute(t_list *commands, t_list *envs)
 		result = execute_single_command(commands->content, envs);
 	else
 		result = execute_all_commands(commands, envs);
-
+	DEBUG("after all wait\n");
+	DEBUG("\nhay %i hijos\n", g_shell.current_child);
+	print_child_pids();
+	clean_array_pid();
 	g_shell.last_execution = result;
-	g_shell.is_executing = false;
 }
