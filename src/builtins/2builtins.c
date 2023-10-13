@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   2builtins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/12 18:46:23 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 21:08:03 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../inc/minishell.h"
-#include "../errors/errors.h"
-#include "../env_parser/env_parser.h"
+
+/*si tenemos un env sin valor, no la mostramos*/
 
 int ft_env(t_list *arguments, t_list *envs)
 {
@@ -32,7 +32,8 @@ int ft_env(t_list *arguments, t_list *envs)
 	while (temp_tokens != NULL)
 	{
 		env_var = temp_tokens->content;
-		printf("%s=%s\n", env_var->name, env_var->content);
+		if (var_exists_in_envs(env_var->name, envs) == 1)
+			printf("%s=%s\n", env_var->name, env_var->content);
 		if (temp_tokens->next == NULL)
 			break;
 		temp_tokens = temp_tokens->next;
@@ -40,19 +41,67 @@ int ft_env(t_list *arguments, t_list *envs)
     return 0;
 }
 
+void show_env_vars_export(t_list *envs)
+{
+	t_list *temp_tokens = envs;
+	t_env_var *env_var;
+	while (temp_tokens != NULL)
+	{
+		env_var = temp_tokens->content;
+		printf("declare -x %s=%s\n", env_var->name, env_var->content);
+		if (temp_tokens->next == NULL)
+			break;
+		temp_tokens = temp_tokens->next;
+	}
+}
+
+/*debemos revisar cuantos argumentos tenemos, de ahi, revisar que estos sean validos*/
+
+/*si tenemos varios argumentos y uno es erroneo, ese, no lo guarda EL RESTO SI
+
+si tenemos un env sin valor SI lo mostramos*/
+int ft_export(t_list *arguments, t_list *envs)
+{
+    int count_arg = ft_lstsize(arguments);
+	t_list *temp_args = arguments->next;
+
+    if (count_arg < 2)
+    {
+        show_env_vars_export(envs);
+        return (0);
+    }
+	while (temp_args != NULL)
+	{
+		if (check_env_arg((char *)temp_args->content, envs) != 0)
+		{
+			char *prev = ft_strjoin("export: ", temp_args->content);
+			char *full_error_msm = ft_strjoin(prev, ": not a valid identifier");
+			abort_perror(full_error_msm); //esto es un show error!!
+			//contine ;
+			return (1);
+		}
+
+		if (temp_args->next == NULL)
+			break;
+		temp_args = temp_args->next;
+	}
+	printf("hay esta len de args: %i\n", count_arg);
+    return (0);
+}
+
 t_builtin	get_builtin(t_command *command)
 {
 	t_builtin	builtins[7];
 	int			i;
 
-	builtins[0] = (t_builtin){.name = "echo", .fn = echo};
-	builtins[1] = (t_builtin){.name = "pwd", .fn = pwd};
+	builtins[0] = (t_builtin){.name = "echo", .fn = ft_echo};
+	builtins[1] = (t_builtin){.name = "pwd", .fn = ft_pwd};
 	builtins[2] = (t_builtin){.name = "exit", .fn = ft_exit};
 	builtins[3] = (t_builtin){.name = "cd", .fn = ft_cd};
 	builtins[4] = (t_builtin){.name = "env", .fn = ft_env};
-
+    builtins[5] = (t_builtin){.name = "export", .fn = ft_export};
 	i = 0;
-	while (i < 5)
+	while (i < 6)
 	{
 		if (ft_strncmp(command->arguments->content, builtins[i].name, 20) == 0)
 		{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/12 18:42:46 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:55:57 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,18 @@
 #include "../inc/minishell.h"
 #include "../errors/errors.h"
 
-int echo(t_list *arguments, t_list *envs)
+int ft_echo(t_list *arguments, t_list *envs)
 {
 	(void)envs;
 	t_list *first_after_echo = arguments->next;
 	bool n_opt = false;
 
-	if (strcmp(first_after_echo->content, "-n") == 0)
+	if (first_after_echo == NULL)
+	{
+		printf("\n");
+		return (0);
+	}
+	else if (strcmp(first_after_echo->content, "-n") == 0)
 	{
 		n_opt = true;
 		first_after_echo = first_after_echo->next;
@@ -42,7 +47,7 @@ int echo(t_list *arguments, t_list *envs)
 	return (0);
 }
 
-int pwd(t_list *arguments, t_list *envs)
+int ft_pwd(t_list *arguments, t_list *envs)
 {
 	(void)envs;
 	int len_args = ft_lstsize(arguments);
@@ -74,7 +79,8 @@ int ft_exit(t_list *arguments, t_list *envs)
 	{
 		if (ft_isdigit_void(arguments->next->content) == 0)
 		{
-			char *full_error_msm = ft_strjoin(arguments->next->content, ": numeric argument required");
+			char *prev = ft_strjoin("exit: ", arguments->next->content);
+			char *full_error_msm = ft_strjoin(prev, ": numeric argument required");
 			printf("exit\n");
 			abort_perror(full_error_msm);
 			exit(255);
@@ -93,7 +99,11 @@ int ft_cd(t_list *arguments, t_list *envs)
 {
 	(void)envs;
 	int len_args = ft_lstsize(arguments);
-	char *first_arg = (char *)arguments->next->content;
+	char *first_arg;
+
+	if (len_args == 1)
+		return (0);
+	first_arg = (char *)arguments->next->content;
 	if (len_args > 2)
 	{
 		abort_perror("cd: too many arguments");
