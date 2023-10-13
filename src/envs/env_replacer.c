@@ -6,14 +6,17 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/11 19:13:44 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:24:33 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "env_replacer.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+extern t_gShell g_shell;
 
 char *get_content(char *env_name, t_list *env_variables)
 {
@@ -76,16 +79,21 @@ char *env_replacer(char *str, t_list *env_variables) {
 			if (str[i] == '$')
  			{
     	    	str_append(res, get_env_value(env_name->buffer, env_variables));
-    	   		str_clear(env_name);
-    	   		current = in_env_var_name; 		
+    	   		current = in_env_var_name;
 			}
-			else {
+			else if (str[i] == '?' && str[i-1] == '$')
+			{
+				str_add_int(res, g_shell.last_execution);
+				current = in_word;
+			}
+			else
+			{
  				str_append(res, get_env_value(env_name->buffer, env_variables));
 				if (str[i] != '"')
 					str_add_char(res, str[i]);
-				str_clear(env_name);
 				current = in_word;			
 			}
+			str_clear(env_name);
 		} else if (current == in_single_quote && str[i] == '\'') {
 			current = in_word;
 		} else if (current == in_word || current == in_single_quote || current == in_double_quote) {

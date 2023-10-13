@@ -50,16 +50,16 @@ void print_strings_echo(void * str) {
 	printf("%s ", (char *)str);
 }
 
-int ft_isdigit_void(void *str)
+int ft_isdigit_void(char *str)
 {
-	char * tmp;
 	int i;
 
 	i  = 0;
-	tmp = ft_strdup((char *)str);
-	while (tmp[i] != '\0')
+	if (str[0] == '-')
+		i++;
+	while (str[i] != '\0')
 	{
-		if (ft_isdigit(tmp[0]) == 0)
+		if (!ft_isdigit(str[i]))
 			return (0);
 		i++;
 	}

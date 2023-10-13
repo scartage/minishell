@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../gnl/get_next_line.h"
+#include <stdlib.h>
 
 int	expand(t_string *string, ssize_t new_size);
 
@@ -21,6 +22,16 @@ int	str_add_char(t_string *string, char new)
 	string->buffer[string->current] = new;
 	string->current++;
 	string->buffer[string->current] = 0;
+	return (BUILDER_OK);
+}
+
+int	str_add_int(t_string *string, int number)
+{
+	char *number_str;
+	
+	number_str = ft_itoa(number);
+	str_append(string, number_str);
+	free(number_str);
 	return (BUILDER_OK);
 }
 

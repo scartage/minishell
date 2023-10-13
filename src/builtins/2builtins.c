@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/12 18:46:23 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:05:02 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "../inc/minishell.h"
+#include "minishell.h"
 #include "../errors/errors.h"
-#include "../env_parser/env_parser.h"
+#include "../envs/env_parser.h"
 
 int ft_env(t_list *arguments, t_list *envs)
 {

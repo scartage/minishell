@@ -6,13 +6,13 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:17:35 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/12 17:20:33 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:05:25 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "../../inc/minishell.h"
-#include "../env_parser/env_parser.h"
+#include "minishell.h"
+#include "../envs/env_parser.h"
 
 char	**comm_to_args(t_command *comm)
 {

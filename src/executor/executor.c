@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 15:51:02 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:29:21 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ int	execute_single_command(t_command *command, t_list *envs)
 			do_exec_call(command, envs);
 		}
 		waitpid(child_pid, &result, 0);
+		result = WEXITSTATUS(result);
 		add_child_pid(child_pid);
 	}
 	return (result);
@@ -183,7 +184,8 @@ int	execute_all_commands(t_list *commands, t_list *envs)
 	}
 	child = execute_last_command(commands->content, envs, in_pipe);
 	close_pipe(in_pipe);
-	waitpid(child, &status, 0); //FIXME: get the correct status
+	waitpid(child, &status, 0);
+	status = WEXITSTATUS(status);
 	while (wait(NULL) != -1)
 		;
 	return (status);

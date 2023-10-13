@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 16:00:37 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:04:20 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "libft.h"
 #include "parsing/token_parser.h"
 #include "parsing/commands.h"
-#include "env_parser/env_parser.h"
-#include "env_replacer/env_replacer.h"
+#include "envs/env_parser.h"
+#include "envs/env_replacer.h"
 #include "errors/errors.h"
 #include "signals/signals.h"
 #include "executor/executor.h"

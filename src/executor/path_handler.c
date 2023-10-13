@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:25:03 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/12 15:57:55 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:05:13 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "path_handler.h"
 #include "../errors/errors.h"
-#include "../env_parser/env_parser.h"
+#include "../envs/env_parser.h"
 
 #define DEF "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 

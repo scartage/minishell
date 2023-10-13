@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 18:16:50 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/12 19:35:18 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:24:18 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ int			str_append(t_string *string, char *str);
  * 					failed a malloc, 1 otherwise.
  */
 int			str_add_char(t_string *string, char new);
+int			str_add_int(t_string *string, int number);
 
 /**
  * Maintains the allocation, but resets the content of the string

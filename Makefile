@@ -6,7 +6,7 @@
 #    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/10/12 18:41:40 by fsoares-         ###   ########.fr        #
+#    Updated: 2023/10/13 16:06:09 by fsoares-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS		= main.c ft_readline.c check_input_before.c token_parser.c parsing_utils.c
 			  file_handler.c path_handler.c executor_utils.c heredoc.c pipe_handler.c\
 			  syscalls.c  # remove when to deliver
 
-SRC_DIRS	= parsing errors env_parser env_replacer signals builtins executor \
+SRC_DIRS	= parsing errors envs signals builtins executor \
               debug  # remove when to deliver
 
 OBJ_DIR		= obj
