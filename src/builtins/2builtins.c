@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/18 18:38:20 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/18 19:42:46 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,30 @@ int ft_export(t_list *arguments, t_list *envs)
     return (0);
 }
 
+int ft_unset(t_list *arguments, t_list *envs)
+{
+	int count_arg = ft_lstsize(arguments);
+	t_list *temp_args = arguments->next;
+
+    if (count_arg == 1)
+        return (0);
+	while (temp_args != NULL)
+	{
+		printf("hola?\n");
+		if (check_if_valid((char *)temp_args->content, &envs) != 0)
+		{
+			char *prev = ft_strjoin("unset: ", temp_args->content);
+			char *full_error_msm = ft_strjoin(prev, ": not a valid identifier");
+			abort_perror(full_error_msm); //esto es un show error!!
+			//contine ;
+			return (1);
+		}
+		if (temp_args->next == NULL)
+			break;
+		temp_args = temp_args->next;
+	}
+	return (0);
+}
 
 t_builtin	get_builtin(t_command *command)
 {
@@ -106,10 +130,10 @@ t_builtin	get_builtin(t_command *command)
 	builtins[3] = (t_builtin){.name = "cd", .fn = ft_cd};
 	builtins[4] = (t_builtin){.name = "env", .fn = ft_env};
     builtins[5] = (t_builtin){.name = "export", .fn = ft_export};
-	//bultins[6]	= (t_builtin){.name = "unset", .fn = ft_unset};
+	builtins[6]	= (t_builtin){.name = "unset", .fn = ft_unset};
 
 	i = 0;
-	while (i < 6)
+	while (i < 7)
 	{
 		if (ft_strncmp(command->arguments->content, builtins[i].name, 20) == 0)
 		{
