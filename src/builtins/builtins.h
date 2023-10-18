@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:20:51 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 21:04:37 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/18 18:06:49 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,5 @@ int         ft_export(t_list *arguments, t_list *envs);
 /*utils fn for export*/
 int	check_env_arg(char *arg, t_list *envs);
 int var_exists_in_envs(char *env_name, t_list *envs);
+void order_envs_list(t_list *envs);
 #endif

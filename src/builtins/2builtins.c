@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 21:08:03 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/18 18:38:20 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int ft_env(t_list *arguments, t_list *envs)
 	while (temp_tokens != NULL)
 	{
 		env_var = temp_tokens->content;
-		if (var_exists_in_envs(env_var->name, envs) == 1)
+		/*solo mostramos variables con valor (mi_var="") es valida*/
+		if (var_exists_in_envs(env_var->name, envs) == 2)
 			printf("%s=%s\n", env_var->name, env_var->content);
 		if (temp_tokens->next == NULL)
 			break;
@@ -48,7 +49,11 @@ void show_env_vars_export(t_list *envs)
 	while (temp_tokens != NULL)
 	{
 		env_var = temp_tokens->content;
-		printf("declare -x %s=%s\n", env_var->name, env_var->content);
+		//todos aquellos que dentro de su contenido tienen un (null) muestro su var
+		if (var_exists_in_envs(env_var->name, envs) == 1)
+			printf("declare -x %s\n", env_var->name);
+		if (var_exists_in_envs(env_var->name, envs) == 2)
+			printf("declare -x %s=\"%s\"\n", env_var->name, env_var->content);
 		if (temp_tokens->next == NULL)
 			break;
 		temp_tokens = temp_tokens->next;
@@ -67,6 +72,7 @@ int ft_export(t_list *arguments, t_list *envs)
 
     if (count_arg < 2)
     {
+		order_envs_list(envs);
         show_env_vars_export(envs);
         return (0);
     }
@@ -85,9 +91,9 @@ int ft_export(t_list *arguments, t_list *envs)
 			break;
 		temp_args = temp_args->next;
 	}
-	printf("hay esta len de args: %i\n", count_arg);
     return (0);
 }
+
 
 t_builtin	get_builtin(t_command *command)
 {
@@ -100,6 +106,8 @@ t_builtin	get_builtin(t_command *command)
 	builtins[3] = (t_builtin){.name = "cd", .fn = ft_cd};
 	builtins[4] = (t_builtin){.name = "env", .fn = ft_env};
     builtins[5] = (t_builtin){.name = "export", .fn = ft_export};
+	//bultins[6]	= (t_builtin){.name = "unset", .fn = ft_unset};
+
 	i = 0;
 	while (i < 6)
 	{
@@ -109,7 +117,6 @@ t_builtin	get_builtin(t_command *command)
 		}
 		i++;
 	}
-
 	return ((t_builtin){.name = NULL, .fn = NULL});
 }
 

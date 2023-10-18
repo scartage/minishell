@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:41:31 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 21:08:03 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/18 17:46:28 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@ int var_exists_in_envs(char *env_name, t_list *envs)
 		t_env_var *env_var = (t_env_var *)temp->content;
 		if (ft_strncmp(env_name, env_var->name, ft_strlen(env_name)) == 0)
 		{
-			if (env_var->content != NULL && ft_strlen(env_var->content) > 0)
-				return (2); //printable en env
-			//existe
+			if (env_var->content != NULL && ft_strlen(env_var->content) >= 0)
+				return (2);
 			return (1);
 		}
 		if (temp->next == NULL)
@@ -33,11 +32,11 @@ int var_exists_in_envs(char *env_name, t_list *envs)
 	return (0);
 }
 
+
 static void update_env_content(char *env_name, char *value, t_list *envs)
 {
 	t_list *temp = envs;
 
-	printf("existe, hacemos update\n");
 	while (temp != NULL)
 	{
 		t_env_var *env_var = (t_env_var *)temp->content;
@@ -62,7 +61,10 @@ static void add_new_end_var(char *env_name, char *value, t_list **envs)
 		exit(EXIT_FAILURE);
 	}
 	new_env_var->name = ft_strdup(env_name);
-	new_env_var->content = ft_strdup(value);
+	if (value == NULL)
+		new_env_var->content = NULL;
+	else
+		new_env_var->content = ft_strdup(value);
 	ft_lstadd_back(envs, ft_lstnew(new_env_var));
 }
 
@@ -126,12 +128,13 @@ static void env_var_with_value(char *arg, t_list *envs)
 		char *name = ft_substr(arg, 0, equal - arg);
 		char *value = ft_substr(arg, (equal + 1) - arg, ft_strlen(arg));
 		if (ft_strlen(value) == 0)
+		{
 			set_env_value_to_null(name, envs);
+		}
 		else
 		{
-			printf("name: %s, value: %s\n", name, value);
-			if (var_exists_in_envs(name, envs) == 1)
-			 	update_env_content(name, value, envs);
+			if (var_exists_in_envs(name, envs) != 0)
+				update_env_content(name, value, envs);
 			else
 				add_new_end_var(name, value, &envs);
 		}
@@ -150,17 +153,15 @@ int check_env_arg(char *arg, t_list *envs)
 	if (arg[ft_strlen(arg) - 1] == '=')
 	{
 		char *parse_arg = ft_substr(arg, 0, ft_strlen(arg) - 1);
-		printf("new arg: %s\n", parse_arg);
 		set_env_value_to_null(parse_arg, envs);
 		free(parse_arg);
 	}
 	char *is_equal_insdide = ft_strchr(arg, '=');
 	if (is_equal_insdide != NULL)
 		flag = 1;
-	//si es 0 es porque no existe, si es diferente es porque si
+	//si dentro de arg no hay un = y tampoco esta en envs, la creo con value NULL
 	else if (flag == 0 && var_exists_in_envs(arg, envs) == 0)
-		add_new_end_var(arg, "", &envs);
-	printf("flag es: %i esta tiene que ser parseada, work in progress\n", flag);
+		add_new_end_var(arg, NULL, &envs);
 	if (flag == 1)
 		env_var_with_value(arg, envs);
 	return (0);
