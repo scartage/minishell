@@ -1,0 +1,19 @@
+echo hola
+echo mundo
+asdasd
+ads
+ads
+das
+ads
+ads
+asd
+asd
+asd
+a
+sd
+asd
+../asdasd
+
+< hola.txt cat | bash
+
+Este comando nos rompe la minishell

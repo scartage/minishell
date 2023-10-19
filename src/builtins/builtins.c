@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/19 14:54:39 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/19 20:29:07 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,19 @@ int ft_pwd(t_list *arguments, t_list *envs)
 	return (0);
 }
 
-/*Falta revisar casos de exit y que funcione con sus parametros*/
+/*revisada y funciona como bash*/
 int ft_exit(t_list *arguments, t_list *envs)
 {
 	(void)envs;
 	int arg_count = ft_lstsize(arguments);
 	int ex_number = 0;
 
-	if (ft_isdigit_void((char *)arguments->next->content) == 0)
+	if (arg_count == 1)
+		exit(EXIT_SUCCESS);
+	if (ft_isdigit_void((char *)arguments->next->content) != 0)
 	{
 		char *prev = ft_strjoin("exit: ", arguments->next->content);
-		char *full_error_msm = ft_strjoin(prev, ": numeric argument required");
+		char *full_error_msm = ft_strjoin(prev, ": numeric argument required\n");
 		printf("exit\n");
 		show_errors_checker(full_error_msm);
 		exit(255);
@@ -100,18 +102,6 @@ int ft_exit(t_list *arguments, t_list *envs)
 		show_errors_checker("exit: too many arguments\n");
 		return (1);
 	}
-	// if (arg_count == 2)
-	// {
-	// 	if (ft_isdigit_void(arguments->next->content) == 0)
-	// 	{
-	// 		char *prev = ft_strjoin("exit: ", arguments->next->content);
-	// 		char *full_error_msm = ft_strjoin(prev, ": numeric argument required");
-	// 		printf("exit\n");
-	// 		show_errors_checker(full_error_msm);
-	// 		exit(255);
-	// 	}
-	// 	ex_number = ft_atoi(arguments->next->content);
-	// }
 	ex_number = ft_atoi(arguments->next->content);
 	printf("exit\n");
 	rl_clear_history();

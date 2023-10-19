@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/19 13:32:21 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:26:05 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdbool.h>
 #include "../inc/minishell.h"
 
+/*revisada, funciona como bash*/
 int ft_env(t_list *arguments, t_list *envs)
 {
 	t_list *temp_tokens = envs;
@@ -25,7 +26,7 @@ int ft_env(t_list *arguments, t_list *envs)
 
     if (ft_lstsize(arguments) > 1)
     {
-		show_errors_checker("env: too many arguments\n");
+		show_errors_checker("env: no options or arguments are required\n");
         return (1);
     }
 	while (temp_tokens != NULL)
@@ -57,12 +58,8 @@ void show_env_vars_export(t_list *envs)
 	}
 }
 
-/*debemos revisar cuantos argumentos tenemos, de ahi, revisar que estos sean validos*/
-
-/*si tenemos varios argumentos y uno es erroneo, ese, no lo guarda EL RESTO SI
-
-si tenemos un env sin valor SI lo mostramos*/
-int ft_export(t_list *arguments, t_list *envs)
+/*revisada funciona como bash*/
+int	ft_export(t_list *arguments, t_list *envs)
 {
     int count_arg = ft_lstsize(arguments);
 	t_list *temp_args = arguments->next;
@@ -88,6 +85,7 @@ int ft_export(t_list *arguments, t_list *envs)
     return (0);
 }
 
+/*revisada y funciona como bash*/
 int ft_unset(t_list *arguments, t_list *envs)
 {
 	int count_arg = ft_lstsize(arguments);
@@ -120,8 +118,8 @@ t_builtin	get_builtin(t_command *command)
 	builtins[2] = (t_builtin){.name = "exit", .fn = ft_exit};
 	builtins[3] = (t_builtin){.name = "cd", .fn = ft_cd};
 	builtins[4] = (t_builtin){.name = "env", .fn = ft_env};
-    builtins[5] = (t_builtin){.name = "export", .fn = ft_export};
-	builtins[6]	= (t_builtin){.name = "unset", .fn = ft_unset};
+	builtins[5] = (t_builtin){.name = "export", .fn = ft_export};
+	builtins[6] = (t_builtin){.name = "unset", .fn = ft_unset};
 
 	i = 0;
 	while (i < 7)

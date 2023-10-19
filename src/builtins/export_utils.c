@@ -6,71 +6,34 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:41:31 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/19 13:11:00 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:30:26 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int var_exists_in_envs(char *env_name, t_list *envs)
+static void	update_env_content(char *env_name, char *value, t_list *envs)
 {
-	t_list *temp = envs;
+	t_list		*temp;
+	t_env_var	*env_var;
 
+	temp = envs;
 	while (temp != NULL)
 	{
-		t_env_var *env_var = (t_env_var *)temp->content;
+		env_var = (t_env_var *)temp->content;
 		if (ft_strncmp(env_name, env_var->name, ft_strlen(env_name)) == 0)
 		{
-			if (env_var->content != NULL && ft_strlen(env_var->content) >= 0)
-				return (2);
-			return (1);
-		}
-		if (temp->next == NULL)
-			break;
-		temp = temp->next;
-	}
-	return (0);
-}
-
-
-static void update_env_content(char *env_name, char *value, t_list *envs)
-{
-	t_list *temp = envs;
-
-	while (temp != NULL)
-	{
-		t_env_var *env_var = (t_env_var *)temp->content;
-		if (ft_strncmp(env_name, env_var->name, ft_strlen(env_name)) == 0)
-		{
-			free(env_var->content); // liberamos memoria del valor anterior
+			free(env_var->content);
 			env_var->content = ft_strdup(value);
-			break;
+			break ;
 		}
 		if (temp->next == NULL)
-			break;
+			break ;
 		temp = temp->next;
 	}
 }
 
-static void add_new_end_var(char *env_name, char *value, t_list **envs)
-{
-	t_env_var *new_env_var = malloc(sizeof(t_env_var));
-	if (new_env_var == NULL)
-	{
-		perror("failed to allocate memory in add_env_var");
-		exit(EXIT_FAILURE);
-	}
-	new_env_var->name = ft_strdup(env_name);
-	if (value == NULL)
-		new_env_var->content = NULL;
-	else
-		new_env_var->content = ft_strdup(value);
-	ft_lstadd_back(envs, ft_lstnew(new_env_var));
-}
-
-/*Nos pasan un name= , revisamos que exista, en caso que si
-cambiamos su valor a NULL, en caso que no, lo creamos y guardamos*/
-static void set_env_value_to_null(char *env_name, t_list *envs)
+static void	set_env_value_to_null(char *env_name, t_list *envs)
 {
 	t_list *temp = envs;
 	int found = 0;
@@ -90,7 +53,7 @@ static void set_env_value_to_null(char *env_name, t_list *envs)
 		add_new_end_var(env_name, "", &envs);
 }
 
-static int check_spaces_bt_equal(char *arg)
+static int	check_spaces_bt_equal(char *arg)
 {
 	char *equal = ft_strchr(arg, '=');
 
@@ -110,16 +73,8 @@ static int check_spaces_bt_equal(char *arg)
 	return (0);
 }
 
-int check_env_name(char *arg)
-{
-	if (!ft_isalpha(arg[0]) && arg[0] != '_')
-	{
-		return (-1);
-	}
-	return (0);
-}
 
-static void env_var_with_value(char *arg, t_list *envs)
+static void	env_var_with_value(char *arg, t_list *envs)
 {
 	char *equal = ft_strchr(arg, '=');
 
