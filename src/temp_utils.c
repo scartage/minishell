@@ -50,20 +50,19 @@ void print_strings_echo(void * str) {
 	printf("%s ", (char *)str);
 }
 
-int ft_isdigit_void(void *str)
+/*if me da 1 es error*/
+int ft_isdigit_void(char *str)
 {
-	char * tmp;
 	int i;
 
 	i  = 0;
-	tmp = ft_strdup((char *)str);
-	while (tmp[i] != '\0')
+	while (str[i] != '\0')
 	{
-		if (ft_isdigit(tmp[0]) == 0)
-			return (0);
+		if (ft_isdigit(str[0]) != 0)
+			return (1);		//si hay algun char devuelve 1
 		i++;
 	}
-	return (1);
+	return (0);		//todos son numeros
 }
 
 void print_command(void * command2) {

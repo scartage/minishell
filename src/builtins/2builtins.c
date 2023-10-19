@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/18 19:42:46 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/19 13:32:21 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,26 @@
 #include <stdbool.h>
 #include "../inc/minishell.h"
 
-/*si tenemos un env sin valor, no la mostramos*/
-
 int ft_env(t_list *arguments, t_list *envs)
 {
-    if (ft_lstsize(arguments) > 1)
-    {
-        abort_perror("env: too many arguments");
-        return (1);
-    }
 	t_list *temp_tokens = envs;
 	t_env_var *env_var;
+
+    if (ft_lstsize(arguments) > 1)
+    {
+		show_errors_checker("env: too many arguments\n");
+        return (1);
+    }
 	while (temp_tokens != NULL)
 	{
 		env_var = temp_tokens->content;
-		/*solo mostramos variables con valor (mi_var="") es valida*/
 		if (var_exists_in_envs(env_var->name, envs) == 2)
 			printf("%s=%s\n", env_var->name, env_var->content);
 		if (temp_tokens->next == NULL)
-			break;
+			break ;
 		temp_tokens = temp_tokens->next;
 	}
-    return 0;
+    return (0);
 }
 
 void show_env_vars_export(t_list *envs)
@@ -49,13 +47,12 @@ void show_env_vars_export(t_list *envs)
 	while (temp_tokens != NULL)
 	{
 		env_var = temp_tokens->content;
-		//todos aquellos que dentro de su contenido tienen un (null) muestro su var
 		if (var_exists_in_envs(env_var->name, envs) == 1)
 			printf("declare -x %s\n", env_var->name);
 		if (var_exists_in_envs(env_var->name, envs) == 2)
 			printf("declare -x %s=\"%s\"\n", env_var->name, env_var->content);
 		if (temp_tokens->next == NULL)
-			break;
+			break ;
 		temp_tokens = temp_tokens->next;
 	}
 }
@@ -81,14 +78,11 @@ int ft_export(t_list *arguments, t_list *envs)
 		if (check_env_arg((char *)temp_args->content, envs) != 0)
 		{
 			char *prev = ft_strjoin("export: ", temp_args->content);
-			char *full_error_msm = ft_strjoin(prev, ": not a valid identifier");
-			abort_perror(full_error_msm); //esto es un show error!!
-			//contine ;
-			return (1);
+			char *full_error_msm = ft_strjoin(prev, ": not a valid identifier\n");
+			show_errors_checker(full_error_msm);
 		}
-
 		if (temp_args->next == NULL)
-			break;
+			break ;
 		temp_args = temp_args->next;
 	}
     return (0);
@@ -103,14 +97,11 @@ int ft_unset(t_list *arguments, t_list *envs)
         return (0);
 	while (temp_args != NULL)
 	{
-		printf("hola?\n");
 		if (check_if_valid((char *)temp_args->content, &envs) != 0)
 		{
 			char *prev = ft_strjoin("unset: ", temp_args->content);
-			char *full_error_msm = ft_strjoin(prev, ": not a valid identifier");
-			abort_perror(full_error_msm); //esto es un show error!!
-			//contine ;
-			return (1);
+			char *full_error_msm = ft_strjoin(prev, ": not a valid identifier\n");
+			show_errors_checker(full_error_msm);
 		}
 		if (temp_args->next == NULL)
 			break;

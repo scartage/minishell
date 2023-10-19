@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:41:31 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/18 17:46:28 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/19 13:11:00 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void set_env_value_to_null(char *env_name, t_list *envs)
 			free(env_var->content); // liberamos memoria del valor anterior
 			env_var->content = ft_strdup("");
 			found = 1;
-			break;
+			break ;
 		}
 		temp = temp->next;
 	}
@@ -110,7 +110,7 @@ static int check_spaces_bt_equal(char *arg)
 	return (0);
 }
 
-static int check_env_name(char *arg)
+int check_env_name(char *arg)
 {
 	if (!ft_isalpha(arg[0]) && arg[0] != '_')
 	{
@@ -141,15 +141,14 @@ static void env_var_with_value(char *arg, t_list *envs)
 	}
 }
 
-// si despues de el name hay un = espacio, es valido, pero la variable no queda con valor
-int check_env_arg(char *arg, t_list *envs)
+
+int	check_env_arg(char *arg, t_list *envs)
 {
 	int flag = 0;
 	if (check_env_name(arg) != 0)
 		return (1);
 	if (check_spaces_bt_equal(arg) != 0)
 		return (1);
-	// si es valida y existe, cambia valor en env, sino, no hace nada
 	if (arg[ft_strlen(arg) - 1] == '=')
 	{
 		char *parse_arg = ft_substr(arg, 0, ft_strlen(arg) - 1);

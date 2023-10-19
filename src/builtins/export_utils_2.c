@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:46:08 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/18 18:11:53 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/19 13:01:13 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,8 @@ void order_envs_list(t_list *envs)
 			t_env_var *env_var_actual = (t_env_var *)actual->content;
 			t_env_var *env_var_sig = (t_env_var *)siguiente->content;
 
-			//compara los nombre y actualiza si es necesario
 			if (ft_strncmp(env_var_actual->name, env_var_sig->name, ft_strlen(env_var_actual->name)) > 0)
-			{
 				swap_nodes(actual, siguiente);
-			}
 			siguiente = siguiente->next;
 		}
 		actual = actual->next;
