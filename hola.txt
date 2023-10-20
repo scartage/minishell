@@ -13,7 +13,3 @@ a
 sd
 asd
 ../asdasd
-
-< hola.txt cat | bash
-
-Este comando nos rompe la minishell

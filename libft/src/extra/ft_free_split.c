@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 16:39:05 by fsoares-          #+#    #+#             */
-/*   Updated: 2022/03/19 02:37:21 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 22:07:46 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_free_split(char **split)
 	int	i;
 
 	i = 0;
-	while (split[i])
+	while (split && split[i])
 		free(split[i++]);
 	free(split);
 }

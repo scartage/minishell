@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:25:03 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/20 21:18:35 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 22:47:45 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include "path_handler.h"
 #include "../errors/errors.h"
 #include "../envs/env_parser.h"
-
-#define DEF "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
 static char	**split_path(char *path)
 {
@@ -43,7 +41,7 @@ char	**get_path_components(t_list *envs)
 		}
 		envs = envs->next;
 	}
-	return (split_path(DEF));
+	return (NULL);
 }
 
 static char	*build_path(char *command, char *path)
@@ -78,6 +76,21 @@ static bool	check_exec_permissions(char *command)
 	return (false);
 }
 
+static char	*try_local_file(char *command)
+{
+	char	buffer[1000];
+	char	*temp;
+
+	getcwd(buffer, 1000);
+	temp = build_path(command, buffer);
+	if (check_exec_permissions(temp))
+	{
+		return (temp);
+	}
+	free(temp);
+	return (NULL);
+}
+
 static char	*search_path(char *command, t_list *envs)
 {
 	char	*temp;
@@ -86,7 +99,7 @@ static char	*search_path(char *command, t_list *envs)
 
 	i = 0;
 	path = get_path_components(envs);
-	while (path[i])
+	while (path && path[i])
 	{
 		temp = build_path(command, path[i]);
 		if (check_exec_permissions(temp))
@@ -98,7 +111,7 @@ static char	*search_path(char *command, t_list *envs)
 		i++;
 	}
 	ft_free_split(path);
-	return (NULL);
+	return (try_local_file(command));
 }
 
 char	*get_full_path(t_command *cmd, t_list *envs)

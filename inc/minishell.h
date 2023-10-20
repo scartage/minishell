@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 21:27:19 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 22:22:48 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ typedef struct s_gShell {
 	int		current_child;
 }	t_gShell;
 
-char *get_input(void);
+char *get_input(int exit_status);
 bool check_pre_parse_input(const char *str);
-#define DEBUG(...) fprintf (stderr, __VA_ARGS__);
-//#define DEBUG(...) ;
+//#define DEBUG(...) fprintf (stderr, __VA_ARGS__);
+#define DEBUG(...) ;
 
 #endif

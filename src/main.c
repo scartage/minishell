@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 20:18:09 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 22:23:36 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	main(int ac, char **av, char **envp)
 	rl_initialize();
 	while (true)
 	{
-		input = get_input();
+		input = get_input(exit_status);
 		if (input == NULL)
 			continue ;
 		if (!check_pre_parse_input(input))

@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/20 19:20:51 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 21:40:28 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,16 @@ static char	*prepend_shell(char *message, char *command)
 	char	*temp;
 	int		size;
 	int		len;
+	char	*to_add = "minishell: ";
+	
+	//FIXME: remove later
+	to_add = "";
 
-	size = ft_strlen(message) + ft_strlen("minishell: ") + 1;
+	size = ft_strlen(message) + ft_strlen(to_add) + 1;
 	if (command)
 		size += ft_strlen(command) + 3;
 	temp = malloc(size);
-	len = ft_strlcpy(temp, "minishell: ", size);
+	len = ft_strlcpy(temp, to_add, size);
 	if (command)
 	{
 		len += ft_strlcpy(temp + len, command, size - len);

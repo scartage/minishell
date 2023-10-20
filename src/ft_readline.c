@@ -3,20 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:46:39 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/11 19:58:46 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/20 22:22:22 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include "parsing/token_parser.h"
 
-extern t_gShell g_shell;
 
-
-char *ft_readline(void)
+char *ft_readline(int exit_status)
 {
 	char *prompt;
 	char *line;
@@ -27,7 +25,7 @@ char *ft_readline(void)
 	{
 		write(STDOUT_FILENO, "exit\n", 5);
 		rl_clear_history();
-		exit(EXIT_SUCCESS);
+		exit(exit_status);
 	}
 	return (line);
 }
@@ -35,12 +33,12 @@ char *ft_readline(void)
 /* rl_catch_signals = 0; es una variable global de readline
  * la cual cuando esta en 0 es para que readline no use sus
  * propios manejadores de senales y podamos usar los nuestros*/
-char *get_input(void)
+char *get_input(int exit_status)
 {
 	char *line;
 
 	rl_catch_signals = 0;
-	line = ft_readline();
+	line = ft_readline(exit_status);
 	if (line[0] == '\0' || strcmp(line, "\n") == 0 || line[0] == 32)
 	{
 		free(line);

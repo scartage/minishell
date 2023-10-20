@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 21:24:05 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 22:17:45 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,24 @@
 #include "minishell.h"
 #include "../errors/errors.h"
 
+bool	echo_is_valid_option(char *argument)
+{
+	int	len;
+	int	i;
+
+	i = 1;
+	len = ft_strlen(argument);
+	if (argument[0] != '-')
+		return (false);
+	while (i < len)
+	{
+		if (argument[i] != 'n')
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 /*revisada, se comporta como bash*/
 int ft_echo(t_list *arguments, t_list *envs)
 {
@@ -25,13 +43,7 @@ int ft_echo(t_list *arguments, t_list *envs)
 	t_list *first_after_echo = arguments->next;
 	bool n_opt = false;
 
-	if (first_after_echo == NULL)
-	{
-		printf("\n");
-		return (0);
-	}
-	/*check this case -nn*/
-	while (ft_strncmp(first_after_echo->content, "-n", 3) == 0)
+	while (first_after_echo && echo_is_valid_option(first_after_echo->content))
 	{
 		if (!n_opt)
 			n_opt = true;
