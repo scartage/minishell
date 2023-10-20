@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 17:53:42 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:10:58 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	execute_input(char *input, t_shell *shell)
 	ft_lstclear(&tokens, free);
 	//ft_lstiter(commands, print_command);
 	execute(commands, shell->env_variables);
-	ft_lstclear((void *)&commands, (void (*)(void *))free_command);
+	ft_lstclear((void *)&commands, (t_del_fn)free_command);
 }
- 
+
 /*this fn returns t_list intead of void*/
 void	get_env(char **envp, t_shell *shell)
 {
@@ -52,7 +52,6 @@ int	main(int ac, char **av, char **envp)
 	int		int_mode;
 	char	*input;
 
-	(void)ac;
 	(void)av;
 	signals(1);
 	if (ac != 1)

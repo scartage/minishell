@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:25:03 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/13 16:05:13 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:31:10 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,6 @@ static char	*build_path(char *command, char *path)
 	return (temp);
 }
 
-void show_error(char *message) {
-	write(STDERR_FILENO, message, ft_strlen(message));
-}
-
 static bool	check_exec_permissions(char *command)
 {
 	if (access(command, F_OK) == 0)
@@ -75,7 +71,7 @@ static bool	check_exec_permissions(char *command)
 			return (true);
 		else
 		{
-			show_error("Permission denied");
+			show_error("Permission denied\n", NULL);
 			exit(126);
 		}
 	}
@@ -116,16 +112,13 @@ char	*get_full_path(t_command *cmd, t_list *envs)
 	{
 		if (check_exec_permissions(command))
 			return (command);
-		show_error("minishell: No such file or directory");
+		show_error("No such file or directory", NULL);
 		exit(127);
 	}
 	result = search_path(command, envs);
 	if (!result)
 	{
-		char *prefix = "minishell: ";
-		char *temp_join = ft_strjoin(prefix, command);
-		char *full_error_msm = ft_strjoin(temp_join, ": command not found\n");
-		show_error(full_error_msm);
+		show_error("command not found\n", command);
 		exit(127);
 	}
 	return (result);

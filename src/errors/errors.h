@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:29 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/11 16:32:06 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:26:18 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ void	abort_perror(char *reason);
  */
 void	ft_error(char *s);
 
-/*Show error in checkers for input*/
-void	show_errors_checker(char *msm);
+/**
+ * Show error in checkers for input
+ * if command is NULL then the command is ommited from the error
+ */
+void	show_error(char *msm, char *command);
 #endif

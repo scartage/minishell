@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/11 17:29:51 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:32:26 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,33 +27,40 @@ void	shell_error(char *reason)
 	terminate_with_error(reason);
 }
 
-static char	*prepend_shell(char *message)
+static char	*prepend_shell(char *message, char *command)
 {
 	char	*temp;
 	int		size;
-	//int		comm_len;
+	int		len;
 
-	//comm_len = 0;
 	size = ft_strlen(message) + ft_strlen("minishell: ") + 1;
+	if (command)
+		size += ft_strlen(command) + 3;
 	temp = malloc(size);
-	ft_strlcpy(temp, "minishell: ", size);
-	ft_strlcat(temp, message, size);
+	len = ft_strlcpy(temp, "minishell: ", size);
+	if (command)
+	{
+		len += ft_strlcpy(temp + len, command, size - len);
+		len += ft_strlcpy(temp + len, ": ", size - len);
+	}
+	ft_strlcpy(temp + len, message, size - len);
 	return (temp);
 }
 
-void	show_errors_checker(char *msm)
+void	show_error(char *msm, char *command)
 {
 	char	*temp;
 
-	temp = prepend_shell(msm);
+	temp = prepend_shell(msm, command);
 	write(STDERR_FILENO, temp, ft_strlen(temp));
+	free(temp);
 }
 
 void	abort_perror(char *message)
 {
 	char	*temp;
 
-	temp = prepend_shell(message);
+	temp = prepend_shell(message, NULL);
 	perror(temp);
 	free(temp);
 	//free_globals();

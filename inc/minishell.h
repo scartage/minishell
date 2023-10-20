@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 17:41:22 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 21:03:14 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <stdio.h>
 #include <unistd.h>				//para el write, isatty
 #include <stdlib.h>				//para el exit
-#include <string.h>				//para el strcmp (temporal)
 #include <stdbool.h>			//para bool
 #include <readline/readline.h>	//para obtener input
 #include <readline/history.h>	//historial del input

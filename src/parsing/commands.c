@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:20:13 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 18:20:27 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:10:24 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	free_out_files(t_out_file *out_file)
 void	free_command(t_command *command)
 {
 	ft_lstclear((void *)&command->arguments, free);
-	ft_lstclear((void *)&command->input_files, (void (*)(void *))free_in_files);
-	ft_lstclear((void *)&command->output_files, (void (*)(void *))free_out_files);
+	ft_lstclear((void *)&command->input_files, (t_del_fn)free_in_files);
+	ft_lstclear((void *)&command->output_files, (t_del_fn)free_out_files);
 	free(command);
 }

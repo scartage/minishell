@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 18:57:26 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:14:16 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 char	**comm_to_args(t_command *comm);
 char	**envs_to_array(t_list *envs);
 void	create_heredocs(t_list *commands);
-void	delete_heredocs();
+void	delete_heredocs(void);
 
 
 void print_child_pids() {

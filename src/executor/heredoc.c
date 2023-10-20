@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:23:16 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/13 19:09:58 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:07:19 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	create_heredocs(t_list *commands)
 	}
 }
 
-void delete_heredocs()
+void	delete_heredocs(void)
 {
 	int		i;
 	int		status;

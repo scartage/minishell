@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/12 18:42:46 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/13 21:06:04 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include <unistd.h>
 #include <limits.h>
 #include <stdio.h>
-#include <stdbool.h>
-#include "../inc/minishell.h"
+#include "minishell.h"
 #include "../errors/errors.h"
 
 int echo(t_list *arguments, t_list *envs)
@@ -25,7 +24,7 @@ int echo(t_list *arguments, t_list *envs)
 	t_list *first_after_echo = arguments->next;
 	bool n_opt = false;
 
-	if (strcmp(first_after_echo->content, "-n") == 0)
+	if (ft_strncmp(first_after_echo->content, "-n", 3) == 0)
 	{
 		n_opt = true;
 		first_after_echo = first_after_echo->next;

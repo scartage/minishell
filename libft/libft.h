@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 18:16:50 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/13 16:24:18 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:52:17 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # define BCYN  "\x1B[1;36m"
 # define BWHT  "\x1B[1;37m"
 # define NC    "\x1B[0m"
+
+typedef void			(*t_del_fn)(void *);
 
 typedef struct s_string {
 	char	*buffer;

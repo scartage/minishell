@@ -69,13 +69,14 @@ static void child_handler(int signal)
 		write(1, "Quit: 3\n", 8);
 		exit(EXIT_FAILURE);
 	}
-	return;
+	return ;
 }
 
-void signals(int i)
+void	signals(int i)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
+	ft_memset(&sa, 0, sizeof(sa));
 	if (i)
 		sa.sa_handler = &signal_handler;
 	else
