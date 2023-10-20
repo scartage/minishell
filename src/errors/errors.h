@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:29 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/13 20:26:18 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:05:22 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	ft_error(char *s);
 /**
  * Show error in checkers for input
  * if command is NULL then the command is ommited from the error
+ * it will output the error as "minishell: <command>: <msg>"
+ * if command is NULL, then it will output: "minishell: <msg>"
  */
-void	show_error(char *msm, char *command);
+void	show_error(char *command, char *msg);
 #endif

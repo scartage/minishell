@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/13 20:32:26 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:06:34 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@ static char	*prepend_shell(char *message, char *command)
 	return (temp);
 }
 
-void	show_error(char *msm, char *command)
+void	show_error(char *command, char *msm)
 {
 	char	*temp;
 
 	temp = prepend_shell(msm, command);
 	write(STDERR_FILENO, temp, ft_strlen(temp));
+	write(STDERR_FILENO, "\n", 1);
 	free(temp);
 }
 

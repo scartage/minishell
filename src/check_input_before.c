@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:20:49 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 20:26:34 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:07:20 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static bool check_closed_quotes(const char *str, int len)
 	}
 	if (single_quotes % 2 != 0 || double_quotes % 2 != 0)
 	{
-		show_error("Error: Quote(s) not closed.\n", NULL);
+		show_error(NULL, "Error: Quote(s) not closed.");
 		return (false);
 	}
 	return (true);
@@ -46,9 +46,9 @@ static bool	check_special_chars(const char *str, int len)
 	if (ft_strnstr(str, "||", len) || ft_strnstr(str, "><", len))
 	{
 		if (ft_strnstr(str, "><", len))
-			show_error("syntax error near unexpected token `<'\n", NULL);
+			show_error(NULL, "syntax error near unexpected token `<'\n");
 		else
-			show_error("syntax error near unexpected token `||'\n", NULL);
+			show_error(NULL, "syntax error near unexpected token `||'\n");
 		return (false);
 	}
 	return (true);
@@ -58,7 +58,7 @@ static bool	check_start_end_chars(const char *str, int len)
 {
 	if (ft_strrchr("|>", str[0]) || ft_strrchr("|><", str[len - 1]))
 	{
-		show_error("syntax error near unexpected token `newline'\n", NULL);
+		show_error(NULL, "syntax error near unexpected token `newline'\n");
 		return (false);
 	}
 	return (true);

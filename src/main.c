@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 20:10:58 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:57:15 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	execute_input(char *input, t_shell *shell)
 void	get_env(char **envp, t_shell *shell)
 {
 	g_shell.current_child = 0;
+	g_shell.last_execution = 42;
 	shell->env_variables = env_parser(envp);
 }
 

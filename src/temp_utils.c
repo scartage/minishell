@@ -50,6 +50,7 @@ void print_strings_echo(void * str) {
 	printf("%s ", (char *)str);
 }
 
+/*0 es que todos los caracteres son numeros*/
 int ft_isdigit_void(char *str)
 {
 	int i;
@@ -60,10 +61,10 @@ int ft_isdigit_void(char *str)
 	while (str[i] != '\0')
 	{
 		if (!ft_isdigit(str[i]))
-			return (0);
+			return (1);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 void print_command(void * command2) {

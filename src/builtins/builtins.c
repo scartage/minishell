@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 21:06:04 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:09:55 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,26 @@
 #include "minishell.h"
 #include "../errors/errors.h"
 
-int echo(t_list *arguments, t_list *envs)
+/*revisada, se comporta como bash*/
+int ft_echo(t_list *arguments, t_list *envs)
 {
 	(void)envs;
 	t_list *first_after_echo = arguments->next;
 	bool n_opt = false;
 
-	if (ft_strncmp(first_after_echo->content, "-n", 3) == 0)
+	if (first_after_echo == NULL)
 	{
-		n_opt = true;
+		printf("\n");
+		return (0);
+	}
+	/*check this case -nn*/
+	while (ft_strncmp(first_after_echo->content, "-n", 3) == 0)
+	{
+		if (!n_opt)
+			n_opt = true;
 		first_after_echo = first_after_echo->next;
 	}
-	while(first_after_echo)
+	while (first_after_echo)
 	{
 		printf("%s", (char *)first_after_echo->content);
 		first_after_echo = first_after_echo->next;
@@ -41,70 +49,92 @@ int echo(t_list *arguments, t_list *envs)
 	return (0);
 }
 
-int pwd(t_list *arguments, t_list *envs)
+/*revisada y testeada, se comporta como bash*/
+int ft_pwd(t_list *arguments, t_list *envs)
 {
-	(void)envs;
-	int len_args = ft_lstsize(arguments);
+	char	buffer[PATH_MAX];
+	int		len_args;
 
+	(void)envs;
+	len_args = ft_lstsize(arguments);
 	if (len_args > 1)
 	{
-		abort_perror("pwd: too many arguments");
-		return (1);
+		t_list *temp_args = arguments->next;
+		while (temp_args != NULL)
+		{
+			if (check_env_name((char *)temp_args->content) != 0)
+			{
+				show_error("pwd", "not a valid identifier\n");
+				return (1);
+			}
+			if (temp_args->next == NULL)
+				break ;
+			temp_args = temp_args->next;
+		}
 	}
-	char buffer[PATH_MAX];
 	getcwd(buffer, PATH_MAX);
 	ft_printf("%s\n", buffer);
 	return (0);
 }
 
-/*Falta revisar casos de exit y que funcione con sus parametros*/
+/*revisada y funciona como bash*/
 int ft_exit(t_list *arguments, t_list *envs)
 {
 	(void)envs;
 	int arg_count = ft_lstsize(arguments);
 	int ex_number = 0;
 
+	if (arg_count == 1)
+		exit(EXIT_SUCCESS);
+	if (ft_isdigit_void((char *)arguments->next->content) != 0)
+	{
+		printf("exit\n");
+		show_error("exit", "numeric argument required\n");
+		exit(255);
+	}
 	if (arg_count > 2)
 	{
-		abort_perror("exit: too many arguments");
+		printf("exit\n");
+		show_error("exit", "too many arguments\n");
 		return (1);
 	}
-	if (arg_count == 2)
-	{
-		if (ft_isdigit_void(arguments->next->content) == 0)
-		{
-			char *full_error_msm = ft_strjoin(arguments->next->content, ": numeric argument required");
-			printf("exit\n");
-			abort_perror(full_error_msm);
-			exit(255);
-		}
-		ex_number = ft_atoi(arguments->next->content);
-	}
+	ex_number = ft_atoi(arguments->next->content);
 	printf("exit\n");
 	rl_clear_history();
-	g_shell.last_execution = 0;
+	//g_shell.last_execution = 0;
 	exit(ex_number);
 	return (0);
 }
 
-/*to check and test*/
+/*revisado y corregido, se comporta como bash*/
 int ft_cd(t_list *arguments, t_list *envs)
 {
 	(void)envs;
 	int len_args = ft_lstsize(arguments);
-	char *first_arg = (char *)arguments->next->content;
+	char *first_arg;
+
+	if (len_args == 1)
+	{
+		if (chdir(getenv("HOME")) != 0)
+		{
+			show_error("cd", "something went wrong");
+			return (1);
+		}
+		return (0);
+	}
+	first_arg = (char *)arguments->next->content;
 	if (len_args > 2)
 	{
-		abort_perror("cd: too many arguments");
+		show_error("cd", "too many arguments");
 		return (1);
 	}
 	if (first_arg[0] == '-')
 	{
-		abort_perror("cd: invalid option");
+		show_error("cd", "invalid options");
 		return (1);
 	}
 	printf("%s\n", first_arg);
 	if (chdir(first_arg) != 0)
-		abort_perror("cd: something went wrong");
+		show_error("cd", "something went wrong");
 	return (0);
 }

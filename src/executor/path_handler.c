@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:25:03 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/13 20:31:10 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:06:43 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static bool	check_exec_permissions(char *command)
 			return (true);
 		else
 		{
-			show_error("Permission denied\n", NULL);
+			show_error(NULL, "Permission denied");
 			exit(126);
 		}
 	}
@@ -112,13 +112,13 @@ char	*get_full_path(t_command *cmd, t_list *envs)
 	{
 		if (check_exec_permissions(command))
 			return (command);
-		show_error("No such file or directory", NULL);
+		show_error(NULL, "No such file or directory");
 		exit(127);
 	}
 	result = search_path(command, envs);
 	if (!result)
 	{
-		show_error("command not found\n", command);
+		show_error(command, "command not found");
 		exit(127);
 	}
 	return (result);

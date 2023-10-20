@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 17:59:11 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:58:55 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,11 @@ char *env_replacer(char *str, t_list *env_variables) {
 			current = in_env_var_name;
 		} else if (current == in_word && str[i] == '$') {
 			current = in_env_var_name;
-		} else if (current == in_env_var_name && !(ft_isalnum(str[i])))
+		} /*if (current == in_env_var_name && ft_strncmp(env_name->buffer, "?", ft_strlen(env_name->buffer)) == 0){
+			str_append(res, ft_itoa(g_shell.last_execution));
+			current = in_word; //i have added this for $?
+	}*/ 
+		else if (current == in_env_var_name && !(ft_isalnum(str[i])))
 		{
 			if (str[i] == '$')
  			{
