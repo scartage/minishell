@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/19 19:26:05 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:16:57 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	ft_export(t_list *arguments, t_list *envs)
 			char *prev = ft_strjoin("export: ", temp_args->content);
 			char *full_error_msm = ft_strjoin(prev, ": not a valid identifier\n");
 			show_errors_checker(full_error_msm);
+			return (1);
 		}
 		if (temp_args->next == NULL)
 			break ;

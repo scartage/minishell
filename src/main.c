@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 18:11:52 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/20 14:19:13 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	execute_input(char *input, t_shell *shell)
 	//printAfter(temp_tokens);
 
 	t_list *commands = token_to_command(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
-	ft_lstiter(commands, print_command);
+	//ft_lstiter(commands, print_command);
 	execute(commands, shell->env_variables);
 }
  
@@ -41,6 +41,7 @@ void	execute_input(char *input, t_shell *shell)
 void	get_env(char **envp, t_shell *shell)
 {
 	g_shell.current_child = 0;
+	g_shell.last_execution = 42;
 	shell->env_variables = env_parser(envp);
 }
 

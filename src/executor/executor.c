@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 15:51:02 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 14:19:28 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,4 +203,5 @@ void	execute(t_list *commands, t_list *envs)
 	print_child_pids();
 	clean_array_pid();
 	g_shell.last_execution = result;
+	//printf("%d\n", g_shell.last_execution);
 }

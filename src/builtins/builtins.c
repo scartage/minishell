@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/19 20:29:07 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/20 14:40:37 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int ft_echo(t_list *arguments, t_list *envs)
 		printf("\n");
 		return (0);
 	}
+	/*check this case -nn*/
 	while (strcmp(first_after_echo->content, "-n") == 0)
 	{
 		if (!n_opt)
@@ -105,7 +106,7 @@ int ft_exit(t_list *arguments, t_list *envs)
 	ex_number = ft_atoi(arguments->next->content);
 	printf("exit\n");
 	rl_clear_history();
-	g_shell.last_execution = 0;
+	//g_shell.last_execution = 0;
 	exit(ex_number);
 	return (0);
 }
