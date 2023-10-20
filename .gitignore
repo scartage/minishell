@@ -11,3 +11,4 @@ output
 libs/
 *.swp
 out
+mpanic/
