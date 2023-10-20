@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 19:09:55 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 21:24:05 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int ft_exit(t_list *arguments, t_list *envs)
 	ex_number = ft_atoi(arguments->next->content);
 	printf("exit\n");
 	rl_clear_history();
-	//g_shell.last_execution = 0;
 	exit(ex_number);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/13 21:03:14 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 21:27:19 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,12 @@ typedef struct s_shell {
 t_shell	shell;
 
 typedef struct s_gShell {
-	int		last_execution;
+	int		exit_status;
 	int		level;
 	bool	is_executing;
 	pid_t	children_pid[MAX_CHILDREN];
 	int		current_child;
 }	t_gShell;
-
-t_gShell	g_shell;
 
 char *get_input(void);
 bool check_pre_parse_input(const char *str);

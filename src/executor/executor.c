@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 18:59:31 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 21:20:07 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,35 +27,6 @@ char	**comm_to_args(t_command *comm);
 char	**envs_to_array(t_list *envs);
 void	create_heredocs(t_list *commands);
 void	delete_heredocs(void);
-
-
-void print_child_pids() {
-    for (int i = 0; i < g_shell.current_child; i++) {
-        DEBUG("Child PID %d: %d\n", i, g_shell.children_pid[i]);
-    }
-}
-
-void add_child_pid(int pid)
-{
-	g_shell.is_executing = true;
-	if (g_shell.current_child < MAX_CHILDREN)
-		g_shell.children_pid[g_shell.current_child++] = pid;
-}
-
-void clean_array_pid(void)
-{
-	int i;
-
-	i = 0;
-	while (i < g_shell.current_child)
-	{
-		g_shell.children_pid[i] = 0;
-		i++;
-	}
-	g_shell.children_pid[i] = 0;
-	g_shell.current_child = 0;
-	g_shell.is_executing = false;
-}
 
 void	do_exec_call(t_command *comm, t_list *envs)
 {
@@ -81,13 +52,28 @@ void	do_exec_call(t_command *comm, t_list *envs)
 	}
 }
 
+int	handle_wait_pid(int child_pid)
+{
+	int	status;
+
+	waitpid(child_pid, &status, 0);
+	if (WTERMSIG(status) == SIGQUIT)
+		printf("Quit: 3\n");
+	if (WTERMSIG(status) == SIGINT)
+		printf("\n");
+	if (WTERMSIG(status) == SIGKILL)
+		printf("Killed: 9\n");
+	while (wait(NULL) != -1)
+		;
+	return (WEXITSTATUS(status));
+}
+
 int	execute_single_command(t_command *command, t_list *envs)
 {
 	t_builtin	builtin;
 	int			child_pid;
-	int			result;
+	int			status;
 
-	result = 0;
 	builtin = get_builtin(command);
 	if (builtin.name != NULL)
 	{
@@ -95,7 +81,7 @@ int	execute_single_command(t_command *command, t_list *envs)
 		int saved_stdout = dup(1);
 		setup_first_read_fd(command);
 		setup_last_write_fd(command);
-		result = builtin.fn(command->arguments, envs);
+		status = builtin.fn(command->arguments, envs);
 		dup2(saved_stdout, 1);
 		dup2(saved_stdin, 0);
 		close(saved_stdout);
@@ -110,11 +96,9 @@ int	execute_single_command(t_command *command, t_list *envs)
 			setup_last_write_fd(command);
 			do_exec_call(command, envs);
 		}
-		waitpid(child_pid, &result, 0);
-		result = WEXITSTATUS(result);
-		add_child_pid(child_pid);
+		status = handle_wait_pid(child_pid);
 	}
-	return (result);
+	return (status);
 }
 
 int	execute_first_command(t_command *comm, t_list *envs, int out_pipe[2])
@@ -128,7 +112,6 @@ int	execute_first_command(t_command *comm, t_list *envs, int out_pipe[2])
 		setup_pipe_write(comm, out_pipe);
 		do_exec_call(comm, envs);
 	}
-	add_child_pid(child_pid);
 	return (child_pid);
 }
 
@@ -143,7 +126,6 @@ int	execute_last_command(t_command *comm, t_list *envs, int in_pipe[2])
 		setup_last_write_fd(comm);
 		do_exec_call(comm, envs);
 	}
-	add_child_pid(child_pid);
 	return (child_pid);
 }
 
@@ -160,7 +142,6 @@ int	exec_command(t_command *comm, t_list *envs, int in_pipe[2], int out_pipe[2])
 		setup_pipe_write(comm, out_pipe);
 		do_exec_call(comm, envs);
 	}
-	add_child_pid(child_pid);
 	return (child_pid);
 }
 
@@ -168,7 +149,7 @@ int	execute_all_commands(t_list *commands, t_list *envs)
 {
 	int	out_pipe[2];
 	int	in_pipe[2];
-	int	child;
+	int	child_pid;
 	int	status;
 
 	pipe(in_pipe);
@@ -183,16 +164,13 @@ int	execute_all_commands(t_list *commands, t_list *envs)
 		in_pipe[1] = out_pipe[1];
 		commands = commands->next;
 	}
-	child = execute_last_command(commands->content, envs, in_pipe);
+	child_pid = execute_last_command(commands->content, envs, in_pipe);
 	close_pipe(in_pipe);
-	waitpid(child, &status, 0);
-	status = WEXITSTATUS(status);
-	while (wait(NULL) != -1)
-		;
+	status = handle_wait_pid(child_pid);
 	return (status);
 }
 
-void	execute(t_list *commands, t_list *envs)
+int	execute(t_list *commands, t_list *envs)
 {
 	int	result;
 
@@ -201,10 +179,8 @@ void	execute(t_list *commands, t_list *envs)
 		result = execute_single_command(commands->content, envs);
 	else
 		result = execute_all_commands(commands, envs);
-	DEBUG("after all wait\n");
-	DEBUG("\nhay %i hijos\n", g_shell.current_child);
-	print_child_pids();
-	clean_array_pid();
-	g_shell.last_execution = result;
+	//DEBUG("after all wait\n");
+	//DEBUG("\nhay %i hijos\n", ft_lstsize(commands));
 	delete_heredocs();
+	return (result);
 }

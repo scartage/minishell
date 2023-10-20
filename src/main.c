@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 19:46:56 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:18:09 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,60 +21,55 @@
 #include "executor/executor.h"
 #include "temp_utils.h"
 
-extern t_gShell g_shell;
-
-void	execute_input(char *input, t_shell *shell)
+static int	execute_input(char *input, t_shell *shell, int exit_status)
 {
 	t_list *tokens = parse_line(input);
 	if (tokens == NULL)
-		// FIXME: set last_execution to 258 (from bash)
-		return ;
+		return (258);
 	//t_list *temp_tokens = tokens;
 
 	//printingBefore(temp_tokens);
-	tokens = replacing_envars(tokens, shell->env_variables);
+	tokens = replacing_envars(tokens, shell->env_variables, exit_status);
 	//printAfter(temp_tokens);
 
 	t_list *commands = token_to_command(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
 	ft_lstclear(&tokens, free);
 	//ft_lstiter(commands, print_command);
-	execute(commands, shell->env_variables);
+	
+	set_signal_handler(signal_handler_executing);
+	exit_status = execute(commands, shell->env_variables);
+	set_signal_handler(signal_handler_input);
 	ft_lstclear((void *)&commands, (t_del_fn)free_command);
+	return (exit_status);
 }
 
 /*this fn returns t_list intead of void*/
 void	get_env(char **envp, t_shell *shell)
 {
-	g_shell.current_child = 0;
-	g_shell.last_execution = 42;
 	shell->env_variables = env_parser(envp);
 }
 
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	shell;
-	int		int_mode;
+	int		exit_status;
 	char	*input;
 
 	(void)av;
-	signals(1);
+	set_signal_handler(signal_handler_input);
 	if (ac != 1)
 		ft_error("Cantidad de argumentos incorrecta\n");
-	int_mode = 1;
+	exit_status = 42;
 	get_env(envp, &shell);
 	rl_initialize();
-	int_mode = isatty(STDIN_FILENO);
-	if (!int_mode)
-		ft_error("No corresponde a la terminal\n");
-	while (int_mode)
+	while (true)
 	{
-		g_shell.is_executing = false;
 		input = get_input();
 		if (input == NULL)
 			continue ;
 		if (!check_pre_parse_input(input))
 			continue ;
-		execute_input(input, &shell);
+		exit_status = execute_input(input, &shell, exit_status);
 	}
 	return (0);
 }

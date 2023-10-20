@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 18:58:55 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:15:27 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-extern t_gShell g_shell;
 
 char *get_content(char *env_name, t_list *env_variables)
 {
@@ -53,7 +51,7 @@ char *get_env_value(char *str, t_list *env_variables) {
 	return res;
 }
 
-char *env_replacer(char *str, t_list *env_variables) {
+char *env_replacer(char *str, t_list *env_variables, int exit_status) {
 	int i = 0;
 
 	t_state current = in_word;
@@ -75,7 +73,7 @@ char *env_replacer(char *str, t_list *env_variables) {
 		} else if (current == in_word && str[i] == '$') {
 			current = in_env_var_name;
 		} /*if (current == in_env_var_name && ft_strncmp(env_name->buffer, "?", ft_strlen(env_name->buffer)) == 0){
-			str_append(res, ft_itoa(g_shell.last_execution));
+			str_append(res, ft_itoa(g_shell.exit_status));
 			current = in_word; //i have added this for $?
 	}*/ 
 		else if (current == in_env_var_name && !(ft_isalnum(str[i])))
@@ -87,7 +85,7 @@ char *env_replacer(char *str, t_list *env_variables) {
 			}
 			else if (str[i] == '?' && str[i-1] == '$')
 			{
-				str_add_int(res, g_shell.last_execution);
+				str_add_int(res, exit_status);
 				current = in_word;
 			}
 			else
@@ -119,14 +117,14 @@ char *env_replacer(char *str, t_list *env_variables) {
 	return result;
 }
 
-t_list *replacing_envars(t_list *input, t_list *env_variables)
+t_list *replacing_envars(t_list *input, t_list *env_variables, int exit_status)
 {
 	t_list *new_tokens = input;
 	t_list *current_tokens = new_tokens;
 
 	while (current_tokens != NULL)
 	{
-		current_tokens->content = env_replacer(current_tokens->content, env_variables);
+		current_tokens->content = env_replacer(current_tokens->content, env_variables, exit_status);
 		if (current_tokens->next == NULL)
 			break ;
 		current_tokens = current_tokens->next;
