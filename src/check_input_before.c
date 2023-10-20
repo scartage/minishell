@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:20:49 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 19:07:20 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:23:02 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "errors/errors.h"
 
 /*Here we are going to check the input before we parsed it*/
-static bool check_closed_quotes(const char *str, int len)
+bool check_closed_quotes(const char *str, int len)
 {
 	int single_quotes = 0;
 	int double_quotes = 0;
@@ -68,8 +68,6 @@ bool	check_pre_parse_input(const char *str)
 {
 	int len = ft_strlen(str);
 
-	if (!check_closed_quotes(str, len))
-		return (false);
 	if (!check_special_chars(str, len))
 		return (false);
 	if (!check_start_end_chars(str, len))
