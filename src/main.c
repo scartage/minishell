@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 18:57:15 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:46:56 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ extern t_gShell g_shell;
 void	execute_input(char *input, t_shell *shell)
 {
 	t_list *tokens = parse_line(input);
+	if (tokens == NULL)
+		// FIXME: set last_execution to 258 (from bash)
+		return ;
 	//t_list *temp_tokens = tokens;
 
 	//printingBefore(temp_tokens);

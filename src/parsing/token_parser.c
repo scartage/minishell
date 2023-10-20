@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:46:11 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/20 19:23:29 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:52:12 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,15 @@ t_parse_info	new_info(char *line)
 	return (info);
 }
 
+static t_list	*handle_error(t_parse_info info, char *line)
+{
+	ft_lstclear(&info.tokens, free);
+	str_free(info.token);
+	free(line);
+	show_error("syntax error", "there sould not be any open quotes");
+	return (NULL);
+}
+
 t_list	*parse_line(char *line)
 {
 	t_state			current_state;
@@ -102,7 +111,7 @@ t_list	*parse_line(char *line)
 		info.current_char = line[info.pos++];
 	}
 	if (current_state == in_quote)
-		show_error("syntax error", "there sould not be any open quotes");
+		return (handle_error(info, line));
 	if (current_state == in_token)
 		add_token(&info, info.token->buffer);
 	str_free(info.token);
