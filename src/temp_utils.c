@@ -1,62 +1,88 @@
 #include "../inc/minishell.h"
+#include "errors/errors.h"
 
-void printingBefore(t_list *temp_tokens)
+// void printingBefore(t_list *temp_tokens)
+// {
+// 	/*while para verificar tokens de la lista*/
+// 	printf("---before env_parsing---\n");
+// 	if (temp_tokens->content == NULL)
+// 	{
+// 		printf("No correct input\n");
+// 		return ;
+// 	}
+// 	while (temp_tokens->content != NULL)
+// 	{
+// 		printf("token: [%s]\n", (char *)temp_tokens->content);
+// 		if (temp_tokens->next == NULL)
+// 			break;
+// 		temp_tokens = temp_tokens->next;
+// 	}
+// 	printf("---Go to replace the env_vars---");
+// 	printf("\n");
+// }
+
+// void printAfter(t_list *temp_tokens)
+// {
+// 	printf("---after env_replacing---\n");
+// 	while (temp_tokens->content != NULL)
+// 	{
+// 		printf("new token content: [%s]\n", (char *)temp_tokens->content);
+// 		if (temp_tokens->next == NULL)
+// 			break;
+// 		temp_tokens = temp_tokens->next;
+// 	}
+// 	printf("fins ara\n");
+// }
+
+void print_infile(void *content2)
 {
-	/*while para verificar tokens de la lista*/
-	printf("---before env_parsing---\n");
-	if (temp_tokens->content == NULL)
-	{
-		printf("No correct input\n");
-		return ;
-	}
-	while (temp_tokens->content != NULL)
-	{
-		printf("token: [%s]\n", (char *)temp_tokens->content);
-		if (temp_tokens->next == NULL)
-			break;
-		temp_tokens = temp_tokens->next;
-	}
-	printf("---Go to replace the env_vars---");
-	printf("\n");
-}
-
-void printAfter(t_list *temp_tokens)
-{
-	printf("---after env_replacing---\n");
-	while (temp_tokens->content != NULL)
-	{
-		printf("new token content: [%s]\n", (char *)temp_tokens->content);
-		if (temp_tokens->next == NULL)
-			break;
-		temp_tokens = temp_tokens->next;
-	}
-	printf("fins ara\n");	
-}
-
-void print_infile(void * content2) {
-	t_in_file * content = (t_in_file *)content2;
+	t_in_file *content = (t_in_file *)content2;
 	printf("{%s: \"%s\"}, ", content->type == HEREDOC ? "<<" : "<", content->name);
 }
 
-void print_outfile(void * content2) {
-	t_out_file * content = (t_out_file *)content2;
+void print_outfile(void *content2)
+{
+	t_out_file *content = (t_out_file *)content2;
 	printf("{%s: \"%s\"}, ", content->type == WRITE ? ">" : ">>", content->name);
 }
 
-void print_strings(void * str) {
+void print_strings(void *str)
+{
 	printf("\"%s\", ", (char *)str);
 }
-void print_strings_echo(void * str) {
+void print_strings_echo(void *str)
+{
 	printf("%s ", (char *)str);
 }
 
-/*0 es que todos los caracteres son numeros*/
-int ft_isdigit_void(char *str)
+/*for quoting args in error msm*/
+char	*fn_quote_arg(const char *arg)
 {
-	int i;
+	int		len;
+	char	*quoted_arg;
 
-	i  = 0;
-	if (str[0] == '-')
+	quoted_arg = malloc(ft_strlen(arg) + 3);
+	if (!quoted_arg)
+	{
+		abort_perror("Failed to allocate memory");
+		exit(EXIT_FAILURE);
+	}
+	quoted_arg[0] = '\'';
+	ft_strlcpy(quoted_arg + 1, arg, ft_strlen(arg) + 1);
+	len = ft_strlen(quoted_arg);
+	quoted_arg[len] = '\'';
+	quoted_arg[len + 1] = '\0';
+	return (quoted_arg);
+}
+
+/*0 es que todos los caracteres son numeros*/
+int	ft_isdigit_void(char *str)
+{
+	int	i;
+
+
+	i = 0;
+	if (str[0] == '-' || str[0] == '+')
 		i++;
 	while (str[i] != '\0')
 	{
@@ -67,8 +93,9 @@ int ft_isdigit_void(char *str)
 	return (0);
 }
 
-void print_command(void * command2) {
-	t_command * command = (t_command *)command2;
+void print_command(void *command2)
+{
+	t_command *command = (t_command *)command2;
 	printf("command: {\n");
 	printf("  in_files: [");
 	ft_lstiter(command->input_files, print_infile);

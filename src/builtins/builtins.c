@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 22:17:45 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:12:29 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ bool	echo_is_valid_option(char *argument)
 }
 
 /*revisada, se comporta como bash*/
+/*pasa mpanic*/
 int ft_echo(t_list *arguments, t_list *envs)
 {
 	(void)envs;
@@ -62,21 +63,23 @@ int ft_echo(t_list *arguments, t_list *envs)
 }
 
 /*revisada y testeada, se comporta como bash*/
-int ft_pwd(t_list *arguments, t_list *envs)
+int	ft_pwd(t_list *arguments, t_list *envs)
 {
 	char	buffer[PATH_MAX];
 	int		len_args;
+	t_list	*temp_args;
 
 	(void)envs;
 	len_args = ft_lstsize(arguments);
 	if (len_args > 1)
 	{
-		t_list *temp_args = arguments->next;
+		temp_args = arguments->next;
 		while (temp_args != NULL)
 		{
 			if (check_env_name((char *)temp_args->content) != 0)
 			{
-				show_error("pwd", "not a valid identifier\n");
+				show_error_arg("pwd ", temp_args->content,
+					"not a valid identifier\n");
 				return (1);
 			}
 			if (temp_args->next == NULL)
@@ -90,34 +93,41 @@ int ft_pwd(t_list *arguments, t_list *envs)
 }
 
 /*revisada y funciona como bash*/
-int ft_exit(t_list *arguments, t_list *envs)
+/*falta que salga con el exit status de otro programa*/
+/*falta manejar casos como '  3' '3  '
+o numeros extremos grandes -18446744073709551617*/
+int	ft_exit(t_list *arguments, t_list *envs)
 {
-	(void)envs;
-	int arg_count = ft_lstsize(arguments);
-	int ex_number = 0;
+	int	arg_count;
+	int	ex_number;
 
+	(void)envs;
+	arg_count = ft_lstsize(arguments);
+	ex_number = 0;
 	if (arg_count == 1)
 		exit(EXIT_SUCCESS);
+	printf("exit\n");
 	if (ft_isdigit_void((char *)arguments->next->content) != 0)
 	{
-		printf("exit\n");
-		show_error("exit", "numeric argument required\n");
+		show_error_arg("exit ", arguments->next->content,
+			"numeric argument required");
 		exit(255);
 	}
 	if (arg_count > 2)
 	{
-		printf("exit\n");
-		show_error("exit", "too many arguments\n");
+		show_error("exit ", "too many arguments");
 		return (1);
 	}
 	ex_number = ft_atoi(arguments->next->content);
-	printf("exit\n");
 	rl_clear_history();
 	exit(ex_number);
 	return (0);
 }
 
 /*revisado y corregido, se comporta como bash*/
+
+/*TODO: - Revisar el output que da cuando cambia de dir
+		- Cambiar el valor de PWD*/
 int ft_cd(t_list *arguments, t_list *envs)
 {
 	(void)envs;
@@ -134,18 +144,18 @@ int ft_cd(t_list *arguments, t_list *envs)
 		return (0);
 	}
 	first_arg = (char *)arguments->next->content;
+	if (first_arg[0] == '-')
+	{
+		show_error_arg("cd: ", first_arg, "invalid options");
+		return (1);
+	}
 	if (len_args > 2)
 	{
 		show_error("cd", "too many arguments");
 		return (1);
 	}
-	if (first_arg[0] == '-')
-	{
-		show_error("cd", "invalid options");
-		return (1);
-	}
-	printf("%s\n", first_arg);
+	//printf("%s\n", first_arg);
 	if (chdir(first_arg) != 0)
-		show_error("cd", "something went wrong");
+		show_error_arg("cd: ", first_arg, "No such file or directory");
 	return (0);
 }

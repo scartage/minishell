@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:29 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/20 19:05:22 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:48:27 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,7 @@ void	ft_error(char *s);
  * if command is NULL, then it will output: "minishell: <msg>"
  */
 void	show_error(char *command, char *msg);
+
+/*Show smsm error with the incorrect argument*/
+void	show_error_arg(char *command, char *arg, char *msg);
 #endif

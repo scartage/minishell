@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/20 21:40:28 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:07:19 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include "errors.h"
 #include "libft.h"
+#include "../temp_utils.h"
 
 void	free_globals(void)
 {
@@ -27,15 +28,15 @@ void	shell_error(char *reason)
 	terminate_with_error(reason);
 }
 
-static char	*prepend_shell(char *message, char *command)
+static char	*prepend_shell(char *command, char *message)
 {
 	char	*temp;
 	int		size;
 	int		len;
 	char	*to_add = "minishell: ";
 	
-	//FIXME: remove later
-	to_add = "";
+	// //FIXME: remove later
+	// to_add = "";
 
 	size = ft_strlen(message) + ft_strlen(to_add) + 1;
 	if (command)
@@ -51,11 +52,28 @@ static char	*prepend_shell(char *message, char *command)
 	return (temp);
 }
 
+
+
+void	show_error_arg(char *command, char *arg, char *msm)
+{
+	char	*temp;
+	char	*prev;
+	char	*quoted_arg;
+
+	quoted_arg = fn_quote_arg(arg);
+	prev = ft_strjoin(command, quoted_arg);
+	free(quoted_arg);
+	temp = prepend_shell(prev, msm);
+	write(STDERR_FILENO, temp, ft_strlen(temp));
+	write(STDERR_FILENO, "\n", 1);
+	free(temp);
+}
+
 void	show_error(char *command, char *msm)
 {
 	char	*temp;
 
-	temp = prepend_shell(msm, command);
+	temp = prepend_shell(command, msm);
 	write(STDERR_FILENO, temp, ft_strlen(temp));
 	write(STDERR_FILENO, "\n", 1);
 	free(temp);
