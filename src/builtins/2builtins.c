@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/25 19:03:11 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/25 20:42:05 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,12 @@ void	show_env_vars_export(t_list *envs)
 }
 
 /*revisada funciona como bash*/
-
-/*TODO: */
+/*pasa todos los casos de mpanic*/
 int	ft_export(t_list *arguments, t_list *envs)
 {
 	int		count_arg;
 	t_list	*temp_args;
-	int flag;
+	int		exit_status;
 
 	count_arg = ft_lstsize(arguments);
 	temp_args = arguments->next;
@@ -84,14 +83,14 @@ int	ft_export(t_list *arguments, t_list *envs)
 		{
 			show_error_arg("export: ", temp_args->content,
 				"not a valid identifier");
-			flag = 1;
+			exit_status = 1;
 			//return (1);
 		}
 		if (temp_args->next == NULL)
 			break ;
 		temp_args = temp_args->next;
 	}
-	if (flag == 1)
+	if (exit_status == 1)
 		return (1);
 	return (0);
 }
@@ -101,7 +100,7 @@ int	ft_unset(t_list *arguments, t_list *envs)
 {
 	int		count_arg;
 	t_list	*temp_args;
-
+	int exit_status;
 	count_arg = ft_lstsize(arguments);
 	temp_args = arguments->next;
 	if (count_arg == 1)
@@ -112,11 +111,14 @@ int	ft_unset(t_list *arguments, t_list *envs)
 		{
 			show_error_arg("unset: ", temp_args->content,
 				"not a valid identifier");
+			exit_status = 1;
 		}
 		if (temp_args->next == NULL)
 			break ;
 		temp_args = temp_args->next;
 	}
+	if (exit_status == 1)
+		return (1);
 	return (0);
 }
 

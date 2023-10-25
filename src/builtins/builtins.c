@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/24 18:01:50 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/25 20:51:14 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,27 +66,9 @@ int ft_echo(t_list *arguments, t_list *envs)
 int	ft_pwd(t_list *arguments, t_list *envs)
 {
 	char	buffer[PATH_MAX];
-	int		len_args;
-	t_list	*temp_args;
 
+	(void)arguments;
 	(void)envs;
-	len_args = ft_lstsize(arguments);
-	if (len_args > 1)
-	{
-		temp_args = arguments->next;
-		while (temp_args != NULL)
-		{
-			if (check_env_name((char *)temp_args->content) != 0)
-			{
-				show_error_arg("pwd ", temp_args->content,
-					"not a valid identifier\n");
-				return (1);
-			}
-			if (temp_args->next == NULL)
-				break ;
-			temp_args = temp_args->next;
-		}
-	}
 	getcwd(buffer, PATH_MAX);
 	ft_printf("%s\n", buffer);
 	return (0);
@@ -111,10 +93,11 @@ int	ft_exit(t_list *arguments, t_list *envs)
 	printf("exit\n");
 	if (ft_isdigit_void((char *)arguments->next->content) != 0)
 	{
-		/*this does not work*/
-		char *arg = arguments->next->content;
-		if ((arg[0] == '\0') || (arg[0] == ' ' && arg[1] == '\0'))
-			show_error_arg("exit ", NULL ,"numeric argument required");
+		if (ft_strlen((char *)arguments->next->content) == 0)
+		{
+			show_error_arg("exit ", "", "numeric argument required");
+			exit(255);
+		}
 		else
 		{
 			show_error_arg("exit ", (char *)arguments->next->content,
