@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/24 14:07:19 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/25 19:01:12 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,21 @@ static char	*prepend_shell(char *command, char *message)
 	return (temp);
 }
 
-
-
 void	show_error_arg(char *command, char *arg, char *msm)
 {
 	char	*temp;
 	char	*prev;
 	char	*quoted_arg;
 
-	quoted_arg = fn_quote_arg(arg);
-	prev = ft_strjoin(command, quoted_arg);
-	free(quoted_arg);
-	temp = prepend_shell(prev, msm);
+	if (arg == NULL)
+		temp = prepend_shell(command, msm);
+	else
+	{
+		quoted_arg = fn_quote_arg(arg);
+		prev = ft_strjoin(command, quoted_arg);
+		free(quoted_arg);
+		temp = prepend_shell(prev, msm);
+	}
 	write(STDERR_FILENO, temp, ft_strlen(temp));
 	write(STDERR_FILENO, "\n", 1);
 	free(temp);

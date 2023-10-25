@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/24 14:12:29 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/24 18:01:50 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ int	ft_pwd(t_list *arguments, t_list *envs)
 /*falta que salga con el exit status de otro programa*/
 /*falta manejar casos como '  3' '3  '
 o numeros extremos grandes -18446744073709551617*/
+
+/*que pasamos como argumento a show_error_arg cuando el arg es ("") o (" ")*/
 int	ft_exit(t_list *arguments, t_list *envs)
 {
 	int	arg_count;
@@ -109,9 +111,16 @@ int	ft_exit(t_list *arguments, t_list *envs)
 	printf("exit\n");
 	if (ft_isdigit_void((char *)arguments->next->content) != 0)
 	{
-		show_error_arg("exit ", arguments->next->content,
-			"numeric argument required");
-		exit(255);
+		/*this does not work*/
+		char *arg = arguments->next->content;
+		if ((arg[0] == '\0') || (arg[0] == ' ' && arg[1] == '\0'))
+			show_error_arg("exit ", NULL ,"numeric argument required");
+		else
+		{
+			show_error_arg("exit ", (char *)arguments->next->content,
+				"numeric argument required");
+			exit(255);
+		}
 	}
 	if (arg_count > 2)
 	{

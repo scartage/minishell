@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:41:31 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/19 19:30:26 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/25 18:51:29 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ static void	env_var_with_value(char *arg, t_list *envs)
 		}
 	}
 }
-
 
 int	check_env_arg(char *arg, t_list *envs)
 {

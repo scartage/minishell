@@ -80,7 +80,6 @@ int	ft_isdigit_void(char *str)
 {
 	int	i;
 
-
 	i = 0;
 	if (str[0] == '-' || str[0] == '+')
 		i++;

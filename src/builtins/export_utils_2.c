@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:46:08 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/19 19:28:59 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/25 18:55:57 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,38 +50,26 @@ int	var_exists_in_envs(char *env_name, t_list *envs)
 	return (0);
 }
 
+static int	is_valid_char_name(char c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+		|| (c >= '0' && c <= '9') || (c == '_'))
+		return (0);
+	return (1);
+}
+
 int	check_env_name(char *arg)
 {
+	int	i;
+
+	i = 0;
 	if (!ft_isalpha(arg[0]) && arg[0] != '_')
-	{
 		return (-1);
+	while (arg[i] && arg[i] != '=')
+	{
+		if (is_valid_char_name(arg[i]) != 0)
+			return (1);
+		i++;
 	}
 	return (0);
-}
-
-static void	swap_nodes(t_list *node1, t_list *node2)
-{
-	t_env_var *temp_env_var = (t_env_var *)node1->content;
-	node1->content = node2->content;
-	node2->content = temp_env_var;
-}
-
-void	order_envs_list(t_list *envs)
-{
-	t_list *actual = envs;
-
-	while (actual != NULL)
-	{
-		t_list *siguiente = actual->next;
-		while (siguiente != NULL)
-		{
-			t_env_var *env_var_actual = (t_env_var *)actual->content;
-			t_env_var *env_var_sig = (t_env_var *)siguiente->content;
-
-			if (ft_strncmp(env_var_actual->name, env_var_sig->name, ft_strlen(env_var_actual->name)) > 0)
-				swap_nodes(actual, siguiente);
-			siguiente = siguiente->next;
-		}
-		actual = actual->next;
-	}
 }
