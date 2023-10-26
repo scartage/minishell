@@ -1,38 +1,38 @@
 #include "../inc/minishell.h"
 #include "errors/errors.h"
 
-// void printingBefore(t_list *temp_tokens)
-// {
-// 	/*while para verificar tokens de la lista*/
-// 	printf("---before env_parsing---\n");
-// 	if (temp_tokens->content == NULL)
-// 	{
-// 		printf("No correct input\n");
-// 		return ;
-// 	}
-// 	while (temp_tokens->content != NULL)
-// 	{
-// 		printf("token: [%s]\n", (char *)temp_tokens->content);
-// 		if (temp_tokens->next == NULL)
-// 			break;
-// 		temp_tokens = temp_tokens->next;
-// 	}
-// 	printf("---Go to replace the env_vars---");
-// 	printf("\n");
-// }
+void printingBefore(t_list *temp_tokens)
+{
+	/*while para verificar tokens de la lista*/
+	printf("---before env_parsing---\n");
+	if (temp_tokens->content == NULL)
+	{
+		printf("No correct input\n");
+		return ;
+	}
+	while (temp_tokens->content != NULL)
+	{
+		printf("token: [%s]\n", (char *)temp_tokens->content);
+		if (temp_tokens->next == NULL)
+			break;
+		temp_tokens = temp_tokens->next;
+	}
+	printf("---Go to replace the env_vars---");
+	printf("\n");
+}
 
-// void printAfter(t_list *temp_tokens)
-// {
-// 	printf("---after env_replacing---\n");
-// 	while (temp_tokens->content != NULL)
-// 	{
-// 		printf("new token content: [%s]\n", (char *)temp_tokens->content);
-// 		if (temp_tokens->next == NULL)
-// 			break;
-// 		temp_tokens = temp_tokens->next;
-// 	}
-// 	printf("fins ara\n");
-// }
+void printAfter(t_list *temp_tokens)
+{
+	printf("---after env_replacing---\n");
+	while (temp_tokens->content != NULL)
+	{
+		printf("new token content: [%s]\n", (char *)temp_tokens->content);
+		if (temp_tokens->next == NULL)
+			break;
+		temp_tokens = temp_tokens->next;
+	}
+	printf("fins ara\n");
+}
 
 void print_infile(void *content2)
 {
@@ -81,14 +81,24 @@ int	ft_isdigit_void(char *str)
 	int	i;
 
 	i = 0;
-	if (str[0] == '-' || str[0] == '+')
+	str = ft_strtrim(str, " "); //FIXME remove leak
+	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i] != '\0')
 	{
 		if (!ft_isdigit(str[i]))
+		{
+			free(str);
 			return (1);
+		}
 		i++;
 	}
+	if (i == 0 || !ft_isdigit(str[i - 1]))
+	{
+		free(str);
+		return (1);
+	}
+	free(str);
 	return (0);
 }
 

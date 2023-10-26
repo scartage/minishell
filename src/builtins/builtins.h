@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:20:51 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/25 20:18:29 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/26 20:12:15 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,15 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-typedef struct s_builtins_fn
-{
-	char	*name;
-	int		(*fn)(t_list *, t_list *);
-}	t_builtin;
 
-t_builtin	get_builtin(t_command *command);
+bool		is_builtin(t_command *command);
 
-int			ft_echo(t_list *arguments, t_list *envs);
-int			ft_pwd(t_list *arguments, t_list *envs);
-int			ft_exit(t_list *arguments, t_list *envs);
+int			call_builtin(t_list *args, t_list *envs,
+				int last_st, bool is_1_com);
+
+int			ft_echo(t_list *arguments);
+int			ft_pwd(void);
+int			ft_exit(t_list *args, int last_st, bool is_1_com);
 int			ft_cd(t_list *arguments, t_list *envs);
 int			ft_env(t_list *arguments, t_list *envs);
 int			ft_export(t_list *arguments, t_list *envs);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_replacer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 22:10:38 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/26 20:38:49 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char *get_content(char *env_name, t_list *env_variables)
 	while (tmp != NULL)
 	{
 		t_env_var* env = (t_env_var *)tmp->content;
-		if (ft_strncmp(env_name, env->name, ft_strlen(env_name)) == 0)
+		if (ft_strncmp(env_name, env->name, ft_strlen(env_name) + 1) == 0)
 		{
 			return (env->content);
 		}
@@ -108,7 +108,7 @@ char *env_replacer(char *str, t_list *env_variables, int exit_status) {
 		current = in_word;
 	}
 	str_free(env_name);
-	char *result = ft_strdup(res->buffer); // needs free
+	char *result = ft_strdup(res->buffer);
 	str_free(res);
 	free(str);
 	return result;

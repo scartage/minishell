@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:23:16 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/13 20:07:19 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/26 19:35:31 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	capture_input_heredoc(t_in_file *in_file, int id)
 	while (1)
 	{
 		line = readline("> ");
-		if (ft_strncmp(in_file->end_str, line, end_str_len) == 0)
+		if (line == NULL || ft_strncmp(in_file->end_str, line, end_str_len) == 0)
 		{
 			free(line);
 			break ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 15:48:59 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/11 19:07:34 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/26 20:44:38 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ t_string	*str_new(void)
 		free(new_);
 		return (NULL);
 	}
+	new_->buffer[0] = 0;
 	new_->current = 0;
 	new_->size = INTERNAL_BUFFER;
 	return (new_);
@@ -102,6 +103,8 @@ int	str_append(t_string *string, char *new)
 
 	if (string == NULL)
 		return (BUILDER_ERROR);
+	if (new == NULL)
+		return (BUILDER_OK);
 	len = 0;
 	while (new[len])
 		len++;

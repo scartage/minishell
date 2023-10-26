@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 21:20:07 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/26 20:48:51 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,16 @@ char	**envs_to_array(t_list *envs);
 void	create_heredocs(t_list *commands);
 void	delete_heredocs(void);
 
-void	do_exec_call(t_command *comm, t_list *envs)
+void	do_exec_call(t_command *comm, t_list *envs, int last_status)
 {
 	char		*command_path;
 	char		**args;
 	char		**envp;
-	t_builtin	builtin;
 	int			return_code;
 
-	builtin = get_builtin(comm);
-	if (builtin.name != NULL)
+	if (is_builtin(comm))
 	{
-		return_code = builtin.fn(comm->arguments, envs);
+		return_code = call_builtin(comm->arguments, envs, last_status, false);
 		exit(return_code);
 	}
 	else
@@ -47,6 +45,7 @@ void	do_exec_call(t_command *comm, t_list *envs)
 		command_path = get_full_path(comm, envs);
 		args = comm_to_args(comm);
 		envp = envs_to_array(envs);
+		printf("bla:  <%s>\n", command_path);
 		if (execve(command_path, args, envp) == -1)
 			abort_perror("Problem executing command");
 	}
@@ -68,22 +67,20 @@ int	handle_wait_pid(int child_pid)
 	return (WEXITSTATUS(status));
 }
 
-int	execute_single_command(t_command *command, t_list *envs)
+int	execute_single_command(t_command *command, t_list *envs, int last_status)
 {
-	t_builtin	builtin;
 	int			child_pid;
 	int			status;
 
-	builtin = get_builtin(command);
-	if (builtin.name != NULL)
+	if (is_builtin(command))
 	{
 		int saved_stdin = dup(0);
 		int saved_stdout = dup(1);
 		setup_first_read_fd(command);
 		setup_last_write_fd(command);
-		status = builtin.fn(command->arguments, envs);
-		dup2(saved_stdout, 1);
-		dup2(saved_stdin, 0);
+		status = call_builtin(command->arguments, envs, last_status, true);
+		dup2(saved_stdout, STDOUT_FILENO);
+		dup2(saved_stdin, STDIN_FILENO);
 		close(saved_stdout);
 		close(saved_stdin);
 	}
@@ -94,14 +91,14 @@ int	execute_single_command(t_command *command, t_list *envs)
 		{
 			setup_first_read_fd(command);
 			setup_last_write_fd(command);
-			do_exec_call(command, envs);
+			do_exec_call(command, envs, last_status);
 		}
 		status = handle_wait_pid(child_pid);
 	}
 	return (status);
 }
 
-int	execute_first_command(t_command *comm, t_list *envs, int out_pipe[2])
+int	execute_first_command(t_command *comm, t_list *envs, int out_pipe[2], int last_status)
 {
 	int	child_pid;
 
@@ -110,12 +107,12 @@ int	execute_first_command(t_command *comm, t_list *envs, int out_pipe[2])
 	{
 		setup_first_read_fd(comm);
 		setup_pipe_write(comm, out_pipe);
-		do_exec_call(comm, envs);
+		do_exec_call(comm, envs, last_status);
 	}
 	return (child_pid);
 }
 
-int	execute_last_command(t_command *comm, t_list *envs, int in_pipe[2])
+int	execute_last_command(t_command *comm, t_list *envs, int in_pipe[2], int last_status)
 {
 	int	child_pid;
 
@@ -124,12 +121,12 @@ int	execute_last_command(t_command *comm, t_list *envs, int in_pipe[2])
 	{
 		setup_pipe_read(comm, in_pipe);
 		setup_last_write_fd(comm);
-		do_exec_call(comm, envs);
+		do_exec_call(comm, envs, last_status);
 	}
 	return (child_pid);
 }
 
-int	exec_command(t_command *comm, t_list *envs, int in_pipe[2], int out_pipe[2])
+int	exec_command(t_command *comm, t_list *envs, int *pipes[2], int last_status)
 {
 	int	child_pid;
 
@@ -138,47 +135,50 @@ int	exec_command(t_command *comm, t_list *envs, int in_pipe[2], int out_pipe[2])
 		abort_perror("Forking for program");
 	if (child_pid == 0)
 	{
-		setup_pipe_read(comm, in_pipe);
-		setup_pipe_write(comm, out_pipe);
-		do_exec_call(comm, envs);
+		setup_pipe_read(comm, pipes[0]);
+		setup_pipe_write(comm, pipes[1]);
+		do_exec_call(comm, envs, last_status);
 	}
 	return (child_pid);
 }
 
-int	execute_all_commands(t_list *commands, t_list *envs)
+int	execute_all_commands(t_list *commands, t_list *envs, int last_status)
 {
 	int	out_pipe[2];
 	int	in_pipe[2];
+	int	*pipes[2];
 	int	child_pid;
 	int	status;
 
 	pipe(in_pipe);
-	execute_first_command(commands->content, envs, in_pipe);
+	execute_first_command(commands->content, envs, in_pipe, last_status);
 	commands = commands->next;
 	while (commands && commands->next)
 	{
 		pipe(out_pipe);
-		exec_command(commands->content, envs, in_pipe, out_pipe);
+		pipes[0] = in_pipe;
+		pipes[1] = out_pipe;
+		exec_command(commands->content, envs, pipes, last_status);
 		close_pipe(in_pipe);
 		in_pipe[0] = out_pipe[0];
 		in_pipe[1] = out_pipe[1];
 		commands = commands->next;
 	}
-	child_pid = execute_last_command(commands->content, envs, in_pipe);
+	child_pid = execute_last_command(commands->content, envs, in_pipe, last_status);
 	close_pipe(in_pipe);
 	status = handle_wait_pid(child_pid);
 	return (status);
 }
 
-int	execute(t_list *commands, t_list *envs)
+int	execute(t_list *commands, t_list *envs, int last_status)
 {
 	int	result;
 
 	create_heredocs(commands);
 	if (ft_lstsize(commands) == 1)
-		result = execute_single_command(commands->content, envs);
+		result = execute_single_command(commands->content, envs, last_status);
 	else
-		result = execute_all_commands(commands, envs);
+		result = execute_all_commands(commands, envs, last_status);
 	//DEBUG("after all wait\n");
 	//DEBUG("\nhay %i hijos\n", ft_lstsize(commands));
 	delete_heredocs();

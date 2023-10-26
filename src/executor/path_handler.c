@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   path_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:25:03 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/20 22:47:45 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/26 21:00:26 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <sys/stat.h>
 #include "libft.h"
 #include "path_handler.h"
 #include "../errors/errors.h"
@@ -61,12 +62,25 @@ static char	*build_path(char *command, char *path)
 	return (temp);
 }
 
+int	is_directory(const char *path)
+{
+	struct stat	statbuf;
+
+	if (stat(path, &statbuf) != 0)
+		return (0);
+	return (S_ISDIR(statbuf.st_mode));
+}
+
 static bool	check_exec_permissions(char *command)
 {
 	if (access(command, F_OK) == 0)
 	{
 		if (access(command, X_OK) == 0)
+		{
+			if (is_directory(command))
+				return (false);
 			return (true);
+		}
 		else
 		{
 			show_error(command, "Permission denied");

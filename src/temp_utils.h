@@ -4,9 +4,9 @@
 
 # include "libft.h"
 # include "../inc/minishell.h"
-// void printingBefore(t_list *temp_tokens);
+void printingBefore(t_list *temp_tokens);
 
-// void printAfter(t_list *temp_tokens);
+void printAfter(t_list *temp_tokens);
 
 void	print_infile(void *content2);
 void	print_outfile(void *content2);
@@ -15,5 +15,5 @@ void	print_strings_echo(void *str);
 int		ft_isdigit_void(void *str);
 void	print_command(void *command2);
 char	*fn_quote_arg(const char *arg);
-
+char	*ft_strtrim_spaces(char *str);
 #endif

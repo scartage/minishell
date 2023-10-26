@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/25 20:42:05 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/26 20:10:40 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	ft_env(t_list *arguments, t_list *envs)
 	temp_tokens = envs;
 	if (ft_lstsize(arguments) > 1)
 	{
-		show_error("env", "no options or arguments are required");
+		show_error_arg("env", arguments->next->content,
+			"no options or arguments are required");
 		return (1);
 	}
 	while (temp_tokens != NULL)
@@ -122,26 +123,47 @@ int	ft_unset(t_list *arguments, t_list *envs)
 	return (0);
 }
 
-t_builtin	get_builtin(t_command *command)
+bool	is_builtin(t_command *command)
 {
-	t_builtin	builtins[7];
-	int			i;
+	char	*name;
 
-	builtins[0] = (t_builtin){.name = "echo", .fn = ft_echo};
-	builtins[1] = (t_builtin){.name = "pwd", .fn = ft_pwd};
-	builtins[2] = (t_builtin){.name = "exit", .fn = ft_exit};
-	builtins[3] = (t_builtin){.name = "cd", .fn = ft_cd};
-	builtins[4] = (t_builtin){.name = "env", .fn = ft_env};
-	builtins[5] = (t_builtin){.name = "export", .fn = ft_export};
-	builtins[6] = (t_builtin){.name = "unset", .fn = ft_unset};
-	i = 0;
-	while (i < 7)
-	{
-		if (ft_strncmp(command->arguments->content, builtins[i].name, 20) == 0)
-		{
-			return (builtins[i]);
-		}
-		i++;
-	}
-	return ((t_builtin){.name = NULL, .fn = NULL});
+	name = command->arguments->content;
+	if (ft_strncmp("echo", name, 5) == 0)
+		return (true);
+	if (ft_strncmp("pwd", name, 4) == 0)
+		return (true);
+	if (ft_strncmp("exit", name, 5) == 0)
+		return (true);
+	if (ft_strncmp("cd", name, 3) == 0)
+		return (true);
+	if (ft_strncmp("env", name, 4) == 0)
+		return (true);
+	if (ft_strncmp("export", name, 7) == 0)
+		return (true);
+	if (ft_strncmp("unset", name, 6) == 0)
+		return (true);
+	return (false);
+}
+
+int	call_builtin(t_list *args, t_list *envs, int last_status, bool is_1_com)
+{
+	char	*name;
+
+	name = args->content;
+	if (ft_strncmp("echo", name, 5) == 0)
+		return (ft_echo(args));
+	if (ft_strncmp("pwd", name, 4) == 0)
+		return (ft_pwd());
+	if (ft_strncmp("exit", name, 5) == 0)
+		return (ft_exit(args, last_status, is_1_com));
+	if (ft_strncmp("cd", name, 3) == 0)
+		return (ft_cd(args, envs));
+	if (ft_strncmp("env", name, 4) == 0)
+		return (ft_env(args, envs));
+	if (ft_strncmp("export", name, 7) == 0)
+		return (ft_export(args, envs));
+	if (ft_strncmp("unset", name, 6) == 0)
+		return (ft_unset(args, envs));
+	ft_putstr_fd("This should never happen, check call_builtin", 2);
+	return (-1);
 }

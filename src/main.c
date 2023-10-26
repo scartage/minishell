@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/24 12:39:26 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/26 20:20:48 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,26 @@
 #include "executor/executor.h"
 #include "temp_utils.h"
 
-static int	execute_input(char *input, t_shell *shell, int exit_status)
+static int	execute_input(char *input, t_shell *shell, int last_status)
 {
 	t_list *tokens = parse_line(input);
 	if (tokens == NULL)
 		return (258);
 	//t_list *temp_tokens = tokens;
 
-	//printingBefore(temp_tokens);
-	tokens = replacing_envars(tokens, shell->env_variables, exit_status);
-	//printAfter(temp_tokens);
+	// printingBefore(temp_tokens);
+	tokens = replacing_envars(tokens, shell->env_variables, last_status);
+	// printAfter(temp_tokens);
 
 	t_list *commands = token_to_command(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
 	ft_lstclear(&tokens, free);
 	//ft_lstiter(commands, print_command);
-	
+
 	set_signal_handler(signal_handler_executing);
-	exit_status = execute(commands, shell->env_variables);
+	last_status = execute(commands, shell->env_variables, last_status);
 	set_signal_handler(signal_handler_input);
 	ft_lstclear((void *)&commands, (t_del_fn)free_command);
-	return (exit_status);
+	return (last_status);
 }
 
 /*this fn returns t_list intead of void*/

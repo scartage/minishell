@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_input_before.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:20:49 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 19:23:02 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/26 20:36:01 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ static bool	check_special_chars(const char *str, int len)
 	if (ft_strnstr(str, "||", len) || ft_strnstr(str, "><", len))
 	{
 		if (ft_strnstr(str, "><", len))
-			show_error(NULL, "syntax error near unexpected token `<'\n");
+			show_error(NULL, "syntax error near unexpected token `<'");
 		else
-			show_error(NULL, "syntax error near unexpected token `||'\n");
+			show_error(NULL, "syntax error near unexpected token `||'");
 		return (false);
 	}
 	return (true);
@@ -56,9 +56,9 @@ static bool	check_special_chars(const char *str, int len)
 
 static bool	check_start_end_chars(const char *str, int len)
 {
-	if (ft_strrchr("|>", str[0]) || ft_strrchr("|><", str[len - 1]))
+	if (ft_strrchr("|", str[0]) || ft_strrchr("|><", str[len - 1]))
 	{
-		show_error(NULL, "syntax error near unexpected token `newline'\n");
+		show_error(NULL, "syntax error near unexpected token `newline'");
 		return (false);
 	}
 	return (true);

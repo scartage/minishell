@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/25 20:51:14 by scartage         ###   ########.fr       */
+/*   Updated: 2023/10/26 20:09:25 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ bool	echo_is_valid_option(char *argument)
 
 /*revisada, se comporta como bash*/
 /*pasa mpanic*/
-int ft_echo(t_list *arguments, t_list *envs)
+int ft_echo(t_list *arguments)
 {
-	(void)envs;
 	t_list *first_after_echo = arguments->next;
 	bool n_opt = false;
 
@@ -63,12 +62,10 @@ int ft_echo(t_list *arguments, t_list *envs)
 }
 
 /*revisada y testeada, se comporta como bash*/
-int	ft_pwd(t_list *arguments, t_list *envs)
+int	ft_pwd()
 {
 	char	buffer[PATH_MAX];
 
-	(void)arguments;
-	(void)envs;
 	getcwd(buffer, PATH_MAX);
 	ft_printf("%s\n", buffer);
 	return (0);
@@ -79,18 +76,18 @@ int	ft_pwd(t_list *arguments, t_list *envs)
 /*falta manejar casos como '  3' '3  '
 o numeros extremos grandes -18446744073709551617*/
 
-/*que pasamos como argumento a show_error_arg cuando el arg es ("") o (" ")*/
-int	ft_exit(t_list *arguments, t_list *envs)
+/*que pasamos como argumento a show_error_arg cuando el arg es ("")*/
+int	ft_exit(t_list *arguments, int last_status, bool is_1_com)
 {
 	int	arg_count;
 	int	ex_number;
 
-	(void)envs;
 	arg_count = ft_lstsize(arguments);
 	ex_number = 0;
+	if (is_1_com)
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (arg_count == 1)
-		exit(EXIT_SUCCESS);
-	printf("exit\n");
+		exit(last_status);
 	if (ft_isdigit_void((char *)arguments->next->content) != 0)
 	{
 		if (ft_strlen((char *)arguments->next->content) == 0)
