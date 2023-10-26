@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 18:48:59 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/12 17:35:06 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/10/26 21:20:48 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	open_write_perm(char *path, bool is_append)
 	int	fd;
 
 	if (access(path, F_OK) == 0 && access(path, W_OK) == -1)
-		abort_perror(path);
+		abort_perror(path); //FIXME
 	if (is_append)
 		fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
