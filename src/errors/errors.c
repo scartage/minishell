@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/11/01 17:36:12 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/03 21:39:46 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,9 @@ static char	*prepend_shell(char *command, char *message)
 	char	*temp;
 	int		size;
 	int		len;
-	char	*to_add = "minishell: ";
-	
-	// //FIXME: remove later
-	// to_add = "";
+	char	*to_add;
 
+	to_add = "minishell: ";
 	size = ft_strlen(message) + ft_strlen(to_add) + 1;
 	if (command)
 		size += ft_strlen(command) + 3;
@@ -74,6 +72,7 @@ void	show_error(char *command, char *msm)
 	write(STDERR_FILENO, "\n", 1);
 	free(temp);
 }
+
 void	abort_perror(char *message)
 {
 	char	*temp;

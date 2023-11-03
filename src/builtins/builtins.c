@@ -6,44 +6,29 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/03 20:04:22 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/03 22:10:05 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <errno.h>
 #include "minishell.h"
 #include "../errors/errors.h"
 #include "builtins.h"
 #include "../temp_utils.h"
 
-bool	echo_is_valid_option(char *argument)
-{
-	int	len;
-	int	i;
-
-	i = 1;
-	len = ft_strlen(argument);
-	if (argument[0] != '-')
-		return (false);
-	while (i < len)
-	{
-		if (argument[i] != 'n')
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
 /*revisada, se comporta como bash*/
 /*pasa mpanic*/
-int ft_echo(t_list *arguments)
+int	ft_echo(t_list *arguments)
 {
-	t_list *first_after_echo = arguments->next;
-	bool n_opt = false;
+	t_list	*first_after_echo;
+	bool	n_opt;
 
+	first_after_echo = arguments->next;
+	n_opt = false;
 	while (first_after_echo && echo_is_valid_option(first_after_echo->content))
 	{
 		if (!n_opt)
@@ -59,16 +44,6 @@ int ft_echo(t_list *arguments)
 	}
 	if (!n_opt)
 		printf("\n");
-	return (0);
-}
-
-/*revisada y testeada, se comporta como bash*/
-int	ft_pwd(void)
-{
-	char	buffer[PATH_MAX];
-
-	getcwd(buffer, PATH_MAX);
-	ft_printf("%s\n", buffer);
 	return (0);
 }
 
@@ -108,18 +83,56 @@ int	ft_exit(t_list *arguments, int last_status, bool is_1_com)
 	return (0);
 }
 
+static int	check_cd_arg(char *first_arg, int len_args)
+{
+	if (ft_strlen(first_arg) == 256)
+	{
+		show_error_arg("cd: ", first_arg, "File name too long", 1);
+		return (1);
+	}
+	if (first_arg[0] == '-')
+	{
+		show_error_arg("cd: ", first_arg, "invalid options", 1);
+		return (1);
+	}
+	if (len_args > 2)
+	{
+		show_error("cd: ", "too many arguments");
+		return (1);
+	}
+	return (0);
+}
+
+static int	change_dir(char *first_arg, t_list *envs)
+{
+	char	oldpwd[PATH_MAX];
+	char	newpwd[PATH_MAX];
+
+	if (ft_strlen(first_arg) == 0)
+		return (0);
+	getcwd(oldpwd, sizeof(oldpwd));
+	if (chdir(first_arg) != 0)
+	{
+		if (errno == ENOTDIR)
+			show_error_arg("cd: ", first_arg, "Not a directory", 1);
+		else if (errno == EACCES)
+			show_error_arg("cd: ", first_arg, "Permission denied", 1);
+		else
+			show_error_arg("cd: ", first_arg, "No such file or directory", 1);
+		return (1);
+	}
+	update_env_content("OLDPWD", oldpwd, envs);
+	getcwd(newpwd, sizeof(newpwd));
+	update_env_content("PWD", newpwd, envs);
+	return (0);
+}
+
 /*revisado y corregido, se comporta como bash*/
-
-/*TODO: - Revisar el output que da cuando cambia de dir
-		- Cambiar el valor de PWD*/
-
-/*TODO: como revisar cuando un dir tiene permisos*/
 int	ft_cd(t_list *arguments, t_list *envs)
 {
 	int		len_args;
 	char	*first_arg;
 
-	(void)envs;
 	len_args = ft_lstsize(arguments);
 	errno = 0;
 	if (len_args == 1)
@@ -132,27 +145,9 @@ int	ft_cd(t_list *arguments, t_list *envs)
 		return (0);
 	}
 	first_arg = (char *)arguments->next->content;
-	if (ft_strlen(first_arg) == 0)
-		return (0);
-	if (first_arg[0] == '-')
-	{
-		show_error_arg("cd: ", first_arg, "invalid options", 1);
+	if (check_cd_arg(first_arg, len_args) != 0)
 		return (1);
-	}
-	if (len_args > 2)
-	{
-		show_error("cd: ", "too many arguments");
+	if (change_dir(first_arg, envs) != 0)
 		return (1);
-	}
-	if (chdir(first_arg) != 0)
-	{
-		if (errno == ENOTDIR)
-			show_error_arg("cd: ", first_arg, "Not a directory", 0);
-		else if (errno == EACCES)
-			show_error_arg("cd: ", first_arg, "Permission denied", 0);
-		else
-			show_error_arg("cd: ", first_arg, "No such file or directory", 1);
-		return (1);
-	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:20:51 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/26 20:12:15 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/03 22:06:19 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,15 @@ int			ft_env(t_list *arguments, t_list *envs);
 int			ft_export(t_list *arguments, t_list *envs);
 int			ft_unset(t_list *arguments, t_list *envs);
 
+/*utils fn for echo*/
+bool		echo_is_valid_option(char *argument);
+
 /*utils fn for export*/
 int			check_env_arg(char *arg, t_list *envs);
 int			check_env_name(char *arg);
 int			var_exists_in_envs(char *env_name, t_list *envs);
 void		add_new_end_var(char *env_name, char *value, t_list **envs);
+void		update_env_content(char *env_name, char *value, t_list *envs);
 void		order_envs_list(t_list *envs);
 
 /*utils fn for unset*/

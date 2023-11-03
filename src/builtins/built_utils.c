@@ -6,11 +6,40 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:40:45 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/25 18:57:37 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/03 22:09:10 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include <limits.h>
+
+bool	echo_is_valid_option(char *argument)
+{
+	int	len;
+	int	i;
+
+	i = 1;
+	len = ft_strlen(argument);
+	if (argument[0] != '-')
+		return (false);
+	while (i < len)
+	{
+		if (argument[i] != 'n')
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+/*revisada y testeada, se comporta como bash*/
+int	ft_pwd(void)
+{
+	char	buffer[PATH_MAX];
+
+	getcwd(buffer, PATH_MAX);
+	ft_printf("%s\n", buffer);
+	return (0);
+}
 
 /*these are util fn for the unset builtin*/
 static void	swap_nodes(t_list *node1, t_list *node2)
