@@ -55,53 +55,6 @@ void print_strings_echo(void *str)
 	printf("%s ", (char *)str);
 }
 
-/*for quoting args in error msm*/
-char	*fn_quote_arg(const char *arg)
-{
-	int		len;
-	char	*quoted_arg;
-
-	quoted_arg = malloc(ft_strlen(arg) + 3);
-	if (!quoted_arg)
-	{
-		abort_perror("Failed to allocate memory");
-		exit(EXIT_FAILURE);
-	}
-	quoted_arg[0] = '\'';
-	ft_strlcpy(quoted_arg + 1, arg, ft_strlen(arg) + 1);
-	len = ft_strlen(quoted_arg);
-	quoted_arg[len] = '\'';
-	quoted_arg[len + 1] = '\0';
-	return (quoted_arg);
-}
-
-/*0 es que todos los caracteres son numeros*/
-int	ft_isdigit_void(char *str)
-{
-	int	i;
-
-	i = 0;
-	str = ft_strtrim(str, " "); //FIXME remove leak
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while (str[i] != '\0')
-	{
-		if (!ft_isdigit(str[i]))
-		{
-			free(str);
-			return (1);
-		}
-		i++;
-	}
-	if (i == 0 || !ft_isdigit(str[i - 1]))
-	{
-		free(str);
-		return (1);
-	}
-	free(str);
-	return (0);
-}
-
 void print_command(void *command2)
 {
 	t_command *command = (t_command *)command2;

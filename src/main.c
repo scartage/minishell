@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/26 20:20:48 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/03 19:39:48 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	main(int ac, char **av, char **envp)
 	set_signal_handler(signal_handler_input);
 	if (ac != 1)
 		ft_error("Cantidad de argumentos incorrecta\n");
-	exit_status = 42;
+	exit_status = 0;
 	get_env(envp, &shell);
 	rl_initialize();
 	while (true)

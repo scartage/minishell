@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/25 19:01:12 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/01 17:36:12 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,6 @@
 #include <unistd.h>
 #include "errors.h"
 #include "libft.h"
-#include "../temp_utils.h"
-
-void	free_globals(void)
-{
-	// TODO: Free all the global variables to avoid leaks
-}
-
-void	shell_error(char *reason)
-{
-	free_globals();
-	terminate_with_error(reason);
-}
 
 static char	*prepend_shell(char *command, char *message)
 {
@@ -52,7 +40,7 @@ static char	*prepend_shell(char *command, char *message)
 	return (temp);
 }
 
-void	show_error_arg(char *command, char *arg, char *msm)
+void	show_error_arg(char *command, char *arg, char *msm, int opt)
 {
 	char	*temp;
 	char	*prev;
@@ -60,11 +48,16 @@ void	show_error_arg(char *command, char *arg, char *msm)
 
 	if (arg == NULL)
 		temp = prepend_shell(command, msm);
-	else
+	if (opt == 0)
 	{
 		quoted_arg = fn_quote_arg(arg);
 		prev = ft_strjoin(command, quoted_arg);
 		free(quoted_arg);
+		temp = prepend_shell(prev, msm);
+	}
+	else
+	{
+		prev = ft_strjoin(command, arg);
 		temp = prepend_shell(prev, msm);
 	}
 	write(STDERR_FILENO, temp, ft_strlen(temp));
@@ -81,7 +74,6 @@ void	show_error(char *command, char *msm)
 	write(STDERR_FILENO, "\n", 1);
 	free(temp);
 }
-
 void	abort_perror(char *message)
 {
 	char	*temp;
@@ -91,11 +83,4 @@ void	abort_perror(char *message)
 	free(temp);
 	free_globals();
 	exit(1);
-}
-
-/*This one is used in the main*/
-void	ft_error(char *s)
-{
-	write(STDERR_FILENO, s, ft_strlen(s));
-	exit(EXIT_FAILURE);
 }

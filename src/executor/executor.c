@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/26 20:48:51 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/01 16:36:13 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	do_exec_call(t_command *comm, t_list *envs, int last_status)
 		command_path = get_full_path(comm, envs);
 		args = comm_to_args(comm);
 		envp = envs_to_array(envs);
-		printf("bla:  <%s>\n", command_path);
+		//printf("bla:  <%s>\n", command_path);
 		if (execve(command_path, args, envp) == -1)
 			abort_perror("Problem executing command");
 	}

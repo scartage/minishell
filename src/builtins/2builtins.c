@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/26 20:10:40 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/01 17:00:56 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_env(t_list *arguments, t_list *envs)
 	if (ft_lstsize(arguments) > 1)
 	{
 		show_error_arg("env", arguments->next->content,
-			"no options or arguments are required");
+			"no options or arguments are required", 1);
 		return (1);
 	}
 	while (temp_tokens != NULL)
@@ -83,7 +83,7 @@ int	ft_export(t_list *arguments, t_list *envs)
 		if (check_env_arg((char *)temp_args->content, envs) != 0)
 		{
 			show_error_arg("export: ", temp_args->content,
-				"not a valid identifier");
+				"not a valid identifier", 0);
 			exit_status = 1;
 			//return (1);
 		}
@@ -111,7 +111,7 @@ int	ft_unset(t_list *arguments, t_list *envs)
 		if (check_if_valid((char *)temp_args->content, &envs) != 0)
 		{
 			show_error_arg("unset: ", temp_args->content,
-				"not a valid identifier");
+				"not a valid identifier", 0);
 			exit_status = 1;
 		}
 		if (temp_args->next == NULL)
