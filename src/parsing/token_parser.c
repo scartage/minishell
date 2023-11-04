@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:46:11 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/11/04 18:49:40 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/04 19:36:10 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_state	handle_in_quote(t_parse_info *info)
 	t_state	next_state;
 
 	next_state = in_quote;
-	if (is_quote(info->current_char) && info->line[info->pos - 1] != '\\')
+	if (is_quote(info->current_char) && info->line[info->pos - 2] != '\\')
 	{
 		add_char_to_token(info, info->current_char);
 		if (info->current_char == info->quote_char)
@@ -75,7 +75,7 @@ t_parse_info	new_info(char *line)
 
 	info.line = line;
 	info.current_char = line[0];
-	info.pos = 0;
+	info.pos = 1;
 	info.token = str_new();
 	if (info.token == NULL)
 		abort_perror("Creating string to save tokens");
@@ -109,7 +109,7 @@ t_list	*parse_line(char *line)
 			current_state = handle_in_quote(&info);
 		else
 			shell_error("wtf, it should never do this (token parsing)");
-		info.current_char = line[++info.pos];
+		info.current_char = line[info.pos++];
 	}
 	if (current_state == in_quote)
 		return (handle_error(info, line));

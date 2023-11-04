@@ -6,13 +6,14 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:20:13 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 17:30:01 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/04 19:38:20 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
 #include "../temp_utils.h"
 #include "minishell.h"
+#include "../errors/errors.h"
 #include <stdio.h>
 
 void	add_input(t_command *command, t_token *type, t_token *value)
@@ -63,6 +64,48 @@ void	add_argument_to_command(t_command *command, t_token *value)
 	ft_lstadd_back(&command->arguments, ft_lstnew(ft_strdup(value->value)));
 }
 
+bool	show_syntax_error(char *val)
+{
+	t_string *err = str_new();
+
+	str_append(err, "syntax error near unexpected token `");
+	str_append(err, val);
+	str_append(err, "'");
+	show_error(NULL, err->buffer);
+	str_free(err);
+	return (false);
+}
+
+bool	valid_token_seq(t_list *tokens)
+{
+	t_token		*token;
+	t_token		*next;
+	t_token		*prev;
+
+	prev = NULL;
+	while (tokens != NULL)
+	{
+		token = tokens->content;
+		if (tokens->next)
+			next = tokens->next->content;
+		else
+			next = NULL;
+		if (token->type == REDIR && next == NULL)
+			return (show_syntax_error("newline"));
+		if (token->type == REDIR && next->type != ARGUMENT)
+			return (show_syntax_error(next->value));
+		if (token->type == PIPE && prev == NULL)
+			return (show_syntax_error("|"));
+		if (token->type == PIPE && next == NULL)
+			return (show_syntax_error("newline"));
+		if (token->type == PIPE && next->type == PIPE)
+			return (show_syntax_error("|"));
+		prev = tokens->content;
+		tokens = tokens->next;
+	}
+	return (true);
+}
+
 t_list	*token_to_command(t_list *tokens)
 {
 	t_list		*commands;
@@ -76,12 +119,12 @@ t_list	*token_to_command(t_list *tokens)
 	{
 		token = tokens->content;
 		first_char = token->value[0];
-		if (first_char == '|' && token->type == PIPE)
+		if (token->type == PIPE)
 		{
 			ft_lstadd_back(&commands, ft_lstnew(new_comm));
 			new_comm = protected_malloc(sizeof(t_command));
 		}
-		else if ((first_char == '<' || first_char == '>') && token->type == REDIR)
+		else if (token->type == REDIR)
 		{
 			add_redirection(new_comm, tokens->content, tokens->next->content);
 			tokens = tokens->next;

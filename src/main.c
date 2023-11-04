@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 18:49:57 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/04 19:23:26 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static int	execute_input(char *input, t_shell *shell, int last_status)
 	tokens = remove_quotes(tokens);
 	//printAfter(tokens);
 
+	if (!valid_token_seq(tokens))
+		return (258);
 	t_list *commands = token_to_command(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
 	ft_lstclear(&tokens, free);
 	//ft_lstiter(commands, print_command);
@@ -67,8 +69,6 @@ int	main(int ac, char **av, char **envp)
 	{
 		input = get_input(exit_status);
 		if (input == NULL)
-			continue ;
-		if (!check_pre_parse_input(input))
 			continue ;
 		exit_status = execute_input(input, &shell, exit_status);
 	}
