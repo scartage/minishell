@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:55:59 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 20:18:27 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/04 17:07:51 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "env_parser.h"
 # include <stdio.h>
 
-t_list	*replacing_envars(t_list *input, t_list *env_vars, int exit_status);
-char	*env_replacer(char *str, t_list *env_vars, int exit_status);
+t_list	*remove_quotes(t_list *input);
+char *replace_envs(char *str, t_list *envs, int last_status);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 18:16:50 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/20 18:52:17 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/04 16:46:06 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,6 @@ void		str_clear(t_string *string);
  * Converts the string to a char* sequence of chars. In the process it frees the 
  * memory associated with the t_string
  */
-char		*str_to_char(t_string *string);
+char		*str_to_chars(t_string *string);
 
 #endif

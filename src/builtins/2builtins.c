@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   2builtins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/01 17:00:56 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/04 18:57:00 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,25 @@ bool	is_builtin(t_command *command)
 		return (true);
 	return (false);
 }
+
+bool	is_special_builtin(t_command *command)
+{
+	char	*name;
+
+	name = command->arguments->content;
+	if (ft_strncmp("exit", name, 5) == 0)
+		return (true);
+	if (ft_strncmp("cd", name, 3) == 0)
+		return (true);
+	if (ft_strncmp("env", name, 4) == 0)
+		return (true);
+	if (ft_strncmp("export", name, 7) == 0)
+		return (true);
+	if (ft_strncmp("unset", name, 6) == 0)
+		return (true);
+	return (false);
+}
+
 
 int	call_builtin(t_list *args, t_list *envs, int last_status, bool is_1_com)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/03 19:39:48 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/04 18:49:57 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,15 @@
 
 static int	execute_input(char *input, t_shell *shell, int last_status)
 {
+	input = replace_envs(input, shell->env_variables, last_status);
+	//printf("after: -%s-\n", input);
 	t_list *tokens = parse_line(input);
 	if (tokens == NULL)
-		return (258);
-	//t_list *temp_tokens = tokens;
+		return (0);
 
-	// printingBefore(temp_tokens);
-	tokens = replacing_envars(tokens, shell->env_variables, last_status);
-	// printAfter(temp_tokens);
+	//printingBefore(tokens);
+	tokens = remove_quotes(tokens);
+	//printAfter(tokens);
 
 	t_list *commands = token_to_command(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
 	ft_lstclear(&tokens, free);

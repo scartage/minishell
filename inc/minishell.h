@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/20 22:22:48 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/04 18:38:25 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,20 @@
 #include "../libft/libft.h"		//para el t_list
 #include <signal.h>
 
+#define IS_TEST 0
 
 #define MAX_CHILDREN 100
+
+typedef enum e_token_type {
+	ARGUMENT,
+	REDIR,
+	PIPE
+}	t_token_type;
+
+typedef struct s_token {
+	char			*value;
+	t_token_type	type;
+}	t_token;
 
 typedef enum e_in_type {
 	NORMAL,  // fichero: <

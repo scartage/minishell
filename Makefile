@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: scartage <scartage@student.42.fr>          +#+  +:+       +#+         #
+#    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/11/01 17:33:25 by scartage         ###   ########.fr        #
+#    Updated: 2023/11/04 15:21:31 by fsoares-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,9 @@ INCLUDES	= inc/minishell.h
 LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -Llibft -lft
 CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include -Ilibft -Iinc
 
-SRCS		= main.c ft_readline.c check_input_before.c token_parser.c parsing_utils.c in_token_handler.c errors.c \
+SRCS		= main.c ft_readline.c check_input_before.c token_parser.c classifier.c parsing_utils.c in_token_handler.c errors.c \
 			  env_parser.c env_replacer.c temp_utils.c signals.c commands.c builtins.c 2builtins.c executor.c \
-			  file_handler.c path_handler.c executor_utils.c heredoc.c pipe_handler.c\
+			  file_handler.c path_handler.c executor_utils.c heredoc.c pipe_handler.c \
 			  built_utils.c export_utils.c export_utils_2.c unset_utils.c utils_for_builtins.c\
 			  errors_and_utils.c syscalls.c  # remove when to deliver
 

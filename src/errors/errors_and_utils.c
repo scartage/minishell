@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors_and_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 17:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/01 17:36:00 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/04 18:31:54 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*fn_quote_arg(const char *arg)
 		abort_perror("Failed to allocate memory");
 		exit(EXIT_FAILURE);
 	}
-	quoted_arg[0] = '\'';
+	quoted_arg[0] = '`';
 	ft_strlcpy(quoted_arg + 1, arg, ft_strlen(arg) + 1);
 	len = ft_strlen(quoted_arg);
 	quoted_arg[len] = '\'';

@@ -41,7 +41,7 @@ void	str_clear(t_string *string)
 	string->buffer[0] = 0;
 }
 
-char	*str_to_char(t_string *string)
+char	*str_to_chars(t_string *string)
 {
 	char	*to_return;
 

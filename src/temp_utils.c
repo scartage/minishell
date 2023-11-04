@@ -3,32 +3,44 @@
 
 void printingBefore(t_list *temp_tokens)
 {
+	t_token *token;
 	/*while para verificar tokens de la lista*/
 	printf("---before env_parsing---\n");
-	if (temp_tokens->content == NULL)
+	if (temp_tokens == NULL)
 	{
 		printf("No correct input\n");
 		return ;
 	}
-	while (temp_tokens->content != NULL)
+	while (temp_tokens != NULL)
 	{
-		printf("token: [%s]\n", (char *)temp_tokens->content);
-		if (temp_tokens->next == NULL)
-			break;
+		token = temp_tokens->content;
+		printf("token: [%s]\n", token->value);
 		temp_tokens = temp_tokens->next;
 	}
 	printf("---Go to replace the env_vars---");
 	printf("\n");
 }
 
+char *get_type(t_token_type type) {
+	switch (type)
+	{
+	case PIPE:
+		return "PIPE";
+	case REDIR:
+		return "REDIR";
+	case ARGUMENT:
+		return "ARG";
+	}
+}
+
 void printAfter(t_list *temp_tokens)
 {
+	t_token *token;
 	printf("---after env_replacing---\n");
-	while (temp_tokens->content != NULL)
+	while (temp_tokens != NULL)
 	{
-		printf("new token content: [%s]\n", (char *)temp_tokens->content);
-		if (temp_tokens->next == NULL)
-			break;
+		token = temp_tokens->content;
+		printf("new token content: [%s] type: %s\n", token->value, get_type(token->type));
 		temp_tokens = temp_tokens->next;
 	}
 	printf("fins ara\n");

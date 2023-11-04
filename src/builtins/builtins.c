@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/03 22:10:05 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/04 18:27:49 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ft_exit(t_list *arguments, int last_status, bool is_1_com)
 
 	arg_count = ft_lstsize(arguments);
 	ex_number = 0;
-	if (is_1_com)
+	if (is_1_com && !IS_TEST)
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (arg_count == 1)
 		exit(last_status);

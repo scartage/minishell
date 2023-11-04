@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/01 16:36:13 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/04 18:57:18 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	execute_single_command(t_command *command, t_list *envs, int last_status)
 	int			child_pid;
 	int			status;
 
-	if (is_builtin(command))
+	if (is_special_builtin(command))
 	{
 		int saved_stdin = dup(0);
 		int saved_stdout = dup(1);
