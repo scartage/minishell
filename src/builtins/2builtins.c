@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 18:57:00 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/04 19:44:59 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ bool	is_builtin(t_command *command)
 {
 	char	*name;
 
+	if (!command->arguments)
+		return (false);
 	name = command->arguments->content;
 	if (ft_strncmp("echo", name, 5) == 0)
 		return (true);
@@ -149,6 +151,8 @@ bool	is_special_builtin(t_command *command)
 {
 	char	*name;
 
+	if (!command->arguments)
+		return (false);
 	name = command->arguments->content;
 	if (ft_strncmp("exit", name, 5) == 0)
 		return (true);

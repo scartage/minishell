@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/11/03 21:39:46 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/04 20:02:30 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	abort_perror(char *message)
 {
 	char	*temp;
 
-	temp = prepend_shell(message, NULL);
+	temp = prepend_shell(NULL, message);
 	perror(temp);
 	free(temp);
 	free_globals();

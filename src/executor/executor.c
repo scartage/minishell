@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 18:57:18 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/04 20:15:14 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	do_exec_call(t_command *comm, t_list *envs, int last_status)
 	}
 	else
 	{
+		if (!comm->arguments)
+			exit(0);
 		command_path = get_full_path(comm, envs);
 		args = comm_to_args(comm);
 		envp = envs_to_array(envs);
