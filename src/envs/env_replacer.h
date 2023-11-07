@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_replacer.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:55:59 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 17:07:51 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/07 19:28:20 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdio.h>
 
 t_list	*remove_quotes(t_list *input);
-char *replace_envs(char *str, t_list *envs, int last_status);
+char	*get_content(char *env_name, t_list *env_variables);
+char	*replace_envs(char *str, t_list *envs, int last_status);
 
 #endif

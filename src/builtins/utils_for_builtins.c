@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 17:32:17 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/01 19:11:59 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/07 19:20:25 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,49 +17,67 @@
 /*Puede que esta solucion no sea correcta, pero ya nos detecta numeros
 mas grandes que un int los cuales no son validos*/
 
-/*TO CHECK*/
-// static int	is_valid_number(char *str)
-// {
-// 	char	*endptr;
-// 	long	num;
+static long	ft_strtol(const char *str, char **endptr)
+{
+	long	result;
+	int		sign;
+	int		digit;
 
-// 	errno = 0;
-// 	num = strtol(str, &endptr, 10);
-// 	if (errno == ERANGE || *endptr != '\0' || str == endptr)
-// 		return (0);
-// 	return (1);
-// }
+	sign = 1;
+	result = 0;
+	while (*str == ' ')
+		str++;
+	if (*str == '+' || *str == '-')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	if (sign == -1 && ft_strncmp(str, "9223372036854775808", 19) == 0)
+	{
+		if (endptr)
+			*endptr = (char *)(str + 19);
+		return (LONG_MIN);
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		digit = *str - '0';
+		if (result > (LONG_MAX - digit) / 10)
+		{
+			errno = ERANGE;
+			if (sign == -1)
+				result = LONG_MIN;
+			else
+				result = LONG_MAX;
+			break ;
+		}
+		result = result * 10 + digit;
+		str++;
+	}
+	if (endptr)
+		*endptr = (char *)str;
+	return (result * sign);
+}
 
-// static int	check_all_numbers(char *str)
-// {
-// 	int	i;
+static int	is_valid_number(char *str)
+{
+	char	*endptr;
+	long	num;
 
-// 	i = 0;
-// 	while (str[i] != '\0')
-// 	{
-// 		if (!ft_isdigit(str[i]))
-// 		{
-// 			free(str);
-// 			return (1);
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
+	errno = 0;
+	num = ft_strtol(str, &endptr);
+	if (errno == ERANGE || *endptr != '\0' || str == endptr)
+		return (1);
+	return (0);
+}
 
-int	ft_isdigit_void(char *str)
+static int	check_all_numbers(char *str)
 {
 	int	i;
 
 	i = 0;
-	str = ft_strtrim(str, " "); //FIXME remove leak
 	if (str[i] == '-' || str[i] == '+')
 		i++;
-	// if (check_all_numbers(str) == 1)
-	// {
-	// 	free(str);
-	// 	return (1);
-	// }
 	while (str[i] != '\0')
 	{
 		if (!ft_isdigit(str[i]))
@@ -70,20 +88,30 @@ int	ft_isdigit_void(char *str)
 		i++;
 	}
 	if (i == 0 || !ft_isdigit(str[i - 1]))
-	{
-		free(str);
 		return (1);
+	return (0);
+}
+
+int	ft_isdigit_void(char *str)
+{
+	int	i;
+
+	i = 0;
+	str = ft_strtrim(str, " "); //FIXME remove leak
+	if (ft_strncmp(str, "--", 3) == 0) {
+		return (0);
 	}
-	// if (ft_strlen(str) >= 18)
-	// {
-	// 	printf("entra a revisar\n");
-	// 	i = is_valid_number(str);
-	// 	if (i == 1)
-	// 	{
-	// 		free(str);
-	// 		return (1);
-	// 	}
-	// }
+	if (check_all_numbers(str) == 1)
+		return (1);
+	if (ft_strlen(str) >= 18)
+	{
+		i = is_valid_number(str);
+		if (i == 1)
+		{
+			free(str);
+			return (1);
+		}
+	}
 	free(str);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:20:51 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 18:57:51 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/07 19:36:20 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include "../errors/errors.h"
 # include <stdio.h>
 # include <stdlib.h>
-
 
 bool		is_builtin(t_command *command);
 bool		is_special_builtin(t_command *command);
@@ -47,5 +46,5 @@ void		update_env_content(char *env_name, char *value, t_list *envs);
 void		order_envs_list(t_list *envs);
 
 /*utils fn for unset*/
-int			check_if_valid(char *arg, t_list **envs);
+int			remove_if_valid(char *arg, t_list **envs);
 #endif

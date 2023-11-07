@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:25:03 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/10/26 21:00:26 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:53:48 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,13 @@ char	*get_full_path(t_command *cmd, t_list *envs)
 	{
 		if (check_exec_permissions(command))
 			return (command);
-		show_error(NULL, "No such file or directory");
-		exit(127);
+		if (is_directory(command)) {
+			show_error(command, "is a directory");
+			exit(126);
+		} else {
+			show_error(command, "No such file or directory");
+			exit(127);
+		}
 	}
 	result = search_path(command, envs);
 	if (!result)

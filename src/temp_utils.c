@@ -1,7 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   temp_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 18:49:47 by scartage          #+#    #+#             */
+/*   Updated: 2023/11/04 19:17:47 by scartage         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 #include "errors/errors.h"
 
-void printingBefore(t_list *temp_tokens)
+
+/*DO NOT COMMENT THIS FN ITS IMPORTANT*/
+char	*get_type(t_token_type type)
+{
+	if (type == PIPE)
+		return ("PIPE");
+	else if (type == REDIR)
+		return ("REDIR");
+	else
+		return ("ARG");
+}
+
+void	printingBefore(t_list *temp_tokens)
 {
 	t_token *token;
 	/*while para verificar tokens de la lista*/
@@ -20,19 +44,6 @@ void printingBefore(t_list *temp_tokens)
 	printf("---Go to replace the env_vars---");
 	printf("\n");
 }
-
-char *get_type(t_token_type type) {
-	switch (type)
-	{
-	case PIPE:
-		return "PIPE";
-	case REDIR:
-		return "REDIR";
-	case ARGUMENT:
-		return "ARG";
-	}
-}
-
 void printAfter(t_list *temp_tokens)
 {
 	t_token *token;

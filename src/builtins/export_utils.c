@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:41:31 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/03 21:57:58 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/07 19:56:26 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ void	update_env_content(char *env_name, char *value, t_list *envs)
 	while (temp != NULL)
 	{
 		env_var = (t_env_var *)temp->content;
-		if (ft_strncmp(env_name, env_var->name, ft_strlen(env_name)) == 0)
+		if (env_name && ft_strncmp(env_name, env_var->name, ft_strlen(env_name)) == 0)
 		{
 			free(env_var->content);
 			env_var->content = ft_strdup(value);
-			break ;
+			return ;
 		}
-		if (temp->next == NULL)
-			break ;
 		temp = temp->next;
 	}
+	if (ft_strncmp(env_name, "PWD", 4) != 0)
+		add_new_end_var(env_name, value, &envs);
 }
 
 static void	set_env_value_to_null(char *env_name, t_list *envs)

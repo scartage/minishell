@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 19:23:26 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/07 19:37:50 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "signals/signals.h"
 #include "executor/executor.h"
 #include "temp_utils.h"
+#include "builtins/builtins.h"
 
 static int	execute_input(char *input, t_shell *shell, int last_status)
 {
@@ -50,6 +51,7 @@ static int	execute_input(char *input, t_shell *shell, int last_status)
 void	get_env(char **envp, t_shell *shell)
 {
 	shell->env_variables = env_parser(envp);
+	remove_if_valid("OLDPWD", &shell->env_variables);
 }
 
 int	main(int ac, char **av, char **envp)

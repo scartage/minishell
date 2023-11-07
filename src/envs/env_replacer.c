@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_replacer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 18:09:22 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/07 19:07:26 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,10 +163,18 @@ int	handle_dollar(t_string *res, char *str, t_state state, int last_status, t_li
 	return (size);
 }
 
+bool should_handle_tilde(char *str, int pos) {
+	bool should_handle;
+	
+	should_handle = str[pos] == '~' && ft_strchr(" /", str[pos + 1]);
+	if (pos != 0 && str[pos - 1] != ' ')
+		should_handle = false;
+	return (should_handle);
+}
+
 char *replace_envs(char *str, t_list *envs, int last_status)
 {
 	t_state current = in_word;
-
 	t_string *res = str_new();
 	bool to_add = true;
 	
@@ -181,6 +189,9 @@ char *replace_envs(char *str, t_list *envs, int last_status)
 			current = in_double_quote;
 		} else if (current == in_double_quote && str[i] == '"') {
 			current = in_word;
+		} else if (current != in_single_quote && should_handle_tilde(str, i)) {
+			str_append(res, get_content("HOME", envs));
+			to_add = false;
 		} else if (current != in_single_quote && str[i] == '$') {
 			int offset = handle_dollar(res, str + i + 1, current, last_status, envs);
 			i += offset;

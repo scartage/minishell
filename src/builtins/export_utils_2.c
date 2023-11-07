@@ -6,17 +6,17 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:46:08 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/25 18:55:57 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/07 19:46:25 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-/*aqui debo meter mas funciones relacionaddas al export*/
-
 void	add_new_end_var(char *env_name, char *value, t_list **envs)
 {
-	t_env_var *new_env_var = malloc(sizeof(t_env_var));
+	t_env_var	*new_env_var;
+
+	new_env_var = malloc(sizeof(t_env_var));
 	if (new_env_var == NULL)
 	{
 		perror("failed to allocate memory in add_env_var");
@@ -32,11 +32,13 @@ void	add_new_end_var(char *env_name, char *value, t_list **envs)
 
 int	var_exists_in_envs(char *env_name, t_list *envs)
 {
-	t_list *temp = envs;
+	t_list		*temp;
+	t_env_var	*env_var;
 
+	temp = envs;
 	while (temp != NULL)
 	{
-		t_env_var *env_var = (t_env_var *)temp->content;
+		env_var = (t_env_var *)temp->content;
 		if (ft_strncmp(env_name, env_var->name, ft_strlen(env_name)) == 0)
 		{
 			if (env_var->content != NULL && ft_strlen(env_var->content) >= 0)
@@ -44,7 +46,7 @@ int	var_exists_in_envs(char *env_name, t_list *envs)
 			return (1);
 		}
 		if (temp->next == NULL)
-			break;
+			break ;
 		temp = temp->next;
 	}
 	return (0);

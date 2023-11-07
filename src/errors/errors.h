@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:29 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/11/01 17:39:07 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/04 19:08:27 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
-
 
 /** Frees all the variables that are stored in the global variables */
 void	free_globals(void);

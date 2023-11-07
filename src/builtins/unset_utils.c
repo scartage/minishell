@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 18:43:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/10/19 18:41:42 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/07 19:36:20 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,12 @@ static void	free_env_var(void *envVarPtr)
 
 t_list	*find_env_var(const char *arg, t_list *envs)
 {
-	t_list	*temp;
+	t_list		*temp;
+	t_env_var	*env_var;
 
 	temp = envs;
 	while (temp != NULL)
 	{
-		t_env_var	*env_var;
-
 		env_var = (t_env_var *)temp->content;
 		if (ft_strncmp(arg, env_var->name, ft_strlen(arg)) == 0)
 			return (temp);
@@ -39,7 +38,7 @@ t_list	*find_env_var(const char *arg, t_list *envs)
 	return (NULL);
 }
 
-int	check_if_valid(char *arg, t_list **envs)
+int	remove_if_valid(char *arg, t_list **envs)
 {
 	if (check_env_name(arg) != 0)
 		return (1);
