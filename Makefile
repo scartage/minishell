@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: scartage <scartage@student.42.fr>          +#+  +:+       +#+         #
+#    By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/11/04 19:43:10 by scartage         ###   ########.fr        #
+#    Updated: 2023/11/07 20:21:58 by fsoares-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minishell
 CC			= gcc
-CFLAGS		= -Wall -Werror -Wextra -MMD -g -fsanitize=address -fsanitize=undefined
+CFLAGS		= -Wall -Werror -Wextra -MMD -g # -fsanitize=address -fsanitize=undefined
 RM			= rm -rf
 
 INCLUDES	= inc/minishell.h

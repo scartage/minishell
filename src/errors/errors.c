@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/11/04 20:02:30 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/07 20:40:45 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ void	show_error_arg(char *command, char *arg, char *msm, int opt)
 		prev = ft_strjoin(command, quoted_arg);
 		free(quoted_arg);
 		temp = prepend_shell(prev, msm);
+		free(prev);
 	}
 	else
 	{
 		prev = ft_strjoin(command, arg);
 		temp = prepend_shell(prev, msm);
+		free(prev);
 	}
 	write(STDERR_FILENO, temp, ft_strlen(temp));
 	write(STDERR_FILENO, "\n", 1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_export_unset.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/07 19:36:20 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/07 20:53:10 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,7 @@ int	ft_export(t_list *arguments, t_list *envs)
 			break ;
 		temp_args = temp_args->next;
 	}
-	if (exit_status == 1)
-		return (1);
-	return (0);
+	return (exit_status);
 }
 
 /*revisada y funciona como bash*/
@@ -112,6 +110,7 @@ int	ft_unset(t_list *arguments, t_list *envs)
 
 	count_arg = ft_lstsize(arguments);
 	temp_args = arguments->next;
+	exit_status = 0;
 	if (count_arg == 1)
 		return (0);
 	while (temp_args != NULL)
@@ -126,7 +125,5 @@ int	ft_unset(t_list *arguments, t_list *envs)
 			break ;
 		temp_args = temp_args->next;
 	}
-	if (exit_status == 1)
-		return (1);
-	return (0);
+	return (exit_status);
 }
