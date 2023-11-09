@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 16:47:07 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:57:45 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 #include "path_handler.h"
 #include "pipe_handler.h"
 #include "../signals/signals.h"
-
 
 char	**comm_to_args(t_command *comm);
 char	**envs_to_array(t_list *envs);
@@ -72,11 +71,13 @@ int	execute_single_command(t_command *command, t_list *envs, int last_status)
 {
 	int			child_pid;
 	int			status;
+	int			saved_stdin;
+	int			saved_stdout;
 
 	if (is_special_builtin(command))
 	{
-		int saved_stdin = dup(0);
-		int saved_stdout = dup(1);
+		saved_stdin = dup(0);
+		saved_stdout = dup(1);
 		setup_first_read_fd(command);
 		setup_last_write_fd(command);
 		status = call_builtin(command->arguments, envs, last_status, true);
@@ -165,7 +166,8 @@ int	execute_all_commands(t_list *commands, t_list *envs, int last_status)
 		in_pipe[1] = out_pipe[1];
 		commands = commands->next;
 	}
-	child_pid = execute_last_command(commands->content, envs, in_pipe, last_status);
+	child_pid = execute_last_command(commands->content,
+			envs, in_pipe, last_status);
 	close_pipe(in_pipe);
 	status = handle_wait_pid(child_pid);
 	return (status);
@@ -180,8 +182,6 @@ int	execute(t_list *commands, t_list *envs, int last_status)
 		result = execute_single_command(commands->content, envs, last_status);
 	else
 		result = execute_all_commands(commands, envs, last_status);
-	//DEBUG("after all wait\n");
-	//DEBUG("\nhay %i hijos\n", ft_lstsize(commands));
 	delete_heredocs();
 	return (result);
 }

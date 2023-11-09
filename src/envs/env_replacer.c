@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 17:29:08 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:01:35 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
 
 typedef enum e_state
 {
@@ -26,14 +25,15 @@ typedef enum e_state
 	in_space
 }	t_state;
 
-
-char *get_content(char *env_name, t_list *env_variables)
+char	*get_content(char *env_name, t_list *env_variables)
 {
-	t_list *tmp = env_variables;
+	t_list		*tmp;
+	t_env_var	*env;
 
+	tmp = env_variables;
 	while (tmp != NULL)
 	{
-		t_env_var* env = (t_env_var *)tmp->content;
+		env = (t_env_var *)tmp->content;
 		if (ft_strncmp(env_name, env->name, ft_strlen(env_name) + 1) == 0)
 		{
 			return (env->content);
@@ -43,18 +43,21 @@ char *get_content(char *env_name, t_list *env_variables)
 	return (NULL);
 }
 
-t_token *del_quotes(t_token *token) {
-	int i = 0;
+t_token	*del_quotes(t_token *token)
+{
+	int			i;
+	t_state		current;
+	t_string	*res;
+	char		*str;
+	char		*result;
 
-	t_state current = in_word;
-
-	t_string *res = str_new();
-	char *str = token->value;
-
+	i = 0;
+	current = in_word;
+	res = str_new();
+	str = token->value;
 	while (str[i])
 	{
-		//printf("char: %c -> status: %i\n", str[i], current);
-		if (current == in_word && str[i] == '\'') {
+		if (current == in_word && str[i] == '\''){
 			current = in_single_quote;
 		} else if (current == in_word && str[i] == '"') {
 			current = in_double_quote;
@@ -71,18 +74,20 @@ t_token *del_quotes(t_token *token) {
 		if (str[i])
 			i++;
 	}
-	char *result = ft_strdup(res->buffer);
+	result = ft_strdup(res->buffer);
 	str_free(res);
 	free(str);
 	token->value = result;
 	return token;
 }
 
-t_list *remove_quotes(t_list *input)
+t_list	*remove_quotes(t_list *input)
 {
-	t_list *new_tokens = input;
-	t_list *current_tokens = new_tokens;
+	t_list	*new_tokens;
+	t_list	*current_tokens;
 
+	new_tokens = input;
+	current_tokens = new_tokens;
 	while (current_tokens != NULL)
 	{
 		current_tokens->content = del_quotes(current_tokens->content);
@@ -93,11 +98,13 @@ t_list *remove_quotes(t_list *input)
     return (new_tokens);
 }
 
-void special_append(t_string *res, char *env_content)
+void	special_append(t_string *res, char *env_content)
 {
-	bool in_word = false;
-	int i = 0;
-	
+	bool	in_word;
+	int		i;
+
+	in_word = false;
+	i = 0;
 	while (env_content[i])
 	{
 		if (in_word == false && env_content[i] != ' ')
@@ -119,10 +126,11 @@ void special_append(t_string *res, char *env_content)
 		str_add_char(res, '"');
 }
 
-char *escape_double_quote(char *orig)
+char	*escape_double_quote(char *orig)
 {
-	t_string *res = str_new();
+	t_string	*res;
 	
+	res = str_new();
 	while (*orig) {
 		if (*orig == '"')
 			str_add_char(res, '\\');
@@ -134,9 +142,11 @@ char *escape_double_quote(char *orig)
 
 int	handle_dollar(t_string *res, char *str, t_state state, int last_status, t_list *envs)
 {
-	int size = 0;
-	char *temp;
-	
+	int		size;
+	char	*temp;
+	char	*content;
+
+	size = 0;
 	while (str[size] && ft_isalpha(str[size]))
 		size++;
 	if (size == 0)
@@ -154,7 +164,7 @@ int	handle_dollar(t_string *res, char *str, t_state state, int last_status, t_li
 		return (size);
 	}
 	temp = ft_substr(str, 0, size);
-	char *content = get_content(temp, envs);
+	content = get_content(temp, envs);
 	if (content != NULL)
 	{
 		if (state == in_double_quote)
@@ -165,7 +175,7 @@ int	handle_dollar(t_string *res, char *str, t_state state, int last_status, t_li
 	return (size);
 }
 
-bool should_handle_tilde(char *str, int pos) {
+bool	should_handle_tilde(char *str, int pos) {
 	bool should_handle;
 	
 	should_handle = str[pos] == '~' && ft_strchr(" /", str[pos + 1]);
@@ -174,13 +184,18 @@ bool should_handle_tilde(char *str, int pos) {
 	return (should_handle);
 }
 
-char *replace_envs(char *str, t_list *envs, int last_status)
+char	*replace_envs(char *str, t_list *envs, int last_status)
 {
-	t_state current = in_word;
-	t_string *res = str_new();
-	bool to_add = true;
-	
-	int i = 0;
+	t_state		current;
+	t_string	*res;
+	bool		to_add;
+	int			i;
+	int			offset;
+
+	current = in_word;
+	res = str_new();
+	to_add = true;
+	i = 0;
 	while (str[i])
 	{
 		if (current == in_word && str[i] == '\'') {
@@ -195,7 +210,7 @@ char *replace_envs(char *str, t_list *envs, int last_status)
 			str_append(res, get_content("HOME", envs));
 			to_add = false;
 		} else if (current != in_single_quote && str[i] == '$') {
-			int offset = handle_dollar(res, str + i + 1, current, last_status, envs);
+			offset = handle_dollar(res, str + i + 1, current, last_status, envs);
 			i += offset;
 			to_add = false;
 		}

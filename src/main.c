@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 17:31:13 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:36:32 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static int	execute_input(char *input, t_shell *shell, int last_status)
 	return (last_status);
 }
 
-/*this fn returns t_list intead of void*/
 void	get_env(char **envp, t_shell *shell)
 {
 	shell->env_variables = env_parser(envp);

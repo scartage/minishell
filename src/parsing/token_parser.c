@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:46:11 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/11/04 19:36:10 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:49:04 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	add_token(t_parse_info *info, char *token);
 void	add_char_to_token(t_parse_info *info, char c);
 void	process_redirection(t_parse_info *info);
 t_list	*classify_tokens(t_list *tokens);
-
 t_state	handle_in_token(t_parse_info *info);
 
 t_state	handle_in_space(t_parse_info *info)

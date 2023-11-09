@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_export_unset.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:53:35 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/07 20:53:10 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:16:20 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	ft_export(t_list *arguments, t_list *envs)
 	t_list	*temp_args;
 	int		exit_status;
 
+	exit_status = 0;
 	count_arg = ft_lstsize(arguments);
 	temp_args = arguments->next;
 	if (check_num_arg(count_arg, envs) == 0)

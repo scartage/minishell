@@ -6,16 +6,13 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 17:32:17 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/07 19:20:25 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:05:02 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include <errno.h>		// para erno
 #include <limits.h>
-
-/*Puede que esta solucion no sea correcta, pero ya nos detecta numeros
-mas grandes que un int los cuales no son validos*/
 
 static long	ft_strtol(const char *str, char **endptr)
 {
@@ -97,10 +94,9 @@ int	ft_isdigit_void(char *str)
 	int	i;
 
 	i = 0;
-	str = ft_strtrim(str, " "); //FIXME remove leak
-	if (ft_strncmp(str, "--", 3) == 0) {
+	str = ft_strtrim(str, " ");
+	if (ft_strncmp(str, "--", 3) == 0)
 		return (0);
-	}
 	if (check_all_numbers(str) == 1)
 		return (1);
 	if (ft_strlen(str) >= 18)

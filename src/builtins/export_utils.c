@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:41:31 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 16:48:34 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:04:33 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ static int	check_spaces_bt_equal(char *arg)
 	}
 	return (0);
 }
-
 
 static void	env_var_with_value(char *arg, t_list *envs)
 {

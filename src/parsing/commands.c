@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:20:13 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 19:38:20 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:52:09 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,9 @@ void	add_argument_to_command(t_command *command, t_token *value)
 
 bool	show_syntax_error(char *val)
 {
-	t_string *err = str_new();
+	t_string	*err;
 
+	err = str_new();
 	str_append(err, "syntax error near unexpected token `");
 	str_append(err, val);
 	str_append(err, "'");

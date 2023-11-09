@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:40:45 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 19:09:34 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:03:04 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ bool	echo_is_valid_option(char *argument)
 	return (true);
 }
 
-/*revisada y testeada, se comporta como bash*/
 int	ft_pwd(void)
 {
 	char	buffer[PATH_MAX];
@@ -41,7 +40,6 @@ int	ft_pwd(void)
 	return (0);
 }
 
-/*these are util fn for the unset builtin*/
 static void	swap_nodes(t_list *node1, t_list *node2)
 {
 	t_env_var	*temp_env_var;

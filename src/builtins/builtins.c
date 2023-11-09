@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 19:12:50 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 20:30:52 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:04:19 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ bool	is_special_builtin(t_command *command)
 {
 	char	*name;
 
-    if (!command->arguments)
+	if (!command->arguments)
 		return (false);
 	name = command->arguments->content;
 	if (ft_strncmp("exit", name, 5) == 0)
@@ -63,7 +63,6 @@ bool	is_special_builtin(t_command *command)
 		return (true);
 	return (false);
 }
-
 
 int	call_builtin(t_list *args, t_list *envs, int last_status, bool is_1_com)
 {
