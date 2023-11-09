@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/07 20:44:21 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:31:13 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,21 @@
 
 static int	execute_input(char *input, t_shell *shell, int last_status)
 {
+	t_list	*tokens;
+	t_list	*commands;
+
 	input = replace_envs(input, shell->env_variables, last_status);
-	//printf("after: -%s-\n", input);
-	t_list *tokens = parse_line(input);
+	tokens = parse_line(input);
 	if (tokens == NULL)
 		return (0);
-
-	//printingBefore(tokens);
 	tokens = remove_quotes(tokens);
-	//printAfter(tokens);
-
 	if (!valid_token_seq(tokens))
 	{
 		ft_lstclear(&tokens, free_token);
 		return (258);
 	}
-	t_list *commands = token_to_command(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
+	commands = token_to_command(tokens);
 	ft_lstclear(&tokens, free_token);
-	//ft_lstiter(commands, print_command);
-
 	set_signal_handler(signal_handler_executing);
 	last_status = execute(commands, shell->env_variables, last_status);
 	set_signal_handler(signal_handler_input);

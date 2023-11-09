@@ -6,25 +6,24 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 19:22:55 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:26:21 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <stdio.h>
-#include <unistd.h>				//para el write, isatty
-#include <stdlib.h>				//para el exit
-#include <stdbool.h>			//para bool
-#include <readline/readline.h>	//para obtener input
-#include <readline/history.h>	//historial del input
-#include "../libft/libft.h"		//para el t_list
-#include <signal.h>
+# include <stdio.h>
+# include <unistd.h>				//para el write, isatty
+# include <stdlib.h>				//para el exit
+# include <stdbool.h>				//para bool
+# include <readline/readline.h>		//para obtener input
+# include <readline/history.h>		//historial del input
+# include "../libft/libft.h"		//para el t_list
+# include <signal.h>
 
-#define IS_TEST 1
-
-#define MAX_CHILDREN 100
+# define IS_TEST 1
+# define MAX_CHILDREN 100
 
 typedef enum e_token_type {
 	ARGUMENT,
@@ -64,10 +63,8 @@ typedef struct s_command {
 	t_list * arguments;     // de char *, array de strings que contiene los argumentos
 } t_command;
 
-
-/*Esta estructura tiene que desaparecer, tenemos que pasar las estructuras*/
 typedef struct s_shell {
-	t_list		*env_variables; //entorno
+	t_list		*env_variables; //variables de entorno
 	t_list		*parsed_words;	//input
 }	t_shell;
 

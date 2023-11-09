@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_replacer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/07 20:44:08 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:29:08 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,17 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+
+typedef enum e_state
+{
+	in_single_quote,
+	in_double_quote,
+	in_env_var_name,
+	in_word,
+	in_space
+}	t_state;
+
 
 char *get_content(char *env_name, t_list *env_variables)
 {
@@ -31,15 +42,6 @@ char *get_content(char *env_name, t_list *env_variables)
 	}
 	return (NULL);
 }
-
-typedef enum e_state
-{
-	in_single_quote,
-	in_double_quote,
-	in_env_var_name,
-	in_word,
-	in_space
-}	t_state;
 
 t_token *del_quotes(t_token *token) {
 	int i = 0;

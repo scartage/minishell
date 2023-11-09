@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_add_char.c                                      :+:      :+:    :+:   */
+/*   str_helpers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:58:28 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/05 16:55:04 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:02:24 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int	str_add_char(t_string *string, char new)
 
 int	str_add_int(t_string *string, int number)
 {
-	char *number_str;
-	
+	char	*number_str;
+
 	number_str = ft_itoa(number);
 	str_append(string, number_str);
 	free(number_str);
