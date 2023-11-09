@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:29 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/11/09 20:30:11 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:54:39 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@
 void	shell_error(char *reason);
 
 /**
- * Shows the error and the generated perror, and aborts the shell, cleaning
- * the global variables
+ * Shows the error and the generated perror, and aborts the shell
  * 
  * @param reason The reason to display on the terminal
  */
