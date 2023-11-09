@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:46:30 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 20:15:14 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:47:07 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	do_exec_call(t_command *comm, t_list *envs, int last_status)
 		command_path = get_full_path(comm, envs);
 		args = comm_to_args(comm);
 		envp = envs_to_array(envs);
-		//printf("bla:  <%s>\n", command_path);
 		if (execve(command_path, args, envp) == -1)
 			abort_perror("Problem executing command");
 	}
