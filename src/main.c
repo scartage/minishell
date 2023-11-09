@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/07 19:37:50 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/07 20:44:21 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,12 @@ static int	execute_input(char *input, t_shell *shell, int last_status)
 	//printAfter(tokens);
 
 	if (!valid_token_seq(tokens))
+	{
+		ft_lstclear(&tokens, free_token);
 		return (258);
+	}
 	t_list *commands = token_to_command(tokens); // d) step, returns t_list of t_commands depending on how many commands we have
-	ft_lstclear(&tokens, free);
+	ft_lstclear(&tokens, free_token);
 	//ft_lstiter(commands, print_command);
 
 	set_signal_handler(signal_handler_executing);

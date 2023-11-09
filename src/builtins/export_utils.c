@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:41:31 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 16:46:57 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:48:34 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ static void	env_var_with_value(char *arg, t_list *envs)
 		if (ft_strlen(value) == 0)
 		{
 			set_env_value_to_null(name, envs);
+			free(value);
 		}
 		else
 		{
@@ -101,6 +102,7 @@ static void	env_var_with_value(char *arg, t_list *envs)
 			else
 				add_new_end_var(name, value, &envs);
 		}
+		free(name);
 	}
 }
 
