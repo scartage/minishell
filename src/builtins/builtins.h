@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:20:51 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/07 19:36:20 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:18:33 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,7 @@ void		order_envs_list(t_list *envs);
 
 /*utils fn for unset*/
 int			remove_if_valid(char *arg, t_list **envs);
+
+/*ultil for ft_strtoll*/
+int			get_sign(const char **str);
 #endif

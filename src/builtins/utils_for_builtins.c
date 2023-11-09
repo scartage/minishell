@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 17:32:17 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 18:05:02 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:17:42 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,25 @@
 #include <errno.h>		// para erno
 #include <limits.h>
 
+static long	handle_overflow(int sign)
+{
+	errno = ERANGE;
+	if (sign == -1)
+		return (LONG_MIN);
+	else
+		return (LONG_MAX);
+}
+
 static long	ft_strtol(const char *str, char **endptr)
 {
 	long	result;
 	int		sign;
 	int		digit;
 
-	sign = 1;
+	sign = get_sign(&str);
 	result = 0;
 	while (*str == ' ')
 		str++;
-	if (*str == '+' || *str == '-')
-	{
-		if (*str == '-')
-			sign = -1;
-		str++;
-	}
 	if (sign == -1 && ft_strncmp(str, "9223372036854775808", 19) == 0)
 	{
 		if (endptr)
@@ -40,14 +43,7 @@ static long	ft_strtol(const char *str, char **endptr)
 	{
 		digit = *str - '0';
 		if (result > (LONG_MAX - digit) / 10)
-		{
-			errno = ERANGE;
-			if (sign == -1)
-				result = LONG_MIN;
-			else
-				result = LONG_MAX;
-			break ;
-		}
+			return (handle_overflow(sign));
 		result = result * 10 + digit;
 		str++;
 	}

@@ -6,11 +6,25 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:46:08 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/07 19:46:25 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:18:51 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+
+int	get_sign(const char **str)
+{
+	int	sign;
+
+	sign = 1;
+	if (**str == '+' || **str == '-')
+	{
+		if (**str == '-')
+			sign = -1;
+		(*str)++;
+	}
+	return (sign);
+}
 
 void	add_new_end_var(char *env_name, char *value, t_list **envs)
 {

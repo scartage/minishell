@@ -6,7 +6,7 @@
 /*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:55:09 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/07 19:54:30 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:01:52 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,6 @@ int	ft_echo(t_list *arguments)
 	return (0);
 }
 
-/*revisada y funciona como bash*/
-/*we have to check this case
-exit | ./minishell
-	minishell: exit */
-
-/*tememos que solucionar casos de numeros muy grandes
-
-esto lo podemos gestionar con un ft_lltoa y ft_atoll*/
 int	ft_exit(t_list *arguments, int last_status, bool is_1_com)
 {
 	int	arg_count;
@@ -131,9 +123,9 @@ int	ft_cd(t_list *arguments, t_list *envs)
 	errno = 0;
 	if (len_args == 1)
 	{
-		if (chdir(getenv("HOME")) != 0)
+		if (chdir(get_content("HOME", envs)) != 0)
 		{
-			show_error("cd", "something went wrong");
+			show_error("cd", "HOME not set");
 			return (1);
 		}
 		return (0);
