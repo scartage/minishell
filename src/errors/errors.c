@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:31 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/11/07 20:40:45 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:30:17 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,5 @@ void	abort_perror(char *message)
 	temp = prepend_shell(NULL, message);
 	perror(temp);
 	free(temp);
-	free_globals();
 	exit(1);
 }

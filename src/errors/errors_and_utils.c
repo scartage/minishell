@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 17:31:24 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/04 18:31:54 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:29:54 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,8 @@ char	*fn_quote_arg(const char *arg)
 	return (quoted_arg);
 }
 
-void	free_globals(void)
-{
-	// TODO: Free all the global variables to avoid leaks
-}
-
 void	shell_error(char *reason)
 {
-	free_globals();
 	terminate_with_error(reason);
 }
 

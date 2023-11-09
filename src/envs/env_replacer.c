@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_replacer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 18:01:35 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:06:16 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,209 +16,103 @@
 #include <string.h>
 #include <stdlib.h>
 
-typedef enum e_state
-{
-	in_single_quote,
-	in_double_quote,
-	in_env_var_name,
-	in_word,
-	in_space
-}	t_state;
+t_env_info	new_env_info(char *str, t_list *envs, int last_status);
+void		special_append(t_string *res, char *env_content);
+char		*escape_double_quote(char *orig);
 
-char	*get_content(char *env_name, t_list *env_variables)
+int	handle_empty_dollar(t_env_info *info, char *base)
 {
-	t_list		*tmp;
-	t_env_var	*env;
+	int	size;
 
-	tmp = env_variables;
-	while (tmp != NULL)
+	size = 0;
+	if (base[0] == '?')
 	{
-		env = (t_env_var *)tmp->content;
-		if (ft_strncmp(env_name, env->name, ft_strlen(env_name) + 1) == 0)
-		{
-			return (env->content);
-		}
-		tmp = tmp->next;
+		str_add_int(info->res, info->last_status);
+		size++;
 	}
-	return (NULL);
+	else if (!(info->current != in_double_quote
+			&& (base[0] == '"' || base[0] == '\'')))
+		str_add_char(info->res, '$');
+	return (size);
 }
 
-t_token	*del_quotes(t_token *token)
-{
-	int			i;
-	t_state		current;
-	t_string	*res;
-	char		*str;
-	char		*result;
-
-	i = 0;
-	current = in_word;
-	res = str_new();
-	str = token->value;
-	while (str[i])
-	{
-		if (current == in_word && str[i] == '\''){
-			current = in_single_quote;
-		} else if (current == in_word && str[i] == '"') {
-			current = in_double_quote;
-		} else if (current == in_double_quote && str[i] == '\\' && str[i + 1] == '"'){
-			str_add_char(res, '"');
-			i++;
-		} else if (current == in_double_quote && str[i] == '"') {
-			current = in_word;
-		} else if (current == in_single_quote && str[i] == '\'') {
-			current = in_word;
-		} else if (current == in_word || current == in_single_quote || current == in_double_quote) {
-			str_add_char(res, str[i]);
-		}
-		if (str[i])
-			i++;
-	}
-	result = ft_strdup(res->buffer);
-	str_free(res);
-	free(str);
-	token->value = result;
-	return token;
-}
-
-t_list	*remove_quotes(t_list *input)
-{
-	t_list	*new_tokens;
-	t_list	*current_tokens;
-
-	new_tokens = input;
-	current_tokens = new_tokens;
-	while (current_tokens != NULL)
-	{
-		current_tokens->content = del_quotes(current_tokens->content);
-		if (current_tokens->next == NULL)
-			break ;
-		current_tokens = current_tokens->next;
-	}
-    return (new_tokens);
-}
-
-void	special_append(t_string *res, char *env_content)
-{
-	bool	in_word;
-	int		i;
-
-	in_word = false;
-	i = 0;
-	while (env_content[i])
-	{
-		if (in_word == false && env_content[i] != ' ')
-		{
-			str_add_char(res, '"');
-			in_word = true;
-		}
-		if (in_word == true && env_content[i] == ' ')
-		{
-			str_add_char(res, '"');
-			in_word = false;
-		}
-		if (env_content[i] == '"')
-			str_add_char(res, '\\');
-		str_add_char(res, env_content[i]);
-		i++;
-	}
-	if (in_word)
-		str_add_char(res, '"');
-}
-
-char	*escape_double_quote(char *orig)
-{
-	t_string	*res;
-	
-	res = str_new();
-	while (*orig) {
-		if (*orig == '"')
-			str_add_char(res, '\\');
-		str_add_char(res, *orig);
-		orig++;
-	}
-	return str_to_chars(res);
-}
-
-int	handle_dollar(t_string *res, char *str, t_state state, int last_status, t_list *envs)
+int	handle_dollar(t_env_info *info)
 {
 	int		size;
+	char	*base;
 	char	*temp;
 	char	*content;
 
+	base = info->str + info->pos + 1;
 	size = 0;
-	while (str[size] && ft_isalpha(str[size]))
+	while (base[size] && ft_isalpha(base[size]))
 		size++;
 	if (size == 0)
-	{
-		if (str[0] == '?')
-		{
-			str_add_int(res, last_status);
-			size++;
-		}
-		else {
-			if (!(state != in_double_quote && (str[0] == '"' || str[0] == '\''))) {
-				str_add_char(res, '$');
-			}
-		}
-		return (size);
-	}
-	temp = ft_substr(str, 0, size);
-	content = get_content(temp, envs);
+		return (handle_empty_dollar(info, base));
+	temp = ft_substr(base, 0, size);
+	content = get_content(temp, info->envs);
 	if (content != NULL)
 	{
-		if (state == in_double_quote)
-			str_append(res, escape_double_quote(content));
+		if (info->current == in_double_quote)
+			str_append(info->res, escape_double_quote(content));
 		else
-			special_append(res, content);
+			special_append(info->res, content);
 	}
 	return (size);
 }
 
-bool	should_handle_tilde(char *str, int pos) {
-	bool should_handle;
-	
+bool	should_handle_tilde(char *str, int pos)
+{
+	bool	should_handle;
+
 	should_handle = str[pos] == '~' && ft_strchr(" /", str[pos + 1]);
 	if (pos != 0 && str[pos - 1] != ' ')
 		should_handle = false;
 	return (should_handle);
 }
 
+t_state	not_single_quote_handler(t_env_info *info)
+{
+	int		offset;
+	char	c;
+
+	c = info->str[info->pos];
+	if (info->current == in_word && c == '\'')
+		return (in_single_quote);
+	if (info->current == in_word && c == '"')
+		return (in_double_quote);
+	if (info->current == in_double_quote && c == '"')
+		return (in_word);
+	if (should_handle_tilde(info->str, info->pos))
+	{
+		str_append(info->res, get_content("HOME", info->envs));
+		info->to_add = false;
+	}
+	if (c == '$')
+	{
+		offset = handle_dollar(info);
+		info->pos += offset;
+		info->to_add = false;
+	}
+	return (info->current);
+}
+
 char	*replace_envs(char *str, t_list *envs, int last_status)
 {
-	t_state		current;
-	t_string	*res;
-	bool		to_add;
-	int			i;
-	int			offset;
+	t_env_info	info;
 
-	current = in_word;
-	res = str_new();
-	to_add = true;
-	i = 0;
-	while (str[i])
+	info = new_env_info(str, envs, last_status);
+	while (str[info.pos])
 	{
-		if (current == in_word && str[i] == '\'') {
-			current = in_single_quote;
-		} else if (current == in_single_quote && str[i] == '\'') {
-			current = in_word;
-		} else if (current == in_word && str[i] == '"') {
-			current = in_double_quote;
-		} else if (current == in_double_quote && str[i] == '"') {
-			current = in_word;
-		} else if (current != in_single_quote && should_handle_tilde(str, i)) {
-			str_append(res, get_content("HOME", envs));
-			to_add = false;
-		} else if (current != in_single_quote && str[i] == '$') {
-			offset = handle_dollar(res, str + i + 1, current, last_status, envs);
-			i += offset;
-			to_add = false;
-		}
-		if (to_add)
-			str_add_char(res, str[i]);
-		to_add = true;
-		i++;
+		if (info.current == in_single_quote && str[info.pos] == '\'')
+			info.current = in_word;
+		else if (info.current != in_single_quote)
+			info.current = not_single_quote_handler(&info);
+		if (info.to_add)
+			str_add_char(info.res, str[info.pos]);
+		info.to_add = true;
+		info.pos++;
 	}
 	free(str);
-	return (str_to_chars(res));
+	return (str_to_chars(info.res));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:00:29 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/11/04 19:08:27 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:30:11 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
-
-/** Frees all the variables that are stored in the global variables */
-void	free_globals(void);
 
 /** 
  * Shows the error and terminates the shell with the reason passed as 

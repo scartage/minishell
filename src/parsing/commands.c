@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 15:20:13 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 17:52:09 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:49:45 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include "minishell.h"
 #include "../errors/errors.h"
 #include <stdio.h>
+
+void	add_argument_to_command(t_command *command, t_token *value);
+bool	show_syntax_error(char *val);
 
 void	add_input(t_command *command, t_token *type, t_token *value)
 {
@@ -59,24 +62,6 @@ void	add_redirection(t_command *command, t_token *type, t_token *value)
 		add_input(command, type, value);
 }
 
-void	add_argument_to_command(t_command *command, t_token *value)
-{
-	ft_lstadd_back(&command->arguments, ft_lstnew(ft_strdup(value->value)));
-}
-
-bool	show_syntax_error(char *val)
-{
-	t_string	*err;
-
-	err = str_new();
-	str_append(err, "syntax error near unexpected token `");
-	str_append(err, val);
-	str_append(err, "'");
-	show_error(NULL, err->buffer);
-	str_free(err);
-	return (false);
-}
-
 bool	valid_token_seq(t_list *tokens)
 {
 	t_token		*token;
@@ -89,15 +74,13 @@ bool	valid_token_seq(t_list *tokens)
 		token = tokens->content;
 		if (tokens->next)
 			next = tokens->next->content;
-		else
-			next = NULL;
-		if (token->type == REDIR && next == NULL)
+		if (token->type == REDIR && tokens->next == NULL)
 			return (show_syntax_error("newline"));
 		if (token->type == REDIR && next->type != ARGUMENT)
 			return (show_syntax_error(next->value));
 		if (token->type == PIPE && prev == NULL)
 			return (show_syntax_error("|"));
-		if (token->type == PIPE && next == NULL)
+		if (token->type == PIPE && tokens->next == NULL)
 			return (show_syntax_error("newline"));
 		if (token->type == PIPE && next->type == PIPE)
 			return (show_syntax_error("|"));
@@ -112,14 +95,12 @@ t_list	*token_to_command(t_list *tokens)
 	t_list		*commands;
 	t_command	*new_comm;
 	t_token		*token;
-	char		first_char;
 
 	commands = NULL;
 	new_comm = protected_malloc(sizeof(t_command));
 	while (tokens != NULL)
 	{
 		token = tokens->content;
-		first_char = token->value[0];
 		if (token->type == PIPE)
 		{
 			ft_lstadd_back(&commands, ft_lstnew(new_comm));
@@ -136,25 +117,4 @@ t_list	*token_to_command(t_list *tokens)
 	}
 	ft_lstadd_back(&commands, ft_lstnew(new_comm));
 	return (commands);
-}
-
-void	free_in_files(t_in_file *in_file)
-{
-	free(in_file->end_str);
-	free(in_file->name);
-	free(in_file);
-}
-
-void	free_out_files(t_out_file *out_file)
-{
-	free(out_file->name);
-	free(out_file);
-}
-
-void	free_command(t_command *command)
-{
-	ft_lstclear((void *)&command->arguments, free);
-	ft_lstclear((void *)&command->input_files, (t_del_fn)free_in_files);
-	ft_lstclear((void *)&command->output_files, (t_del_fn)free_out_files);
-	free(command);
 }

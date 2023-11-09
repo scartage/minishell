@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:32:34 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/11/09 17:48:46 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:20:45 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 # define TOKEN_PARSER_H
 
 # include "libft.h"
-
-typedef enum e_state
-{
-	in_space,
-	in_token,
-	in_quote,
-}	t_state;
 
 typedef struct s_parse_info {
 	char		current_char;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   temp_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 18:49:47 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 17:46:11 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:50:43 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ char	*get_type(t_token_type type)
 // 	while (temp_tokens != NULL)
 // 	{
 // 		token = temp_tokens->content;
-// 		printf("new token content: [%s] type: %s\n", token->value, get_type(token->type));
+// 		printf("new token content: [%s] type: %s\n", 
+// 				token->value, get_type(token->type));
 // 		temp_tokens = temp_tokens->next;
 // 	}
 // 	printf("fins ara\n");
@@ -59,13 +60,15 @@ char	*get_type(t_token_type type)
 // void print_infile(void *content2)
 // {
 // 	t_in_file *content = (t_in_file *)content2;
-// 	printf("{%s: \"%s\"}, ", content->type == HEREDOC ? "<<" : "<", content->name);
+// 	printf("{%s: \"%s\"}, ", 
+// 		content->type == HEREDOC ? "<<" : "<", content->name);
 // }
 
 // void print_outfile(void *content2)
 // {
 // 	t_out_file *content = (t_out_file *)content2;
-// 	printf("{%s: \"%s\"}, ", content->type == WRITE ? ">" : ">>", content->name);
+// 	printf("{%s: \"%s\"}, ", 
+// 		content->type == WRITE ? ">" : ">>", content->name);
 // }
 
 // void print_strings(void *str)

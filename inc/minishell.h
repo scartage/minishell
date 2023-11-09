@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:40:01 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 17:47:15 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:22:29 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@
 # include "../libft/libft.h"		//para el t_list
 # include <signal.h>
 
-# define IS_TEST 1
-# define MAX_CHILDREN 100
+# define IS_TEST 0
 
 typedef enum e_token_type {
 	ARGUMENT,
@@ -68,19 +67,17 @@ typedef struct s_shell {
 	t_list		*parsed_words;	//input
 }	t_shell;
 
-t_shell	shell;
-
-typedef struct s_gShell {
-	int		exit_status;
-	int		level;
-	bool	is_executing;
-	pid_t	children_pid[MAX_CHILDREN];
-	int		current_child;
-}	t_gShell;
+typedef enum e_state
+{
+	in_space,
+	in_token,
+	in_quote,
+	in_word,
+	in_single_quote,
+	in_double_quote,
+	in_env_var_name,
+}	t_state;
 
 char *get_input(int exit_status);
-
-//#define DEBUG(...) fprintf (stderr, __VA_ARGS__);
-#define DEBUG(...) ;
 
 #endif
