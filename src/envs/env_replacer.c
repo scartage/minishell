@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 15:54:56 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 20:06:16 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/11 16:29:42 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	handle_dollar(t_env_info *info)
 		return (handle_empty_dollar(info, base));
 	temp = ft_substr(base, 0, size);
 	content = get_content(temp, info->envs);
+	free(temp);
 	if (content != NULL)
 	{
 		if (info->current == in_double_quote)

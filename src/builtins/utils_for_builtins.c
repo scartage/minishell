@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_for_builtins.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 17:32:17 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 20:17:42 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:06:23 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,7 @@ static int	check_all_numbers(char *str)
 	while (str[i] != '\0')
 	{
 		if (!ft_isdigit(str[i]))
-		{
-			free(str);
 			return (1);
-		}
 		i++;
 	}
 	if (i == 0 || !ft_isdigit(str[i - 1]))
@@ -92,9 +89,15 @@ int	ft_isdigit_void(char *str)
 	i = 0;
 	str = ft_strtrim(str, " ");
 	if (ft_strncmp(str, "--", 3) == 0)
+	{
+		free(str);
 		return (0);
+	}
 	if (check_all_numbers(str) == 1)
+	{
+		free(str);
 		return (1);
+	}
 	if (ft_strlen(str) >= 18)
 	{
 		i = is_valid_number(str);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:41:31 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 18:04:33 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:21:52 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ static void	env_var_with_value(char *arg, t_list *envs)
 		if (ft_strlen(value) == 0)
 		{
 			set_env_value_to_null(name, envs);
-			free(value);
 		}
 		else
 		{
@@ -102,6 +101,7 @@ static void	env_var_with_value(char *arg, t_list *envs)
 				add_new_end_var(name, value, &envs);
 		}
 		free(name);
+		free(value);
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:46:08 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/09 20:18:51 by scartage         ###   ########.fr       */
+/*   Updated: 2023/11/11 16:41:34 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ void	add_new_end_var(char *env_name, char *value, t_list **envs)
 		exit(EXIT_FAILURE);
 	}
 	new_env_var->name = ft_strdup(env_name);
-	if (value == NULL)
-		new_env_var->content = NULL;
-	else
-		new_env_var->content = ft_strdup(value);
+	new_env_var->content = ft_strdup(value);
 	ft_lstadd_back(envs, ft_lstnew(new_env_var));
 }
 

@@ -6,7 +6,7 @@
 /*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 12:32:09 by fsoares-          #+#    #+#             */
-/*   Updated: 2022/02/15 21:23:05 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:08:25 by fsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 	{
 		start++;
 		new_len--;
+		if (s1[start - 1] == 0)
+			break ;
 	}
 	return (ft_substr(s1, start, new_len + 1));
 }
