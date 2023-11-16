@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:41:31 by scartage          #+#    #+#             */
-/*   Updated: 2023/11/11 17:21:52 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/11/13 20:51:43 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ void	update_env_content(char *env_name, char *value, t_list *envs)
 		}
 		temp = temp->next;
 	}
-	if (ft_strncmp(env_name, "PWD", 4) != 0)
-		add_new_end_var(env_name, value, &envs);
+	add_new_end_var(env_name, value, &envs);
 }
 
 static void	set_env_value_to_null(char *env_name, t_list *envs)
