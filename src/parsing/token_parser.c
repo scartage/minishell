@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsoares- <fsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scartage <scartage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:46:11 by fsoares-          #+#    #+#             */
-/*   Updated: 2023/04/05 18:36:46 by fsoares-         ###   ########.fr       */
+/*   Updated: 2023/06/07 17:10:07 by scartage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ t_state	handle_in_quote(t_parse_info *info)
 	return (next_state);
 }
 
+/*Hay que solucionar cuando el input es un espacio (32)*/
 t_parse_info	new_info(char *line)
 {
 	t_parse_info	info;

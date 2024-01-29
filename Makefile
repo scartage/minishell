@@ -6,7 +6,7 @@
 #    By: scartage <scartage@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/28 20:31:49 by scartage          #+#    #+#              #
-#    Updated: 2023/05/30 18:16:21 by scartage         ###   ########.fr        #
+#    Updated: 2023/06/07 17:34:12 by scartage         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ fclean: clean
 
 re: fclean all
 
-test:
+test: all
 	@$(MAKE) -C tests
 
 .PHONY: all clean fclean re test
